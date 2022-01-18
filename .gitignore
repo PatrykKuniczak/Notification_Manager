@@ -1,0 +1,4 @@
+/.idea
+express_app/node_modules
+*.env
+package-lock.json
