@@ -3,10 +3,9 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import logger from "./shared/Logger";
 import bodyParser from "body-parser";
-import BaseRouter from "./routers";
+import BaseRouter from "./controller";
 import "reflect-metadata";
 import {createConnection} from "typeorm";
-
 
 (async () => {
     try {
@@ -16,6 +15,7 @@ import {createConnection} from "typeorm";
         logger.err(e.message)
     }
 })()
+
 
 const app = express()
 
