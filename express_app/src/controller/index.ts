@@ -10,11 +10,11 @@ import {
 
 const baseRouter: Router = Router();
 
-baseRouter.post("/notification/create", addNotification)
-baseRouter.put("/notification/edit/:id", editNotification)
-baseRouter.delete("/notification/delete/:id", deleteNotification)
-baseRouter.get("/notification/all", displayAllNotifications)
-baseRouter.get("/notification/:id", displayNotificationById)
-baseRouter.get("/notification/:field/:data", displayNotification)
+baseRouter.post("/notifications/create", addNotification)
+baseRouter.put("/notifications/edit/:id", editNotification)
+baseRouter.delete("/notifications/delete/:id", deleteNotification)
+baseRouter.get("/notifications/all", displayAllNotifications)
+baseRouter.get("/notifications/:id", displayNotificationById)
+baseRouter.get("/notifications/:field/:data", displayNotification)
 
 export default baseRouter;
