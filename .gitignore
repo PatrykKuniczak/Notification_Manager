@@ -4,3 +4,4 @@
 build/
 */package-lock.json
 */ormconfig.json
+/express_app/src/database/migration/*
