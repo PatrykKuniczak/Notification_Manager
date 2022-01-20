@@ -28,7 +28,8 @@ export async function editNotification(req: Request, res: Response): Promise<num
     field = field.trim();
     newData = newData.trim();
 
-    if (newData && field !== "") {
+    if (newData && field !== "" && field !== "id") {
+
         try {
             req.params.id = Number(req.params.id);
             const result: UpdateResult = await getManager().update(Notification, req.params.id, {[field]: newData});
