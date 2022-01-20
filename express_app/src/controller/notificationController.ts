@@ -4,7 +4,7 @@ import {DeleteResult, getManager, UpdateResult} from "typeorm";
 import {checkResult} from "./helpers";
 
 
-export async function addNotification(req: Request, res: Response): Promise<void> {
+export async function addNotification(req: Request, res: Response): Promise<number> {
     let {name, description} = req.body;
     name = name.trim();
     description = description.trim();
@@ -23,7 +23,7 @@ export async function addNotification(req: Request, res: Response): Promise<void
     }
 }
 
-export async function editNotification(req: Request, res: Response): Promise<void> {
+export async function editNotification(req: Request, res: Response): Promise<number> {
     let {field, newData} = req.body;
     field = field.trim();
     newData = newData.trim();
@@ -45,7 +45,7 @@ export async function editNotification(req: Request, res: Response): Promise<voi
 
 }
 
-export async function deleteNotification(req: Request, res: Response): Promise<void> {
+export async function deleteNotification(req: Request, res: Response): Promise<number> {
     if (req.params.id !== undefined) {
         try {
             req.params.id = Number(req.params.id);
@@ -61,12 +61,12 @@ export async function deleteNotification(req: Request, res: Response): Promise<v
     }
 }
 
-export async function displayAllNotifications(req: Request, res: Response): Promise<Notification[]> {
+export async function displayAllNotifications(req: Request, res: Response): Promise<Notification[] | []> {
     const result: Notification[] = await getManager().find(Notification);
     return res.send(result)
 }
 
-export async function displayNotification(req: Request, res: Response): Promise<void> {
+export async function displayNotification(req: Request, res: Response): Promise<Notification | number> {
     const field = req.params.field.trim();
     const data = req.params.data.trim();
 
@@ -86,7 +86,7 @@ export async function displayNotification(req: Request, res: Response): Promise<
 
 }
 
-export async function displayNotificationById(req: Request, res: Response): Promise<void> {
+export async function displayNotificationById(req: Request, res: Response): Promise<Notification | number> {
     const id = req.params.id.trim();
 
     if (id !== "") {
