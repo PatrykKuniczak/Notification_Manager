@@ -11,7 +11,7 @@ import {
 const baseRouter: Router = Router();
 
 baseRouter.post("/notifications/create", addNotification)
-baseRouter.put("/notifications/edit/:id", editNotification)
+baseRouter.patch("/notifications/edit/:id", editNotification)
 baseRouter.delete("/notifications/delete/:id", deleteNotification)
 baseRouter.get("/notifications/all", displayAllNotifications)
 baseRouter.get("/notifications/:id", displayNotificationById)
