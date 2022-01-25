@@ -1,6 +1,21 @@
+import "./Server"
 import logger from "./shared/Logger";
-import app from "./Server";
+import baseRouter from "./controller";
+import express, {Express} from "express"
+import morgan from 'morgan';
+import cors from "cors"
+import cookieParser from "cookie-parser"
 
-app.listen(process.env.PORT, () => {
-    logger.info('Express server started on port: ' + process.env.EXPRESS_PORT);
+
+const app: Express = express();
+
+app.use(express.json());
+app.use(cors());
+app.use(express.urlencoded({extended: true}));
+app.use(cookieParser());
+app.use(morgan("dev"));
+app.use('/api', baseRouter);
+
+app.listen(9000, () => {
+    logger.info('Express server started on port: 9000');
 });
