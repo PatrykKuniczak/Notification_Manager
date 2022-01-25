@@ -6,6 +6,7 @@ import {checkResult} from "./helpers";
 
 export async function addNotification(req: Request, res: Response): Promise<number> {
     let {name, description} = req.body;
+
     name = name.fullTrim().toTitle();
     description = description.fullTrim();
 
@@ -25,6 +26,7 @@ export async function addNotification(req: Request, res: Response): Promise<numb
 
 export async function editNotification(req: Request, res: Response): Promise<number> {
     let {field, newData} = req.body;
+
     field = field.fullTrim();
     newData = field === "name" ? newData.fullTrim().toTitle() : newData.fullTrim();
 
@@ -83,6 +85,7 @@ export async function displayNotification(req: Request, res: Response): Promise<
         } catch (err: any) {
             return res.sendStatus(404)
         }
+
     } else {
         return res.sendStatus(404);
     }

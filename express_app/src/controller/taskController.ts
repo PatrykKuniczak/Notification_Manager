@@ -7,6 +7,7 @@ import {Task} from "../database/entity/Task";
 
 export async function addTask(req: Request, res: Response): Promise<number> {
     let {title, description} = req.body;
+
     title = title.fullTrim().toTitle();
     description = description.fullTrim();
 
@@ -26,6 +27,7 @@ export async function addTask(req: Request, res: Response): Promise<number> {
 
 export async function editTask(req: Request, res: Response): Promise<number> {
     let {title, description} = req.body;
+
     title = title.fullTrim().toTitle();
     description = description.fullTrim();
 
