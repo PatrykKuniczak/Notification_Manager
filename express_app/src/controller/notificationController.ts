@@ -6,8 +6,8 @@ import {checkResult} from "./helpers";
 
 export async function addNotification(req: Request, res: Response): Promise<number> {
     let {name, description} = req.body;
-    name = name.trim().toTitle();
-    description = description.trim();
+    name = name.fullTrim().toTitle();
+    description = description.fullTrim();
 
     if (name && description !== "") {
         try {
@@ -25,8 +25,8 @@ export async function addNotification(req: Request, res: Response): Promise<numb
 
 export async function editNotification(req: Request, res: Response): Promise<number> {
     let {field, newData} = req.body;
-    field = field.trim();
-    newData = field === "name" ? newData.trim().toTitle() : newData.trim();
+    field = field.fullTrim();
+    newData = field === "name" ? newData.fullTrim().toTitle() : newData.fullTrim();
 
     if (newData && field !== "" && field !== "id") {
 
@@ -68,8 +68,10 @@ export async function displayAllNotifications(req: Request, res: Response): Prom
 }
 
 export async function displayNotification(req: Request, res: Response): Promise<Notification | number> {
-    const field = req.params.field.trim();
-    const data = req.params.data.trim();
+    let {field, data} = req.params;
+
+    field = field.fullTrim();
+    data = data.fullTrim();
 
     if (field && data !== "") {
         try {
@@ -88,7 +90,7 @@ export async function displayNotification(req: Request, res: Response): Promise<
 }
 
 export async function displayNotificationById(req: Request, res: Response): Promise<Notification | number> {
-    const id = req.params.id.trim();
+    const id = req.params.id.fullTrim();
 
     if (id !== "") {
         try {
