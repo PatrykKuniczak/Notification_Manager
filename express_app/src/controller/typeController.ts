@@ -6,7 +6,7 @@ import {Type} from "../database/entity/Type";
 
 export async function addType(req: Request, res: Response): Promise<number> {
     let {name} = req.body;
-    name = name.trim().toTitle();
+    name = name.fullTrim().toTitle();
 
     if (name !== "") {
         try {
@@ -24,8 +24,8 @@ export async function addType(req: Request, res: Response): Promise<number> {
 
 export async function editType(req: Request, res: Response): Promise<number> {
     let {field, newData} = req.body;
-    field = field.trim();
-    newData = field === "name" ? newData.trim().toTitle() : newData.trim();
+    field = field.fullTrim();
+    newData = field === "name" ? newData.fullTrim().toTitle() : newData.fullTrim();
 
     if (newData && field !== "" && field !== "id") {
 
@@ -67,8 +67,10 @@ export async function displayAllTypes(req: Request, res: Response): Promise<Type
 }
 
 export async function displayType(req: Request, res: Response): Promise<Type | number> {
-    const field = req.params.field.trim();
-    const data = req.params.data.trim();
+    let {field, data} = req.params;
+
+    field = field.fullTrim();
+    data = data.fullTrim();
 
     if (field && data !== "") {
         try {
@@ -87,7 +89,7 @@ export async function displayType(req: Request, res: Response): Promise<Type | n
 }
 
 export async function displayTypeById(req: Request, res: Response): Promise<Type | number> {
-    const id = req.params.id.trim();
+    const id = req.params.id.fullTrim();
 
     if (id !== "") {
         try {
