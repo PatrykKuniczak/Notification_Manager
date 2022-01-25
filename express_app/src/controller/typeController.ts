@@ -6,7 +6,7 @@ import {Type} from "../database/entity/Type";
 
 export async function addType(req: Request, res: Response): Promise<number> {
     let {name} = req.body;
-    name = name.trim();
+    name = name.trim().toTitle();
 
     if (name !== "") {
         try {
@@ -25,7 +25,7 @@ export async function addType(req: Request, res: Response): Promise<number> {
 export async function editType(req: Request, res: Response): Promise<number> {
     let {field, newData} = req.body;
     field = field.trim();
-    newData = newData.trim();
+    newData = field === "name" ? newData.trim().toTitle() : newData.trim();
 
     if (newData && field !== "" && field !== "id") {
 
