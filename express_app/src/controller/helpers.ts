@@ -7,3 +7,8 @@ export function checkResult(result: DeleteResult | UpdateResult){
         return 200;
     }
 }
+
+// @ts-ignore
+String.prototype.toTitle = function() {
+    return this.replace(/(^|\s)\S/g, function(t) { return t.toUpperCase() });
+}
