@@ -6,7 +6,7 @@ import {checkResult} from "./helpers";
 
 export async function addNotification(req: Request, res: Response): Promise<number> {
     let {name, description} = req.body;
-    name = name.trim();
+    name = name.trim().toTitle();
     description = description.trim();
 
     if (name && description !== "") {
@@ -26,7 +26,7 @@ export async function addNotification(req: Request, res: Response): Promise<numb
 export async function editNotification(req: Request, res: Response): Promise<number> {
     let {field, newData} = req.body;
     field = field.trim();
-    newData = newData.trim();
+    newData = field === "name" ? newData.trim().toTitle() : newData.trim();
 
     if (newData && field !== "" && field !== "id") {
 
