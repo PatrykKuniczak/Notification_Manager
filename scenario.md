@@ -10,6 +10,8 @@ Lista oraz kalendarz mają mieć takie same możliwości.
 
 Chcę mieć wyszukiwarkę, sortowanie listy.
 
+Dodatkowo chciałym mieć możliwość, dodawania wydarzeń głosowo oraz czytania ich przez komputer.
+
 
 Wydarzenia mają zawierać:
 1. Tytuł
