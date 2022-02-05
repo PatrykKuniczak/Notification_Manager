@@ -18,4 +18,4 @@ Wydarzenia mają zawierać:
 4. Date i godzine dodania
 5. Ustawienia powiadomienia
 6. Opcję przestawienia strefy czasowej.
-7. Opcję zaznaczenia "ważne"
+7. Znacznik "ważne"
