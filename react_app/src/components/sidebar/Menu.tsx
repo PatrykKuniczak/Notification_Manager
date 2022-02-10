@@ -13,14 +13,14 @@ function Menu() {
             <Link to="/active"><img src={logo} alt="logo"/></Link>
             <ul>
                 <li>
-                    <NavLink className={({isActive}) => (isActive && styles.active) || null}
+                    <NavLink className={({isActive}) => (isActive && styles.active) || ''}
                              to="active">
                         <div className={styles["iconSquare"]}/>
                         <img className={styles["icon"]} src={activeEye} alt="openEye"/>
                         <span>Aktywne</span></NavLink>
                 </li>
 
-                <li><NavLink className={({isActive}) => (isActive && styles.active) || null}
+                <li><NavLink className={({isActive}) => (isActive && styles.active) || ''}
                              to="unActive">
                     <div className={styles["iconSquare"]}/>
                     <img className={styles["icon"]} src={unActiveEye} alt="closeEye"/>
