@@ -1,0 +1,102 @@
+@import "../helpers/Variables.module";
+
+@mixin animateOpacity($from, $to, $time) {
+
+  @keyframes fadein {
+    from {
+      opacity: $from;
+    }
+    to {
+      opacity: $to;
+    }
+  }
+
+  animation: fadein $time+s;
+}
+
+
+.menu {
+  width: 269px;
+  height: 100vh;
+  background-color: #201F24;
+  border-radius: 20px;
+
+  &:hover {
+    border: 2px solid #4353FF;
+  }
+
+  a {
+    img {
+      margin: 15px 0 80px 15px;
+      height: 74.3px;
+      width: 74.3px;
+    }
+  }
+
+  ul {
+    list-style-type: none;
+
+    li {
+      margin-top: 15px;
+
+      a {
+        width: fit-content;
+        display: flex;
+        align-items: center;
+        height: 45px;
+
+        &.active {
+
+          span {
+            color: $buttonActiveColor;
+          }
+
+          .iconSquare {
+            background-color: $buttonActiveColor;
+          }
+
+          .icon {
+            filter: invert(42%) sepia(24%) saturate(3347%) hue-rotate(194deg) brightness(90%) contrast(95%);
+          }
+        }
+
+        &:hover {
+          @include animateOpacity(0.8, 1, 0.3);
+
+          span {
+            color: $buttonHoverColor;
+          }
+
+          .iconSquare {
+            background-color: $buttonHoverColor;
+          }
+
+          .icon {
+            filter: invert(45%) sepia(27%) saturate(3242%) hue-rotate(201deg) brightness(101%) contrast(91%);
+          }
+        }
+
+        .iconSquare {
+          width: 5px;
+          border-radius: 0 14px 14px 0;
+          height: 100%;
+          background-color: $buttonColor;
+        }
+
+        .icon {
+          width: 30px;
+          height: 30px;
+          margin: 0 0 0 5px;
+          filter: invert(45%) sepia(7%) saturate(319%) hue-rotate(353deg) brightness(95%) contrast(85%);
+        }
+
+        span {
+          margin-left: 10px;
+          font-size: 30px;
+          padding: 1px 5px 1px 0;
+          color: $buttonColor;
+        }
+      }
+    }
+  }
+}

@@ -1,26 +1,21 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
+import Home from './page/Home';
+import DisplayActiveItems from "./components/mainContent/DisplayActiveItems";
+import DisplayUnActiveItems from "./components/mainContent/DisplayUnActiveItems";
+
 
 function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
-  );
+    return (
+        <BrowserRouter>
+            <Routes>
+                <Route path="/" element={<Home/>}>
+                    <Route path="active" element={<DisplayActiveItems/>}/>
+                    <Route path="unActive" element={<DisplayUnActiveItems/>}/>
+                </Route>
+                <Route path="*" element={<Navigate to="/"/>}/>
+            </Routes>
+        </BrowserRouter>
+    );
 }
 
 export default App;
