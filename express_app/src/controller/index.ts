@@ -1,36 +1,38 @@
 import {Router} from "express";
-import {
-    addNotification,
-    deleteNotification,
-    displayAllNotifications,
-    displayNotification,
-    displayNotificationById,
-    editNotification
-} from "./notificationController";
-import {addType, deleteType, displayAllTypes, displayType, displayTypeById, editType} from "./typeController";
-import {addTask, deleteTask, displayAllTasks, displayTask, displayTaskById, editTask} from "./taskController";
+import {Notification} from "../database/entity/Notification";
+import itemsController from "./itemsController";
+import {Type} from "../database/entity/Type";
+import {Task} from "../database/entity/Task";
+
 
 const baseRouter: Router = Router();
+const notificationController = itemsController(Notification);
+const typeController = itemsController(Type);
+const taskController = itemsController(Task);
 
-baseRouter.post("/notifications/create", addNotification)
-baseRouter.patch("/notifications/edit/:id", editNotification)
-baseRouter.delete("/notifications/delete/:id", deleteNotification)
-baseRouter.get("/notifications/all", displayAllNotifications)
-baseRouter.get("/notifications/:id", displayNotificationById)
-baseRouter.get("/notifications/:field/:data", displayNotification)
 
-baseRouter.post("/types/create", addType)
-baseRouter.patch("/types/edit/:id", editType)
-baseRouter.delete("/types/delete/:id", deleteType)
-baseRouter.get("/types/all", displayAllTypes)
-baseRouter.get("/types/:id", displayTypeById)
-baseRouter.get("/types/:field/:data", displayType)
+baseRouter.post("/notifications", async (req, res) => await notificationController.create(req, res));
+baseRouter.put("/notifications/:id", async (req, res) => await notificationController.edit(req, res));
+baseRouter.delete("/notifications/:id", async (req, res) => await notificationController.delete(req, res));
+baseRouter.get("/notifications/all", async (req, res) => await notificationController.displayAll(req, res));
+baseRouter.get("/notifications/:id", async (req, res) => await notificationController.displayById(req, res));
+baseRouter.get("/notifications", async (req, res) => await notificationController.displayOne(req, res));
 
-baseRouter.post("/tasks/create", addTask)
-baseRouter.put("/tasks/edit/:id", editTask)
-baseRouter.delete("/tasks/delete/:id", deleteTask)
-baseRouter.get("/tasks/all", displayAllTasks)
-baseRouter.get("/tasks/:id", displayTaskById)
-baseRouter.get("/tasks/:field/:data", displayTask)
+
+baseRouter.post("/types", async (req, res) => await typeController.create(req, res));
+baseRouter.put("/types/:id", async (req, res) => await typeController.edit(req, res));
+baseRouter.delete("/types/:id", async (req, res) => await typeController.delete(req, res));
+baseRouter.get("/types/all", async (req, res) => await typeController.displayAll(req, res));
+baseRouter.get("/types/:id", async (req, res) => await typeController.displayById(req, res));
+baseRouter.get("/types", async (req, res) => await typeController.displayOne(req, res));
+
+
+baseRouter.post("/tasks", async (req, res) => await taskController.create(req, res));
+baseRouter.put("/tasks/:id", async (req, res) => await taskController.edit(req, res));
+baseRouter.delete("/tasks/:id", async (req, res) => await taskController.delete(req, res));
+baseRouter.get("/tasks/all", async (req, res) => await taskController.displayAll(req, res));
+baseRouter.get("/tasks/:id", async (req, res) => await taskController.displayById(req, res));
+baseRouter.get("/tasks", async (req, res) => await taskController.displayOne(req, res));
+
 
 export default baseRouter;
