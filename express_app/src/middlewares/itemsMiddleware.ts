@@ -1,9 +1,9 @@
 import {IEntityRepository, IJsonMessage, IRepository} from "../controller/helpers/interfaces";
 import {validateOrReject} from "class-validator";
 import {getManager} from "typeorm";
-import {Notification} from "../database/entity/Notification";
-import {Task} from "../database/entity/Task";
-import {Type} from "../database/entity/Type";
+import {Notification} from "../database/entities/Notification";
+import {Task} from "../database/entities/Task";
+import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
 
 
