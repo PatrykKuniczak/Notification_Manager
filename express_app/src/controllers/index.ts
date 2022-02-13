@@ -1,8 +1,8 @@
 import {Router} from "express";
-import {Notification} from "../database/entity/Notification";
+import {Notification} from "../database/entities/Notification";
 import itemsController from "./itemsController";
-import {Type} from "../database/entity/Type";
-import {Task} from "../database/entity/Task";
+import {Type} from "../database/entities/Type";
+import {Task} from "../database/entities/Task";
 
 
 const baseRouter: Router = Router();

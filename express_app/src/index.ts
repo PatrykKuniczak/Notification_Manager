@@ -1,6 +1,6 @@
 import "./Server"
 import logger from "./shared/Logger";
-import baseRouter from "./controller";
+import baseRouter from "./controllers";
 import express, {Express} from "express"
 import morgan from 'morgan';
 import cors from "cors"

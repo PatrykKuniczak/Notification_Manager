@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
-import {Notification} from "../../database/entity/Notification";
-import {Type} from "../../database/entity/Type";
-import {Task} from "../../database/entity/Task";
+import {Notification} from "../../database/entities/Notification";
+import {Type} from "../../database/entities/Type";
+import {Task} from "../../database/entities/Task";
 import {EntityTarget} from "typeorm";
 
 export type IRepository = Notification | Type | Task

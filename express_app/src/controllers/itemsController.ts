@@ -1,6 +1,6 @@
 import {Request, Response} from "express";
 import {DeleteResult, getManager} from "typeorm";
-import {createItem} from "../middleware/itemsMiddleware";
+import {createItem} from "../middlewares/itemsMiddleware";
 import {IEntityRepository, IItems} from "./helpers/interfaces";
 import {instanceOfIJsonMessage} from "./helpers/helpers";
 
