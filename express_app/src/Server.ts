@@ -8,4 +8,3 @@ createConnection().then(res => {
 }).catch(res => {
     logger.err(res.message)
 })
-
