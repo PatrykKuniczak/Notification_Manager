@@ -21,10 +21,6 @@
   background-color: #201F24;
   border-radius: 20px;
 
-  &:hover {
-    border: 2px solid #4353FF;
-  }
-
   a {
     img {
       margin: 15px 0 80px 15px;
@@ -61,7 +57,7 @@
         }
 
         &:hover {
-          @include animateOpacity(0.8, 1, 0.3);
+          @include animateOpacity(0.65, 1, 0.5);
 
           span {
             color: $buttonHoverColor;

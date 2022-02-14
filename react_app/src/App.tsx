@@ -9,6 +9,7 @@ function App() {
         <BrowserRouter>
             <Routes>
                 <Route path="/" element={<Home/>}>
+                    <Route path="" element={<Navigate to={'active'}/>}/>
                     <Route path="active" element={<DisplayActiveItems/>}/>
                     <Route path="unActive" element={<DisplayUnActiveItems/>}/>
                 </Route>
