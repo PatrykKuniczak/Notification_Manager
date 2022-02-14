@@ -8,7 +8,7 @@ Lista oraz kalendarz mają mieć takie same możliwości.
 
 Chcę mieć wyszukiwarkę, opcje sortowanie listy alfabetycznie.
 
-Dodatkowo chciałym mieć możliwość, dodawania wydarzeń głosowo oraz czytania ich przez komputer.
+Dodatkowo chciałym mieć możliwość, dodawania wydarzeń głosowo oraz czytania ich przez komputer oraz potrzebował bym wtyczkę do google chrome.
 
 
 Wydarzenia mają zawierać:
