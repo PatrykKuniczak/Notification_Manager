@@ -1,4 +1,4 @@
-import {IEntityRepository, IJsonMessage, IRepository} from "../controller/helpers/interfaces";
+import {IEntityRepository, IJsonMessage, IRepository} from "../controllers/helpers/interfaces";
 import {validateOrReject} from "class-validator";
 import {getManager} from "typeorm";
 import {Notification} from "../database/entities/Notification";
