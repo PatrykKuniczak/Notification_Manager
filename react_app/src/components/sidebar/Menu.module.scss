@@ -1,4 +1,5 @@
-@import "../helpers/variables.module";
+@import "../helpers/variables";
+
 
 @mixin animateOpacity($from, $to, $time) {
 
@@ -16,81 +17,193 @@
 
 
 .menu {
-  width: 269px;
-  height: 100vh;
-  background-color: #201F24;
-  border-radius: 20px;
+  margin-left: 10px;
+  margin-top: 10px;
+  width: fit-content;
 
-  a {
+  .toggle-btn {
+    background-color: $button-active-color;
+    padding: 3px;
+    border: none;
+    outline: #2d74e0 1px solid;
+
+    &:hover {
+      outline: #4F95F1 3px solid;
+      transition: ease-in-out, outline, .30s;
+    }
+
+    &:focus, &:focus-visible {
+      outline: #5495e8 3px solid;
+    }
+
     img {
-      margin: 15px 0 80px 15px;
-      height: 74.3px;
-      width: 74.3px;
+      display: flex;
+    }
+
+    &:focus {
+      box-shadow: 0 0 0 0.1rem rgba(71, 144, 253, 0.5);
+    }
+  }
+}
+
+
+.toggle-menu {
+  height: 100%;
+  width: fit-content;
+  background-color: $background-color;
+  border-radius: 0 20px 20px 0;
+
+  &-header {
+    display: flex;
+    justify-content: flex-end;
+
+    button {
+      padding: 5px;
+      margin-right: 10px;
+      margin-top: 10px;
+      opacity: 1;
+      filter: invert(37%) sepia(42%) saturate(2492%) hue-rotate(199deg) brightness(92%) contrast(90%);
+
+      &:hover {
+        opacity: 1;
+        filter: invert(52%) sepia(84%) saturate(1742%) hue-rotate(192deg) brightness(98%) contrast(93%);
+      }
+
+      &:focus-visible, &:focus {
+        outline: 2px solid #4F95F1;
+        filter: invert(52%) sepia(84%) saturate(1742%) hue-rotate(192deg) brightness(98%) contrast(93%);
+      }
     }
   }
 
-  ul {
-    list-style-type: none;
+  &-body {
 
-    li {
-      margin-top: 15px;
+    .logo {
+      width: 50px;
+      height: 50px;
+      display: block;
+      margin-top: -26px;
+      margin-left: 10px;
 
-      a {
-        width: fit-content;
-        display: flex;
-        align-items: center;
-        height: 45px;
+      &:focus-visible {
+        outline: #4F95F1 solid 2px;
+        border-radius: 13px;
+      }
+    }
 
-        &.active {
+    ul {
+      padding-inline: 0;
+      padding-block: 1em;
+      margin-top: 30%;
 
-          span {
-            color: $buttonActiveColor;
-          }
+      @media (height < 350px) {
+        & {
+          margin-top: 15%;
+        }
+      }
 
-          .iconSquare {
-            background-color: $buttonActiveColor;
+      li {
+        padding-right: 5px;
+
+        a {
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+          width: fit-content;
+          height: 45px;
+          margin-bottom: 15px;
+
+          .icon-square {
+            width: 5px;
+            border-radius: 0 14px 14px 0;
+            height: 100%;
+            background-color: $button-color;
           }
 
           .icon {
-            filter: invert(42%) sepia(24%) saturate(3347%) hue-rotate(194deg) brightness(90%) contrast(95%);
+            width: 30px;
+            height: 30px;
+            margin: 0 0 0 5px;
+            filter: invert(45%) sepia(7%) saturate(319%) hue-rotate(353deg) brightness(95%) contrast(85%);
           }
-        }
-
-        &:hover {
-          @include animateOpacity(0.65, 1, 0.5);
 
           span {
-            color: $buttonHoverColor;
+            margin-left: 10px;
+            font-size: 15px;
+            padding: 1px 5px 1px 0;
+            color: $button-color;
           }
 
-          .iconSquare {
-            background-color: $buttonHoverColor;
+          &:focus-visible {
+            outline: #4F95F1 solid 2px;
+            border-radius: 3px;
           }
 
-          .icon {
-            filter: invert(45%) sepia(27%) saturate(3242%) hue-rotate(201deg) brightness(101%) contrast(91%);
+          &:hover {
+            @include animateOpacity(0.65, 1, 0.5);
+
+            span {
+              color: $button-hover-color;
+            }
+
+            .icon-square {
+              background-color: $button-hover-color;
+            }
+
+            .icon {
+              filter: $button-hover-icon-filter;
+            }
           }
         }
+      }
 
-        .iconSquare {
-          width: 5px;
-          border-radius: 0 14px 14px 0;
-          height: 100%;
-          background-color: $buttonColor;
+      .active {
+        span {
+          color: $button-active-color;
+        }
+
+        .icon-square {
+          background-color: $button-active-color;
         }
 
         .icon {
-          width: 30px;
-          height: 30px;
-          margin: 0 0 0 5px;
-          filter: invert(45%) sepia(7%) saturate(319%) hue-rotate(353deg) brightness(95%) contrast(85%);
+          filter: $button-hover-icon-filter;
+        }
+      }
+    }
+
+    .form-link-container {
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      height: calc(100vh - 278px);
+
+      a {
+        height: 44px;
+        background-color: #1e28b6;
+        border-radius: 15px;
+        margin-bottom: 30px;
+        padding: 10px;
+        opacity: 0.8;
+
+        .add-button {
+          background: none;
+          border: none;
+          color: white;
+          outline: none;
+          -webkit-text-stroke: 1px black;
         }
 
-        span {
-          margin-left: 10px;
-          font-size: 30px;
-          padding: 1px 5px 1px 0;
-          color: $buttonColor;
+        &:hover {
+          opacity: 1;
+        }
+
+        &:focus-visible {
+          outline: #4F95F1 solid 2px;
+        }
+
+        &.active {
+          outline: #4F95F1 solid 2px;
         }
       }
     }
