@@ -1,5 +1,6 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {Length, MinLength} from "class-validator";
+import {IsBoolean, Length, MinLength} from "class-validator";
+
 
 @Entity()
 export class Task {
@@ -19,4 +20,7 @@ export class Task {
     })
     description: string;
 
+    @IsBoolean({message: "Important must be a boolean value."})
+    @Column()
+    important: boolean;
 }

@@ -8,7 +8,7 @@ import {Request, Response} from "express";
 
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
-    const [name, title, description] = validBody(req);
+    const [name, title, description, important] = validBody(req);
 
     let result: IRepository | IJsonMessage;
 
@@ -25,6 +25,7 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             const task = new Task();
             task.title = title;
             task.description = description;
+            task.important = important;
 
             result = await validItem(req, res, Repository, task);
             break;
@@ -54,8 +55,9 @@ export const validBody = (req) => {
     const name = req.body.name ? req.body.name.fullTrim().toTitle() : undefined;
     const title = req.body.title ? req.body.title.fullTrim().toTitle() : undefined;
     const description = req.body.description ? req.body.description.fullTrim() : undefined;
+    const important = req.body.important === true || req.body.important ===  false ? req.body.important : undefined;
 
-    return [name, title, description]
+    return [name, title, description, important]
 }
 
 export const createValidationErrors = (res, err): IJsonMessage => {
