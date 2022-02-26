@@ -1,0 +1,19 @@
+@mixin animateOpacity($from, $to, $time) {
+
+  @keyframes fadein {
+    from {
+      opacity: $from;
+    }
+    to {
+      opacity: $to;
+    }
+  }
+
+  animation: fadein $time+s;
+}
+
+@mixin listButton {
+  background: none;
+  border: none;
+  cursor: pointer;
+}
