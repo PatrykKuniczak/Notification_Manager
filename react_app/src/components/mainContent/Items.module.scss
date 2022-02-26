@@ -1,0 +1,96 @@
+@import "../helpers/helpers";
+@import "../helpers/variables";
+
+
+.main-content {
+  display: flex;
+  flex-direction: column;
+  margin-block: 30px;
+  margin-inline: 20px;
+  padding: 30px;
+  border: 1px solid #4882e0;
+  border-radius: 15px;
+  background-color: #201F24;
+  overflow-y: auto;
+  overflow-x: hidden;
+
+  h1 {
+    color: $title-color;
+    margin-bottom: 40px;
+  }
+
+  table {
+    width: 100%;
+
+    tbody {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      tr {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border: 1px solid $table-border-color;
+        border-radius: 10px;
+        padding-block: 5px;
+        padding-inline: 10px;
+
+        &:nth-last-child(1) {
+          margin-bottom: 10px;
+        }
+
+        td {
+
+          color: $text-color;
+          overflow: hidden;
+          white-space: nowrap;
+          text-overflow: ellipsis;
+
+          &.title, &.description {
+            width: calc((100vw - 40px - 20px) / 2 - 64px);
+            padding-right: 15px;
+          }
+
+          &.star-button-container, &.delete-button-container {
+            margin-right: 8px;
+
+            .star-button {
+              &-active {
+                filter: invert(70%) sepia(45%) saturate(805%) hue-rotate(6deg) brightness(114%) contrast(96%);
+              }
+            }
+          }
+
+          button {
+            @include listButton;
+          }
+        }
+      }
+    }
+  }
+}
+
+
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+::-webkit-scrollbar-track {
+  background-color: #548efa;
+  border-radius: 20px;
+  margin-block: 30px;
+}
+
+::-webkit-scrollbar-thumb {
+  background-color: #17509b;
+  border-radius: 20px;
+
+  &:hover {
+    background-color: #0e3b75;
+  }
+}
+
+.main-content--active {
+
+}

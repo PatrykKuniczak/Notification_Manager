@@ -1,19 +1,5 @@
 @import "../helpers/variables";
-
-
-@mixin animateOpacity($from, $to, $time) {
-
-  @keyframes fadein {
-    from {
-      opacity: $from;
-    }
-    to {
-      opacity: $to;
-    }
-  }
-
-  animation: fadein $time+s;
-}
+@import "../helpers/helpers";
 
 
 .menu {

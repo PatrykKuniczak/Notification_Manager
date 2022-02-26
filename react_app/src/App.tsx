@@ -3,6 +3,7 @@ import Home from './page/Home';
 import Items from "./components/mainContent/Items";
 import AddForm from "./components/mainContent/AddForm";
 
+export const API_URL = "http://localhost:9000/api";
 
 function App() {
     return (
@@ -10,7 +11,7 @@ function App() {
             <Routes>
                 <Route path="/" element={<Home/>}>
                     <Route path="" element={<Navigate to={'active'}/>}/>
-                    <Route path="active" element={<Items active/>}/>
+                    <Route path="active" element={<Items active={true}/>}/>
                     <Route path="inactive" element={<Items active={false}/>}/>
                     <Route path="add-form" element={<AddForm/>}/>
                 </Route>
