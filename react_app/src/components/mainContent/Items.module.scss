@@ -1,18 +1,13 @@
+@import "../helpers/_variables";
 @import "../helpers/helpers";
-@import "../helpers/variables";
 
 
 .main-content {
-  display: flex;
-  flex-direction: column;
-  margin-block: 30px;
-  margin-inline: 20px;
-  padding: 30px;
-  border: 1px solid #4882e0;
-  border-radius: 15px;
-  background-color: #201F24;
-  overflow-y: auto;
-  overflow-x: hidden;
+  @include main-content-shape;
+
+  .error-message {
+    color: $text-color;
+  }
 
   h1 {
     color: $title-color;

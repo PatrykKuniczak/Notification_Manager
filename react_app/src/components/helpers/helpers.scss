@@ -17,3 +17,17 @@
   border: none;
   cursor: pointer;
 }
+
+
+@mixin main-content-shape{
+  display: flex;
+  flex-direction: column;
+  margin-block: 30px;
+  margin-inline: 20px;
+  padding: 30px;
+  border: 1px solid #4882e0;
+  border-radius: 15px;
+  background-color: #201F24;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
