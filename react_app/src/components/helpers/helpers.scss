@@ -19,7 +19,7 @@
 }
 
 
-@mixin main-content-shape{
+@mixin main-content-shape {
   display: flex;
   flex-direction: column;
   margin-block: 30px;
@@ -30,4 +30,13 @@
   background-color: #201F24;
   overflow-y: auto;
   overflow-x: hidden;
+}
+
+@mixin add-button {
+  background: none;
+  border: none;
+  color: white;
+  outline: none;
+  -webkit-text-stroke: 1px black;
+
 }

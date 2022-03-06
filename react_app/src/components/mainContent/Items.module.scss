@@ -5,8 +5,30 @@
 .main-content {
   @include main-content-shape;
 
-  .error-message {
+  .error-message, .empty-message {
     color: $text-color;
+  }
+
+  .empty-massage-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    a {
+      .add-button {
+        @include add-button;
+        display: block;
+        width: fit-content;
+        background-color: #1e28b6;
+        border-radius: 15px;
+        padding: 10px;
+        margin-top: 15px;
+      }
+    }
+  }
+
+  div {
+    justify-content: center;
   }
 
   h1 {
