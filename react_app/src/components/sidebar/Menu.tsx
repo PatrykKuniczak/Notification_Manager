@@ -7,6 +7,7 @@ import React, {useState} from "react";
 import Offcanvas from 'react-bootstrap/Offcanvas'
 import {Button} from "react-bootstrap";
 import listIcon from "./icons/listIcon.svg";
+import addIcon from "./icons/addIcon.svg";
 
 
 const ToggleMenu: React.FC<any> = (props) => {
@@ -32,15 +33,6 @@ const ToggleMenu: React.FC<any> = (props) => {
                     <span>Zarchiwizowane</span></NavLink>
                 </li>
             </ul>
-
-            <div className={styles['form-link-container']}>
-                <NavLink className={({isActive}) => (isActive && styles.active) || ''}
-                         to={"add-form"}>
-                    <button className={styles["add-button"]}>
-                        <b><i>Dodaj Zadanie</i></b>
-                    </button>
-                </NavLink>
-            </div>
         </Offcanvas.Body>
     </Offcanvas>
 }
@@ -51,10 +43,11 @@ function Menu() {
     const toggleShow = () => setShow((s) => !s);
 
     return <aside className={styles.menu}>
+            <Button onClick={toggleShow} className={styles["toggle-btn"]}><img src={listIcon} alt="List icon"/></Button>
+            <Button className={styles["add-btn"]}><NavLink to={"/add-form"}><img src={addIcon}
+                                                                                 alt="List icon"/></NavLink></Button>
 
-        <Button onClick={toggleShow} className={styles["toggle-btn"]}><img src={listIcon} alt="List icon"/></Button>
         <ToggleMenu show={show} handleClose={handleClose}/>
-
     </aside>
 
 }

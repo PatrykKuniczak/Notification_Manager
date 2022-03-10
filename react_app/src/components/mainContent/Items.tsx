@@ -4,7 +4,7 @@ import star from "./icons/star.svg";
 import deleteIcon from "./icons/delete.svg";
 import {NavLink, useLocation} from "react-router-dom";
 import Axios from "axios";
-import {Task} from "../helpers/interfaces/Task";
+import {Task} from "../helpers/interfaces/Interfaces";
 import {CirclesWithBar} from "react-loader-spinner";
 
 
@@ -70,9 +70,15 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
                         </button>
                     </NavLink>
                 </div>
-            }else {
+            } else {
                 return <div className={styles["empty-massage-container"]}>
-                    <h3 className={styles["empty-message"]}> Nie ma żadnego zadania</h3>
+                    <h3 className={styles["empty-message"]}> Nie ma żadnego zadania.</h3>
+
+                    <NavLink to={"active"}>
+                        <button className={styles["add-button"]}>
+                            <b><i>Przejdź do aktywnych</i></b>
+                        </button>
+                    </NavLink>
                 </div>
             }
 
@@ -90,8 +96,7 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
                         </td>
 
                         <td className={styles["delete-button-container"]} onClick={deleteHandler.bind(this, id)}>
-                            <button type="button"><img src={deleteIcon} alt="Delete button"/>
-                            </button>
+                            <button type="button"><img src={deleteIcon} alt="Delete button"/></button>
                         </td>
                     </tr>)}
             </Table>

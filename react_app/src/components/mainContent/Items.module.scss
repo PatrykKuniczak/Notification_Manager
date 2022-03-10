@@ -16,9 +16,12 @@
 
     a {
       .add-button {
-        @include add-button;
         display: block;
         width: fit-content;
+        border: none;
+        color: white;
+        outline: none;
+        -webkit-text-stroke: 1px black;
         background-color: #1e28b6;
         border-radius: 15px;
         padding: 10px;
