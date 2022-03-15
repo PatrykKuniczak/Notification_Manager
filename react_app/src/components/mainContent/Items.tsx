@@ -84,12 +84,18 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
 
         } else if (!loading) {
             return <Table>
-                {items.map(({id, title, description, important}) =>
+                {items.map(({id, title, description, important, taskType, notificationDate}) =>
                     <tr key={id}>
                         <td className={styles.title}>{title}</td>
                         <td className={styles.description}>{description}</td>
                         <td className={styles["star-button-container"]}>
-                            <button onClick={importantHandler.bind(this, id, {title, description, important})}
+                            <button onClick={importantHandler.bind(this, id, {
+                                title,
+                                description,
+                                important,
+                                taskType,
+                                notificationDate
+                            })}
                                     className={important ? styles["star-button-active"] : ''} type="button"><img
                                 src={star} alt="Star,Important button"/>
                             </button>

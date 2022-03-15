@@ -15,6 +15,7 @@ function App() {
                     <Route path="active" element={<Items active={true}/>}/>
                     <Route path="inactive" element={<Items active={false}/>}/>
                     <Route path="add-form" element={<TaskForm actionType={"add"}/>}/>
+                    <Route path="edit-form/:id" element={<TaskForm actionType={"edit"}/>}/>
                 </Route>
                 <Route path="*" element={<Navigate to="/"/>}/>
             </Routes>

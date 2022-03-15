@@ -4,8 +4,24 @@
 .form-container {
   @include main-content-shape;
 
+  .loading-spinner {
+    display: flex;
+    justify-content: center;
+  }
+
+  .error-message {
+    display: flex;
+    justify-content: center;
+    color: $text-color;
+    margin-top: 30px;
+  }
+
   h1 {
     color: $title-color;
   }
 
+  .form-label {
+    color: #5898f8;
+    font-size: 1.25rem;
+  }
 }
