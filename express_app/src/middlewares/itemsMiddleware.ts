@@ -8,6 +8,7 @@ import {Request, Response} from "express";
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
     const [name, title, description, important, taskType, notificationDate] = validBody(req);
+    const dateObj = new Date(notificationDate);
 
     let result: IRepository | IJsonMessage;
 
@@ -18,7 +19,7 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             task.description = description;
             task.important = important;
             task.taskType = taskType;
-            task.notificationDate = notificationDate;
+            task.notificationDate = dateObj;
 
 
             result = await validItem(req, res, Repository, task);

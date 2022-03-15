@@ -1,6 +1,5 @@
 import {IJsonMessage} from "./interfaces";
 
-// todo: jakoś przerób te prototypy
 String.prototype.toTitle = function () {
     return this.toLowerCase().replace(/(^|\s)\S/g, function (char) {
         return char.toUpperCase();

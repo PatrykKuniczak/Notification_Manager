@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsBoolean, IsDate, Length, MinDate, MinLength} from "class-validator";
+import {IsBoolean, Length, MinDate, MinLength} from "class-validator";
 
 
 @Entity()
@@ -28,8 +28,7 @@ export class Task {
     @Column()
     taskType: string
 
-    // TODO: NAPRAW MINDATE
     @Column("datetime")
-    // @MinDate(new Date(), {message: "Date must be after: $constraint1."})
+    @MinDate(new Date(), {message: "Date must be after: $constraint1."})
     notificationDate: Date
 }

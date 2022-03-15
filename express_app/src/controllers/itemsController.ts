@@ -61,7 +61,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
         return res.status(200).send(result);
     },
 
-
+// TODO: SPRÓBUJ POŁĄCZYĆ W 1 DISPLAYONE I ALL
     displayOne: async (req: Request, res: Response): Promise<Response> => {
         let {field, data} = req.query;
 
