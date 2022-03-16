@@ -55,31 +55,29 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
         }
     },
 
+    display: async (req: Request, res: Response): Promise<Response | Response[]> => {
+        if (Object.keys(req.query).length > 0) {
+            let {field, data} = req.query;
 
-    displayAll: async (req: Request, res: Response): Promise<Response[]> => {
-        const result = await getManager().find(Repository);
-        return res.status(200).send(result);
-    },
+            field = field.fullTrim();
+            data = data.fullTrim();
 
-// TODO: SPRÓBUJ POŁĄCZYĆ W 1 DISPLAYONE I ALL
-    displayOne: async (req: Request, res: Response): Promise<Response> => {
-        let {field, data} = req.query;
+            if (field && data) {
+                try {
+                    const result = await getManager().findOne(Repository, {[field]: data});
 
-        field = field.fullTrim();
-        data = data.fullTrim();
+                    return result ? res.status(200).send(result) : res.status(404).send({message: "Record Not Found"});
 
-        if (field && data) {
-            try {
-                const result = await getManager().findOne(Repository, {[field]: data});
-
-                return result ? res.status(200).send(result) : res.status(404).send({message: "Record Not Found"});
-
-            } catch (err: any) {
-                return err.sqlMessage ? res.status(404).send({message: err.sqlMessage})
-                    : res.status(404).send({message: "Record Not Found"});
+                } catch (err: any) {
+                    return err.sqlMessage ? res.status(404).send({message: err.sqlMessage})
+                        : res.status(404).send({message: "Record Not Found"});
+                }
+            } else {
+                return res.status(404).send({message: "Fields can't be empty"});
             }
         } else {
-            return res.status(404).send({message: "Fields can't be empty"});
+            const result = await getManager().find(Repository);
+            return res.status(200).send(result);
         }
     },
 
