@@ -27,6 +27,7 @@ const formikSchema = yup.object().shape({
 
 
 // TODO: ZRÓB DODAWANIE I USUWANIE I EDYCJE TYPÓW
+// TODO: NAPRAW WSTAWIANIE TYPU PRZY EDIT
 
 const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const [show, setShow] = useState(false);
@@ -37,6 +38,29 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const [typeArray, setTypeArray] = useState<TypeArray>([]);
 
     const navigate = useNavigate();
+
+    const handleClose = () => {
+        setShow(false)
+        navigate("/active")
+    };
+
+    const submitHandler = async (data: ITask) => {
+        try {
+            if (actionType === "add") {
+                await Axios.post("/tasks", data);
+            } else {
+                await Axios.put(`/tasks/${id}`, data);
+            }
+
+            setMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} powiodło się.`);
+            setShow(true);
+
+        } catch (err: any) {
+            setMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} nie powiodło się, wystąpił błąd: 
+            ${err.message}`);
+            setShow(true);
+        }
+    }
 
     const initialState = useMemo(() => ({
         notificationDate: "",
@@ -199,28 +223,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                     </Form>
                 )}
             </Formik>
-        }
-    }
-    const handleClose = () => {
-        setShow(false)
-        navigate("/active")
-    };
-
-    const submitHandler = async (data: ITask) => {
-        try {
-            if (actionType === "add") {
-                await Axios.post("/tasks", data);
-            } else {
-                await Axios.put(`/tasks/${id}`, data);
-            }
-
-            setMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} powiodło się.`);
-            setShow(true);
-
-        } catch (err: any) {
-            setMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} nie powiodło się, wystąpił błąd: 
-            ${err.message}`);
-            setShow(true);
         }
     }
 
