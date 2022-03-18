@@ -3,7 +3,7 @@ import React, {useEffect, useMemo, useState} from "react";
 import Form from "react-bootstrap/esm/Form";
 import {Formik} from "formik";
 import * as yup from "yup";
-import {Task, TypeArray} from "../helpers/interfaces/Interfaces";
+import {ITask, TypeArray} from "../helpers/interfaces/Interfaces";
 import {Button, Col, InputGroup, Modal, Row} from "react-bootstrap";
 import Axios from "axios";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
@@ -45,7 +45,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
 
     const {id} = useParams();
 
-    const [editData, setEditData] = useState<Task>(initialState);
+    const [editData, setEditData] = useState<ITask>(initialState);
 
     const contentSwitcher = () => {
         if (errorOccur) {
@@ -206,7 +206,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         navigate("/active")
     };
 
-    const submitHandler = async (data: Task) => {
+    const submitHandler = async (data: ITask) => {
         try {
             if (actionType === "add") {
                 await Axios.post("/tasks", data);
@@ -225,7 +225,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     }
 
     useEffect(() => {
-        Axios.get('/types/all').then(({data}) => {
+        Axios.get('/types').then(({data}) => {
             setTypeArray(data)
             setLoading(false);
         }).catch(() => setErrorOccur(true));

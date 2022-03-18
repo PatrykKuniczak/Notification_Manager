@@ -4,7 +4,7 @@ import star from "./icons/star.svg";
 import deleteIcon from "./icons/delete.svg";
 import {NavLink, useLocation} from "react-router-dom";
 import Axios from "axios";
-import {Task} from "../helpers/interfaces/Interfaces";
+import {ITask} from "../helpers/interfaces/Interfaces";
 import {CirclesWithBar} from "react-loader-spinner";
 
 
@@ -20,13 +20,13 @@ const Table: React.FC = (props) => {
 
 const Items: React.FC<{ active: boolean }> = ({active}) => {
     const location = useLocation();
-    const [items, setItems] = useState<Task[]>([]);
+    const [items, setItems] = useState<ITask[]>([]);
     const [loading, setLoading] = useState<Boolean>(true);
     const [errorOccur, setErrorOccur] = useState<Boolean>(false);
 
 
     const fetchAll = useCallback(() => {
-        return Axios.get("/tasks/all").then(({data}) => {
+        return Axios.get("/tasks").then(({data}) => {
             setItems(data);
             setLoading(false);
         }).catch(() => setErrorOccur(true));
