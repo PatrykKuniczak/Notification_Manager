@@ -8,6 +8,7 @@ import {Button, Col, InputGroup, Modal, Row} from "react-bootstrap";
 import Axios from "axios";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {CirclesWithBar} from "react-loader-spinner";
+import dateFormat from "dateformat";
 
 
 const formikSchema = yup.object().shape({
@@ -25,24 +26,27 @@ const formikSchema = yup.object().shape({
         (value) => value !== "default").required("Typ jest wymagany").min(3, "Typ jest za krótki")
 })
 
-
 // TODO: ZRÓB DODAWANIE I USUWANIE I EDYCJE TYPÓW
-// TODO: NAPRAW WSTAWIANIE TYPU PRZY EDIT
-
+// TODO: PROBLEM Z TYPEM JEST PONIEWAŻ NIE MA TOTITLE
 const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
-    const [show, setShow] = useState(false);
+    const initialState = useMemo(() => ({
+        notificationDate: "",
+        description: "",
+        id: 0,
+        important: false,
+        taskType: "default",
+        title: ""
+    }), [])
+
+    const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [message, setMessage] = useState("");
     const [errorOccur, setErrorOccur] = useState<Boolean>(false);
     const [loading, setLoading] = useState<Boolean>(true);
-
+    const [editData, setEditData] = useState<ITask>(initialState);
     const [typeArray, setTypeArray] = useState<TypeArray>([]);
 
+    const {id} = useParams();
     const navigate = useNavigate();
-
-    const handleClose = () => {
-        setShow(false)
-        navigate("/active")
-    };
 
     const submitHandler = async (data: ITask) => {
         try {
@@ -53,23 +57,38 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
             }
 
             setMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} powiodło się.`);
-            setShow(true);
+            setShowSubmitModal(true);
 
         } catch (err: any) {
             setMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} nie powiodło się, wystąpił błąd: 
             ${err.message}`);
-            setShow(true);
+            setShowSubmitModal(true);
         }
     }
 
-    const initialState = useMemo(() => ({
-        notificationDate: "",
-        description: "", id: 0, important: false, taskType: "default", title: ""
-    }), [])
+    const handleClose = () => {
+        setShowSubmitModal(false)
+        navigate("/active")
+    };
 
-    const {id} = useParams();
+    useEffect(() => {
+        Axios.get('/types').then(({data}) => {
+            setTypeArray(data)
+            setLoading(false);
+        }).catch(() => setErrorOccur(true));
+        if (actionType === "edit") {
+            Axios.get(`/tasks/${id}`).then(({data}) => {
+                const dateObj = new Date(data.notificationDate ? data.notificationDate : "");
+                const convertedDate = dateFormat(dateObj, "yyyy-mm-dd'T'HH:MM");
 
-    const [editData, setEditData] = useState<ITask>(initialState);
+                setEditData(() => ({
+                    ...data, notificationDate: convertedDate
+                }))
+            }).catch(() => setErrorOccur(true));
+        } else {
+            setEditData(initialState)
+        }
+    }, [actionType, id, initialState])
 
     const contentSwitcher = () => {
         if (errorOccur) {
@@ -84,7 +103,8 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                 />
             </div>
         } else if (!loading) {
-            return <Formik onSubmit={submitHandler} initialValues={editData} validationSchema={formikSchema}
+            return <Formik onSubmit={submitHandler} initialValues={editData}
+                           validationSchema={formikSchema}
                            enableReinitialize={true}>
                 {({
                       handleSubmit,
@@ -146,7 +166,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                     <Form.Control
                                         type="datetime-local"
                                         name="notificationDate"
-                                        defaultValue={values.notificationDate ? values.notificationDate.slice(0, 19) : ""}
+                                        defaultValue={values.notificationDate}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isValid={touched.notificationDate && !errors.notificationDate}
@@ -163,7 +183,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                         <Row className="mb-5">
                             <Form.Group as={Col} md="max" controlId="taskTypeForm">
                                 <Form.Label className={styles["form-label"]}>Typ Aktywności</Form.Label>
-                                <InputGroup hasValidation>
+                                <InputGroup hasValidation className={styles["task-input"]}>
                                     <Form.Select
                                         name="taskType"
                                         onChange={handleChange}
@@ -185,6 +205,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                             </Form.Group>
 
                         </Row>
+
 
                         <Row className="mb-2">
                             <Form.Group as={Col} md="max" controlId="importantForm">
@@ -209,7 +230,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                             </Form.Group>
                         </Row>
 
-                        <Modal show={show} onHide={handleClose}>
+                        <Modal show={showSubmitModal} onHide={handleClose}>
                             <Modal.Body>{message}</Modal.Body>
                             <Modal.Footer>
                                 <Button variant="secondary" onClick={handleClose}>
@@ -226,19 +247,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         }
     }
 
-    useEffect(() => {
-        Axios.get('/types').then(({data}) => {
-            setTypeArray(data)
-            setLoading(false);
-        }).catch(() => setErrorOccur(true));
-        if (actionType === "edit") {
-            Axios.get(`/tasks/${id}`).then(({data}) => setEditData(data)).catch(() => setErrorOccur(true));
-        } else {
-            setEditData(initialState)
-        }
-    }, [actionType, id, initialState])
-
-
     return <div className={styles["form-container"]}>
         <h1>{actionType === "add" ? "Dodawanie" : "Edytowanie"} Zadania</h1>
         {contentSwitcher()}
@@ -247,3 +255,4 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
 
 
 export default TaskForm;
+

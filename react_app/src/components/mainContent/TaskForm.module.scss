@@ -24,4 +24,13 @@
     color: #5898f8;
     font-size: 1.25rem;
   }
+
+  .task-input {
+    gap: 15px;
+
+    button {
+      width: fit-content;
+      padding-inline: 8px;
+    }
+  }
 }
