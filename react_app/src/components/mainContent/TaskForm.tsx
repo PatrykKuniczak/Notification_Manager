@@ -9,6 +9,7 @@ import Axios from "axios";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {CirclesWithBar} from "react-loader-spinner";
 import dateFormat from "dateformat";
+import {toTitle} from "../helpers/helpers";
 
 
 const formikSchema = yup.object().shape({
@@ -23,18 +24,17 @@ const formikSchema = yup.object().shape({
                  ${String(eventStartDate.toISOString().slice(0, 16)).replace("T", " ")}`)),
     important: yup.boolean().required("Wartość true lub false jest wymagana"),
     taskType: yup.string().test('is-not-default', "Wybierz opcję!",
-        (value) => value !== "default").required("Typ jest wymagany").min(3, "Typ jest za krótki")
+        (value) => value !== "Default").required("Typ jest wymagany").min(3, "Typ jest za krótki")
 })
 
 // TODO: ZRÓB DODAWANIE I USUWANIE I EDYCJE TYPÓW
-// TODO: PROBLEM Z TYPEM JEST PONIEWAŻ NIE MA TOTITLE
 const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const initialState = useMemo(() => ({
         notificationDate: "",
         description: "",
         id: 0,
         important: false,
-        taskType: "default",
+        taskType: "Default",
         title: ""
     }), [])
 
@@ -66,14 +66,12 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         }
     }
 
-    const handleClose = () => {
-        setShowSubmitModal(false)
-        navigate("/active")
-    };
-
     useEffect(() => {
         Axios.get('/types').then(({data}) => {
-            setTypeArray(data)
+            const convertedDate = data.map(({id, name}: {id: number, name: string}) => {
+                return {id: id, name: toTitle(name)};
+            })
+            setTypeArray(convertedDate);
             setLoading(false);
         }).catch(() => setErrorOccur(true));
         if (actionType === "edit") {
@@ -123,7 +121,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                     <Form.Control
                                         type="text"
                                         name="title"
-                                        value={values.title}
+                                        value={toTitle(values.title)}
                                         onChange={handleChange}
                                         onBlur={handleBlur}
                                         isValid={touched.title && !errors.title}
@@ -192,7 +190,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                         isValid={touched.taskType && !errors.taskType}
                                         isInvalid={touched.taskType && !!errors.taskType}
                                     >
-                                        <option value="default" key="default"> Wybierz opcję:</option>
+                                        <option value="Default" key="Default"> Wybierz opcję:</option>
                                         {typeArray.map(({id, name}) => <option value={name}
                                                                                key={id}> {name} </option>)}
                                     </Form.Select>
@@ -230,10 +228,10 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                             </Form.Group>
                         </Row>
 
-                        <Modal show={showSubmitModal} onHide={handleClose}>
+                        <Modal show={showSubmitModal} onHide={() => navigate("/active")}>
                             <Modal.Body>{message}</Modal.Body>
                             <Modal.Footer>
-                                <Button variant="secondary" onClick={handleClose}>
+                                <Button variant="secondary">
                                     <NavLink to="/active"> Ok </NavLink>
                                 </Button>
                             </Modal.Footer>
