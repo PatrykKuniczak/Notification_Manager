@@ -5,6 +5,7 @@ export interface ITask {
     important: boolean
     notificationDate: string | undefined
     taskType: string
+    taskTypeInput: string
 }
 
 export type TypeArray = { id: number, name: string }[]

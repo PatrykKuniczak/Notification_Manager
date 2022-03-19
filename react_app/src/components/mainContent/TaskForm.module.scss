@@ -33,4 +33,19 @@
       padding-inline: 8px;
     }
   }
+
+  .task-type-input {
+    .close-btn {
+      background: none;
+      border: none;
+      filter: invert(51%) sepia(2%) saturate(0%) hue-rotate(2deg) brightness(98%) contrast(93%);
+
+      &:focus-visible , &:focus {
+        outline: none;
+      }
+      img {
+        width: fit-content;
+      }
+    }
+  }
 }
