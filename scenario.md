@@ -1,4 +1,4 @@
-# ToDo List
+# Notification Manager
 
 Potrzebuję aplikacji w przeglądarce, mobilną i desktopową, która umożliwi mi dodawanie oraz zarządzanie wydarzeniami w kalendarzu, będzie można do nich dodać opis, będę mógł podejrzeć czas, w którym wydarzenie zostało dodane, oraz wybrać datę kiedy ma przyjśc powiadomienie.
 
