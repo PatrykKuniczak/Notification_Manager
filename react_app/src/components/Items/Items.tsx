@@ -1,10 +1,10 @@
 import styles from "./Items.module.scss";
 import React, {useCallback, useEffect, useState} from "react";
-import star from "./icons/star.svg";
-import deleteIcon from "./icons/delete.svg";
+import star from "../TaskForm/icons/star.svg";
+import deleteIcon from "../TaskForm/icons/delete.svg";
 import {NavLink, useLocation} from "react-router-dom";
 import Axios from "axios";
-import {ITask} from "../helpers/interfaces/Interfaces";
+import {ITask} from "../helpers/Interfaces";
 import {CirclesWithBar} from "react-loader-spinner";
 
 

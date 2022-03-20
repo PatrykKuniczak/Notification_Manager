@@ -1,9 +1,10 @@
-import Menu from "../components/sidebar/Menu";
+import Menu from "../Menu/Menu";
 import styles from './Home.module.scss';
 import {Outlet} from 'react-router-dom'
+import React from "react";
 
 
-function Home() {
+const Home: React.FC = () => {
 
     return (
         <div className={styles.container}>

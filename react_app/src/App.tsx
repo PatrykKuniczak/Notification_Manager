@@ -1,12 +1,13 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
-import Home from './page/Home';
-import Items from "./components/mainContent/Items";
+import Home from './components/Home/Home';
+import Items from "./components/Items/Items";
 import Axios from "axios";
-import TaskForm from "./components/mainContent/TaskForm";
+import React from "react";
+import TaskForm from "./components/TaskForm/TaskForm";
 
 Axios.defaults.baseURL = "http://localhost:9000/api";
 
-function App() {
+const App: React.FC = () => {
     return (
         <BrowserRouter>
             <Routes>

@@ -6,6 +6,7 @@ import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
 
 
+
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
     const [name, title, description, important, taskType, notificationDate] = validBody(req);
     const dateObj = new Date(notificationDate);

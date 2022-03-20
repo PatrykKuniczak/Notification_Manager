@@ -3,14 +3,14 @@ import React, {useEffect, useMemo, useState} from "react";
 import Form from "react-bootstrap/esm/Form";
 import {Formik} from "formik";
 import * as yup from "yup";
-import {ITask, TypeArray} from "../helpers/interfaces/Interfaces";
 import {Button, Col, InputGroup, Modal, Row} from "react-bootstrap";
 import Axios from "axios";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import {CirclesWithBar} from "react-loader-spinner";
 import dateFormat from "dateformat";
 import {toTitle} from "../helpers/helpers";
-import addType from "./icons/addType.svg";
+import {ITask, TypeArray} from "../helpers/Interfaces";
+import addIcon from "./icons/add.svg";
 import closeIcon from "./icons/close.svg";
 
 
@@ -32,7 +32,7 @@ const formikSchema = yup.object().shape({
 })
 
 // TODO: ZRÓB USUWANIE I EDYCJE TYPÓW
-// TODO: PO 1 DODAWANIU TYPU PÓŹNIEJ ZOSTAJE INPUT STARY
+// TODO: NIE DZIAŁA EDYCJA ZADANIA
 const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const initialState = useMemo(() => ({
         notificationDate: "",
@@ -44,6 +44,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         title: ""
     }), [])
 
+
     const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [showTaskInput, setShowTaskInput] = useState(false);
     const [showTaskInputModal, setShowTaskInputModal] = useState(false);
@@ -54,6 +55,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const [editData, setEditData] = useState<ITask>(initialState);
     const [typeArray, setTypeArray] = useState<TypeArray>([]);
     const [typeInputAction, setTypeInputAction] = useState("");
+
 
     const {id} = useParams();
     const navigate = useNavigate();
@@ -100,19 +102,26 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     }, [actionType, id, initialState, showTaskInputModal])
 
     const typeSubmitHandler = (taskType: string) => {
-        return Axios.post('/types', {name: taskType}).then((res) => {
+        return Axios.post('/types', {name: taskType}).then(() => {
             if (typeInputAction === "edit") {
-                setTaskSubmitMessage(`Edytowanie ${res.status === 201 ? 'Powiodło się' : "Nie powiodło się"}`)
+                setTaskSubmitMessage(`Edytowanie powiodło się`)
             } else {
-                setTaskSubmitMessage(`Dodawanie ${res.status === 201 ? 'Powiodło się' : "Nie powiodło się"}`)
+                setTaskSubmitMessage(`Dodawanie powiodło się`)
             }
+        }).catch(() => {
+            if (typeInputAction === "edit") {
+                setTaskSubmitMessage(`Edytowanie nie powiodło się`)
+            } else {
+                setTaskSubmitMessage(`Dodawanie nie powiodło się`)
+            }
+        }).finally(() => {
             setShowTaskInputModal(true)
         })
     }
 
     const closeTypeInputModal = () => {
-        setShowTaskInputModal(false)
-        setShowTaskInput(false)
+        setShowTaskInputModal(false);
+        setShowTaskInput(false);
     }
 
     const contentSwitcher = () => {
@@ -226,7 +235,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                     <Form.Control.Feedback type="invalid" tooltip>
                                         {errors.taskType}
                                     </Form.Control.Feedback>
-                                    <Button type="button" onClick={() => setShowTaskInput(true)}><img src={addType}
+                                    <Button type="button" onClick={() => setShowTaskInput(true)}><img src={addIcon}
                                                                                                       alt="Add Type button"/></Button>
                                 </InputGroup>
                             </Form.Group>
@@ -244,6 +253,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                         onBlur={handleBlur}
                                         isValid={touched.taskTypeInput && !errors.taskTypeInput}
                                         isInvalid={touched.taskTypeInput && !!errors.taskTypeInput}
+                                        autoFocus
                                     />
                                     <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                     <Form.Control.Feedback type="invalid" tooltip>
@@ -263,7 +273,11 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                 <Modal.Body> {taskSubmitMessage} </Modal.Body>
                                 <Modal.Footer>
                                     <Button variant="secondary"
-                                            onClick={closeTypeInputModal}> Ok </Button>
+                                            onClick={() => {
+                                                closeTypeInputModal()
+                                                values.taskTypeInput = ""
+                                                touched.taskTypeInput = false;
+                                            }}> Ok </Button>
                                 </Modal.Footer>
                             </Modal>
                         </Row>}
