@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsBoolean, Length, MinDate, MinLength} from "class-validator";
+import {IsBoolean, Length, Matches, MinDate, MinLength, NotEquals} from "class-validator";
 
 
 @Entity()
@@ -24,8 +24,12 @@ export class Task {
     @Column()
     important: boolean;
 
-    @MinLength(2, {message: "Type is too short. Minimal length is $constraint1"})
     @Column()
+    @Matches(/^[a-żA-Ż\s]+$/, {message: "Type must have only letters."})
+    @NotEquals("Default", {message: "taskType can't be 'Default'"})
+    @Length(3, 255, {
+        message: "Name must have minimum length $constraint1 and maximal length is $constraint2."
+    })
     taskType: string
 
     @Column("datetime")

@@ -15,8 +15,8 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
         return await getManager().save(result)
             .then(() => res.sendStatus(201))
-            .catch(() => res.sendStatus(404));
-
+            .catch(() => res.sendStatus(404)
+            );
     },
 
 
