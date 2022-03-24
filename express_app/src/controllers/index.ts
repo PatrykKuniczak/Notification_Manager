@@ -3,7 +3,7 @@ import itemsController from "./itemsController";
 import {Type} from "../database/entities/Type";
 import {Task} from "../database/entities/Task";
 
-// toDO: GDY ŁĄCZY SIĘ WYSAKUJE BŁĄD GDY FRONTED ZAPYTA W TYM CZASIE
+
 const baseRouter: Router = Router();
 const typeController = itemsController(Type);
 const taskController = itemsController(Task);

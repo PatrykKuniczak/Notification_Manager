@@ -76,7 +76,15 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
                 return res.status(404).send({message: "Fields can't be empty"});
             }
         } else {
-            const result = await getManager().find(Repository);
+
+            const result = await getManager().find(Repository).catch(() => {
+                return new Error()
+            });
+
+            if (result instanceof Error) {
+                return res.status(202).send({message: "Records loading pending"})
+            }
+
             return res.status(200).send(result);
         }
     },
