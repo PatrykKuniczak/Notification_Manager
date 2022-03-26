@@ -17,6 +17,7 @@ const Table: React.FC = (props) => {
     </table>
 }
 
+// TODO: WŁĄCZANIE EDYCJI PO KLIKNIĘCIU NA ITEM
 
 const Items: React.FC<{ active: boolean }> = ({active}) => {
     const location = useLocation();
@@ -27,7 +28,8 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
 
     const fetchAll = useCallback(() => {
         return Axios.get("/tasks").then(({data}) => {
-            setItems(data);
+            data.message ? setItems([]) : setItems(data);
+
             setLoading(false);
         }).catch(() => setErrorOccur(true));
     }, []);
@@ -89,7 +91,7 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
                         <td className={styles.title}>{title}</td>
                         <td className={styles.description}>{description}</td>
                         <td className={styles["star-button-container"]}>
-                            <button onClick={importantHandler.bind(this, id, {
+                            <button onClick={importantHandler.bind(this, id!, {
                                 title,
                                 description,
                                 important,
@@ -101,7 +103,7 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
                             </button>
                         </td>
 
-                        <td className={styles["delete-button-container"]} onClick={deleteHandler.bind(this, id)}>
+                        <td className={styles["delete-button-container"]} onClick={deleteHandler.bind(this, id!)}>
                             <button type="button"><img src={deleteIcon} alt="Delete button"/></button>
                         </td>
                     </tr>)}
