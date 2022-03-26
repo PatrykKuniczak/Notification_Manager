@@ -44,71 +44,59 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
 
 
     const [showSubmitModal, setShowSubmitModal] = useState(false);
-    const [showTaskInput, setShowTaskInput] = useState(false);
-    const [showTaskInputModal, setShowTaskInputModal] = useState(false);
     const [submitMessage, setSubmitMessage] = useState("");
-    const [taskSubmitMessage, setTaskSubmitMessage] = useState("");
+    const [showTaskInput, setShowTaskInput] = useState(false);
+    const [typeInputAction, setTypeInputAction] = useState("add");
     const [errorOccur, setErrorOccur] = useState(false);
     const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState<ITask>(initialState);
     const [typeArray, setTypeArray] = useState<TypeArray>([]);
-    const [typeInputAction, setTypeInputAction] = useState("");
-
 
     const {id} = useParams();
     const navigate = useNavigate();
 
-    const submitHandler = (data: ITask) => {
-        delete data.taskTypeInput;
+    const submitHandler = async (data: (ITask | string), actionTypeValue: string) => {
+
+        if (typeof data === "object") {
+            delete data.taskTypeInput;
+        }
 
         try {
-            if (actionType === "add") {
-                Axios.post("/tasks", data);
+            if (actionTypeValue === "addTask") {
+                await Axios.post("/tasks", data);
+            } else if (actionTypeValue === "editTask") {
+                await Axios.put(`/tasks/${id}`, data);
+            } else if (actionTypeValue === "addType") {
+                await Axios.post('/types', {name: data});
             } else {
-                Axios.put(`/tasks/${id}`, data);
+                // Axios.put(`/types/${id}, `)
             }
 
-            setSubmitMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} powiodło się.`);
-            setShowSubmitModal(true);
+            setSubmitMessage(`${actionTypeValue.startsWith("add") ? "Dodawanie" : "Edytowanie"} powiodło się.`);
 
         } catch (err: any) {
-            setSubmitMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} nie powiodło się, wystąpił błąd: 
-            ${err.message}`);
+            setSubmitMessage(`${actionTypeValue.startsWith("add") ? "Dodawanie" : "Edytowanie"} nie powiodło się,
+             wystąpił błąd: ${err.message}`);
+        } finally {
             setShowSubmitModal(true);
         }
     }
 
-    const typeSubmitHandler = (taskType: string) => {
-
-        return Axios.post('/types', {name: taskType}).then(() => {
-            if (typeInputAction === "edit") {
-                setTaskSubmitMessage(`Edytowanie powiodło się`)
-            } else {
-                setTaskSubmitMessage(`Dodawanie powiodło się`)
-            }
-        }).catch(() => {
-            if (typeInputAction === "edit") {
-                setTaskSubmitMessage(`Edytowanie nie powiodło się`)
-            } else {
-                setTaskSubmitMessage(`Dodawanie nie powiodło się`)
-            }
-        }).finally(() => {
-            setShowTaskInputModal(true)
-        })
-    }
 
     const closeTypeInputModal = (values: any, touched: any) => {
-        setShowTaskInputModal(false);
+        setShowSubmitModal(false);
         setShowTaskInput(false);
         values.taskTypeInput = "Placeholder"
         touched.taskTypeInput = false;
     }
 
+    // TODO: PO DODANIU TYPU WYBIERZ GO NA LIŚCIE OPCJI
     useEffect(() => {
         Axios.get('/types').then(({data}) => {
             const convertedDate = data.map(({id, name}: { id: number, name: string }) => {
                 return {id: id, name: toTitle(name)};
             })
+
             setTypeArray(convertedDate);
             setLoading(false);
         }).catch(() => setErrorOccur(true));
@@ -124,209 +112,220 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         } else {
             setEditData(initialState)
         }
-    }, [actionType, id, initialState, showTaskInputModal])
+    }, [actionType, id, initialState, showSubmitModal])
 
+    const contentSwitcher = () => {
+        if (errorOccur) {
+            return <h3 className={styles["error-message"]}>Wystąpił problem, podczas łączenia z serwerem.</h3>
+        } else if (loading) {
+            return <div className={styles["loading-spinner"]}>
+                <CirclesWithBar
+                    color="#2d74e0"
+                    outerCircleColor="#2678e1"
+                    innerCircleColor="#4987f3"
+                    barColor="#75716c"
+                />
+            </div>
+        } else if (!loading) {
 
-    return <div className={styles["form-container"]}>
-        <h1>{actionType === "add" ? "Dodawanie" : "Edytowanie"} Zadania</h1>
-        {errorOccur && <h3 className={styles["error-message"]}>Wystąpił problem, podczas łączenia z serwerem.</h3>}
-        {loading && <div className={styles["loading-spinner"]}>
-            <CirclesWithBar
-                color="#2d74e0"
-                outerCircleColor="#2678e1"
-                innerCircleColor="#4987f3"
-                barColor="#75716c"
-            />
-        </div>}
+            return <Formik onSubmit={(value) => submitHandler(value, actionType + "Task")
+            }
+                           initialValues={editData}
+                           validationSchema={formikSchema}
+                           enableReinitialize={true}>
+                {({
+                      handleSubmit,
+                      handleChange,
+                      handleBlur,
+                      values,
+                      touched,
+                      errors,
+                  }) =>
+                    (
+                        <Form noValidate onSubmit={handleSubmit}>
 
-        {!loading && <Formik onSubmit={submitHandler}
-                             initialValues={editData}
-                             validationSchema={formikSchema}
-                             enableReinitialize={true}>
-            {({
-                  handleSubmit,
-                  handleChange,
-                  handleBlur,
-                  values,
-                  touched,
-                  errors,
-              }) =>
-                (
-                    <Form noValidate onSubmit={handleSubmit}>
+                            <Row className="mb-5 mt-5">
+                                <Form.Group as={Col} md="max" controlId="titleForm">
+                                    <Form.Label className={styles["form-label"]}>Tytuł</Form.Label>
+                                    <InputGroup hasValidation>
+                                        <Form.Control
+                                            type="text"
+                                            name="title"
+                                            value={toTitle(values.title)}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            isValid={touched.title && !errors.title}
+                                            isInvalid={touched.title && !!errors.title}
+                                            autoFocus
+                                        />
+                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid" tooltip>
+                                            {errors.title}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
+                                </Form.Group>
+                            </Row>
 
-                        <Row className="mb-5 mt-5">
-                            <Form.Group as={Col} md="max" controlId="titleForm">
-                                <Form.Label className={styles["form-label"]}>Tytuł</Form.Label>
-                                <InputGroup hasValidation>
-                                    <Form.Control
-                                        type="text"
-                                        name="title"
-                                        value={toTitle(values.title)}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        isValid={touched.title && !errors.title}
-                                        isInvalid={touched.title && !!errors.title}
-                                        autoFocus
-                                    />
-                                    <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {errors.title}
-                                    </Form.Control.Feedback>
-                                </InputGroup>
-                            </Form.Group>
-                        </Row>
+                            <Row className="mb-5">
+                                <Form.Group as={Col} md="max" controlId="descriptionForm">
+                                    <Form.Label className={styles["form-label"]}>Opis</Form.Label>
+                                    <InputGroup hasValidation>
+                                        <Form.Control
+                                            type="text"
+                                            name="description"
+                                            value={values.description}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            isValid={touched.description && !errors.description}
+                                            isInvalid={touched.description && !!errors.description}
+                                        />
+                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid" tooltip>
+                                            {errors.description}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
+                                </Form.Group>
+                            </Row>
 
-                        <Row className="mb-5">
-                            <Form.Group as={Col} md="max" controlId="descriptionForm">
-                                <Form.Label className={styles["form-label"]}>Opis</Form.Label>
-                                <InputGroup hasValidation>
-                                    <Form.Control
-                                        type="text"
-                                        name="description"
-                                        value={values.description}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        isValid={touched.description && !errors.description}
-                                        isInvalid={touched.description && !!errors.description}
-                                    />
-                                    <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {errors.description}
-                                    </Form.Control.Feedback>
-                                </InputGroup>
-                            </Form.Group>
-                        </Row>
+                            <Row className="mb-5">
+                                <Form.Group as={Col} md="max" controlId="dateForm">
+                                    <Form.Label className={styles["form-label"]}>Data</Form.Label>
+                                    <InputGroup hasValidation>
+                                        <Form.Control
+                                            type="datetime-local"
+                                            name="notificationDate"
+                                            defaultValue={values.notificationDate}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            isValid={touched.notificationDate && !errors.notificationDate}
+                                            isInvalid={touched.notificationDate && !!errors.notificationDate}
+                                        />
+                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid" tooltip>
+                                            {errors.notificationDate}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
+                                </Form.Group>
+                            </Row>
 
-                        <Row className="mb-5">
-                            <Form.Group as={Col} md="max" controlId="dateForm">
-                                <Form.Label className={styles["form-label"]}>Data</Form.Label>
-                                <InputGroup hasValidation>
-                                    <Form.Control
-                                        type="datetime-local"
-                                        name="notificationDate"
-                                        defaultValue={values.notificationDate}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        isValid={touched.notificationDate && !errors.notificationDate}
-                                        isInvalid={touched.notificationDate && !!errors.notificationDate}
-                                    />
-                                    <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {errors.notificationDate}
-                                    </Form.Control.Feedback>
-                                </InputGroup>
-                            </Form.Group>
-                        </Row>
+                            <Row className="mb-5">
+                                <Form.Group as={Col} md="max" controlId="taskTypeForm">
+                                    <Form.Label className={styles["form-label"]}>Typ Aktywności</Form.Label>
+                                    <InputGroup hasValidation className={styles["task-input"]}>
+                                        <Form.Select
+                                            name="taskType"
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            value={values.taskType}
+                                            isValid={touched.taskType && !errors.taskType}
+                                            isInvalid={touched.taskType && !!errors.taskType}
+                                        >
+                                            <option value="Default" key="Default"> Wybierz opcję:</option>
+                                            {typeArray.map(({id, name}) => <option value={name}
+                                                                                   key={id}> {name} </option>)}
+                                        </Form.Select>
 
-                        <Row className="mb-5">
-                            <Form.Group as={Col} md="max" controlId="taskTypeForm">
-                                <Form.Label className={styles["form-label"]}>Typ Aktywności</Form.Label>
-                                <InputGroup hasValidation className={styles["task-input"]}>
-                                    <Form.Select
-                                        name="taskType"
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        value={values.taskType}
-                                        isValid={touched.taskType && !errors.taskType}
-                                        isInvalid={touched.taskType && !!errors.taskType}
-                                    >
-                                        <option value="Default" key="Default"> Wybierz opcję:</option>
-                                        {typeArray.map(({id, name}) => <option value={name}
-                                                                               key={id}> {name} </option>)}
-                                    </Form.Select>
+                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid" tooltip>
+                                            {errors.taskType}
+                                        </Form.Control.Feedback>
+                                        <Button type="button" onClick={() => {
+                                            values.taskTypeInput = ""
+                                            setShowTaskInput(true)
+                                        }}><img src={addIcon}
+                                                alt="Add Type button"/></Button>
+                                    </InputGroup>
+                                </Form.Group>
+                            </Row>
 
-                                    <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {errors.taskType}
-                                    </Form.Control.Feedback>
-                                    <Button type="button" onClick={() => {
-                                        values.taskTypeInput = ""
-                                        setShowTaskInput(true)
-                                    }}><img src={addIcon}
-                                            alt="Add Type button"/></Button>
-                                </InputGroup>
-                            </Form.Group>
-                        </Row>
+                            {showTaskInput && <Row className="mb-5 mt-5">
+                                <Form.Group className={styles["task-type-input"]} as={Col} md="max"
+                                            controlId="taskTypeInput">
+                                    <InputGroup hasValidation>
+                                        <Form.Control
+                                            type="text"
+                                            name="taskTypeInput"
+                                            value={values.taskTypeInput ? toTitle(values.taskTypeInput) : ""}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            isValid={touched.taskTypeInput && !errors.taskTypeInput}
+                                            isInvalid={touched.taskTypeInput && !!errors.taskTypeInput}
+                                            autoFocus
+                                        />
+                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid" tooltip>
+                                            {errors.taskTypeInput}
+                                        </Form.Control.Feedback>
+                                        <Button type="button" className={styles["close-btn"]}
+                                                onClick={closeTypeInputModal.bind(this, values, touched)}>
+                                            <img
+                                                src={closeIcon} alt="Close Type Input"/></Button>
 
-                        {showTaskInput && <Row className="mb-5 mt-5">
-                            <Form.Group className={styles["task-type-input"]} as={Col} md="max"
-                                        controlId="taskTypeInput">
-                                <InputGroup hasValidation>
-                                    <Form.Control
-                                        type="text"
-                                        name="taskTypeInput"
-                                        value={values.taskTypeInput ? toTitle(values.taskTypeInput) : ""}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        isValid={touched.taskTypeInput && !errors.taskTypeInput}
-                                        isInvalid={touched.taskTypeInput && !!errors.taskTypeInput}
-                                        autoFocus
-                                    />
-                                    <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {errors.taskTypeInput}
-                                    </Form.Control.Feedback>
-                                    <Button type="button" className={styles["close-btn"]}
-                                            onClick={closeTypeInputModal.bind(this, values, touched)}>
-                                        <img
-                                            src={closeIcon} alt="Close Type Input"/></Button>
+                                        <Button className="ms-1" type="button"
+                                                onClick={!errors.taskTypeInput ? submitHandler.bind(this, values.taskTypeInput!, typeInputAction + "Type") :
+                                                    () => {
+                                                    }}>
+                                            {typeInputAction === "add" ? "Dodaj" : "Edytuj"}
+                                        </Button>
+                                    </InputGroup>
+                                </Form.Group>
 
-                                    <Button type="button" className="ms-1"
-                                            onClick={typeSubmitHandler.bind(this, values.taskTypeInput!)}>
-                                        {typeInputAction === "edit" ? "Edytuj" : "Dodaj"}
-                                    </Button>
-                                </InputGroup>
-                            </Form.Group>
+                                <Modal show={showSubmitModal && showTaskInput}
+                                       onHide={closeTypeInputModal.bind(this, values, touched)}>
+                                    <Modal.Body> {submitMessage} </Modal.Body>
+                                    <Modal.Footer>
+                                        <Button variant="secondary" type="button"
+                                                onClick={closeTypeInputModal.bind(this, values, touched)}> Ok </Button>
+                                    </Modal.Footer>
+                                </Modal>
+                            </Row>}
 
-                            <Modal show={showTaskInputModal} onHide={closeTypeInputModal.bind(this, values, touched)}>
-                                <Modal.Body> {taskSubmitMessage} </Modal.Body>
+                            <Row className="mb-2">
+                                <Form.Group as={Col} md="max" controlId="importantForm">
+                                    <Form.Label className={styles["form-label"]}> Ważne </Form.Label>
+                                    <InputGroup hasValidation>
+                                        <Form.Check
+                                            className={"mt-2"}
+                                            type="switch"
+                                            id="custom-switch"
+                                            name="important"
+                                            checked={values.important}
+                                            onChange={handleChange}
+                                            onBlur={handleBlur}
+                                            isValid={touched.important && !errors.important}
+                                            isInvalid={touched.important && !!errors.important}
+                                        />
+                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
+                                        <Form.Control.Feedback type="invalid" tooltip>
+                                            {errors.important}
+                                        </Form.Control.Feedback>
+                                    </InputGroup>
+                                </Form.Group>
+                            </Row>
+
+                            <Modal show={showSubmitModal && !showTaskInput} onHide={() => {
+                                navigate("/active")
+                            }}>
+                                <Modal.Body>{submitMessage}</Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary"
-                                            onClick={closeTypeInputModal.bind(this, values, touched)}> Ok </Button>
+                                    <Button variant="secondary" onClick={() => setShowSubmitModal(false)}>
+                                        <NavLink to="/active"> Ok </NavLink>
+                                    </Button>
                                 </Modal.Footer>
                             </Modal>
-                        </Row>}
 
-                        <Row className="mb-2">
-                            <Form.Group as={Col} md="max" controlId="importantForm">
-                                <Form.Label className={styles["form-label"]}> Ważne </Form.Label>
-                                <InputGroup hasValidation>
-                                    <Form.Check
-                                        className={"mt-2"}
-                                        type="switch"
-                                        id="custom-switch"
-                                        name="important"
-                                        checked={values.important}
-                                        onChange={handleChange}
-                                        onBlur={handleBlur}
-                                        isValid={touched.important && !errors.important}
-                                        isInvalid={touched.important && !!errors.important}
-                                    />
-                                    <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                    <Form.Control.Feedback type="invalid" tooltip>
-                                        {errors.important}
-                                    </Form.Control.Feedback>
-                                </InputGroup>
-                            </Form.Group>
-                        </Row>
+                            <Button className="btn mt-5"
+                                    type="submit"> {actionType === "add" ? "Dodaj" : "Edytuj"} </Button>
+                        </Form>
+                    )
+                }
+            </Formik>
+        }
 
-                        <Modal show={showSubmitModal} onHide={() => {
-                            navigate("/active")
-                        }}>
-                            <Modal.Body>{submitMessage}</Modal.Body>
-                            <Modal.Footer>
-                                <Button variant="secondary" onClick={() => setShowSubmitModal(false)}>
-                                    <NavLink to="/active"> Ok </NavLink>
-                                </Button>
-                            </Modal.Footer>
-                        </Modal>
-
-                        <Button className="btn mt-5"
-                                type="submit"> {actionType === "add" ? "Dodaj" : "Edytuj"} </Button>
-                    </Form>
-                )
-            }
-        </Formik>}
+    }
+    return <div className={styles["form-container"]}>
+        <h1>{actionType === "add" ? "Dodawanie" : "Edytowanie"} Zadania</h1>
+        {contentSwitcher()}
     </div>
 }
 
