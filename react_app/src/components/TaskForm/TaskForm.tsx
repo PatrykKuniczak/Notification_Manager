@@ -51,6 +51,8 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState<ITask>(initialState);
     const [typeArray, setTypeArray] = useState<TypeArray>([]);
+    const [preSelect, setPreSelect] = useState(false);
+
 
     const {id} = useParams();
     const navigate = useNavigate();
@@ -68,7 +70,9 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                 await Axios.put(`/tasks/${id}`, data);
             } else if (actionTypeValue === "addType") {
                 await Axios.post('/types', {name: data});
+                setPreSelect(true);
             } else {
+                setPreSelect(true);
                 // Axios.put(`/types/${id}, `)
             }
 
@@ -90,16 +94,24 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         touched.taskTypeInput = false;
     }
 
-    // TODO: PO DODANIU TYPU WYBIERZ GO NA LIŚCIE OPCJI
     useEffect(() => {
         Axios.get('/types').then(({data}) => {
-            const convertedDate = data.map(({id, name}: { id: number, name: string }) => {
+            const convertedDate: TypeArray = data.map(({id, name}: { id: number, name: string }) => {
                 return {id: id, name: toTitle(name)};
             })
 
+
             setTypeArray(convertedDate);
+            if (preSelect) {
+                const lastElem: { id: number, name: string } = Array.from(convertedDate.values()).pop()!;
+                setEditData((prevData) => ({...prevData, taskType: lastElem.name}))
+            }
+
             setLoading(false);
-        }).catch(() => setErrorOccur(true));
+        }).catch(() => {
+            setErrorOccur(true)
+        });
+
         if (actionType === "edit") {
             Axios.get(`/tasks/${id}`).then(({data}) => {
                 const dateObj = new Date(data.notificationDate ? data.notificationDate : "");
@@ -112,7 +124,11 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
         } else {
             setEditData(initialState)
         }
-    }, [actionType, id, initialState, showSubmitModal])
+
+        return () => {
+            setPreSelect(false);
+        }
+    }, [actionType, id, initialState, preSelect])
 
     const contentSwitcher = () => {
         if (errorOccur) {
@@ -262,7 +278,8 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                                 src={closeIcon} alt="Close Type Input"/></Button>
 
                                         <Button className="ms-1" type="button"
-                                                onClick={!errors.taskTypeInput ? submitHandler.bind(this, values.taskTypeInput!, typeInputAction + "Type") :
+                                                onClick={!errors.taskTypeInput ?
+                                                    submitHandler.bind(this, values.taskTypeInput!, typeInputAction + "Type") :
                                                     () => {
                                                     }}>
                                             {typeInputAction === "add" ? "Dodaj" : "Edytuj"}
