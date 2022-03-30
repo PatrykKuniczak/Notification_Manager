@@ -20,6 +20,5 @@ export interface IItems {
         edit(req: Request, res: Response): Promise<Response>
         delete(req: Request, res: Response): Promise<Response>
         display(req: Request, res: Response): Promise<Response | Response[]>
-        displayById(req: Request, res: Response): Promise<Response>
     }
 }

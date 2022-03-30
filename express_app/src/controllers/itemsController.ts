@@ -1,8 +1,9 @@
 import {Request, Response} from "express";
-import {DeleteResult, getManager} from "typeorm";
+import {DeleteResult} from "typeorm";
 import {createItem} from "../services/itemsService";
 import {IEntityRepository, IItems} from "./helpers/interfaces";
 import {instanceOfIJsonMessage} from "./helpers/helpers";
+import {AppDataSource} from "../index";
 
 
 const itemsController: IItems = (Repository: IEntityRepository) => ({
@@ -10,13 +11,15 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
     create: async (req: Request, res: Response): Promise<Response> => {
         const result = await createItem(req, res, Repository);
 
-        if (instanceOfIJsonMessage(result))
-            return res.status(401).send(result);
+        if (instanceOfIJsonMessage(result)) {
+            return res.status(401).send(result)
+        }
 
-        return await getManager().save(result)
-            .then(() => res.sendStatus(201))
-            .catch(() => res.sendStatus(404)
-            );
+        return await AppDataSource.manager.save(result)
+            .then(() => {
+                return res.sendStatus(201)
+            })
+            .catch(() => res.sendStatus(404))
     },
 
 
@@ -27,8 +30,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
             return res.status(401).send(result);
 
         try {
-
-            const updateResult = await getManager().update(Repository, req.params.id, result);
+            const updateResult = await AppDataSource.manager.update(Repository, req.params.id, result);
             const status = !updateResult.affected ? 404 : 200;
 
             return status === 404 ? res.status(status).send({message: "Record Not Found"}) : res.sendStatus(status);
@@ -43,7 +45,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
         if (req.params.id) {
             try {
-                const result: DeleteResult = await getManager().delete(Repository, req.params.id);
+                const result: DeleteResult = await AppDataSource.manager.delete(Repository, req.params.id);
                 const status = !result.affected ? 404 : 200;
 
                 return status === 404 ? res.status(status).send({message: "Record Not Found"}) : res.sendStatus(status);
@@ -64,7 +66,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
             if (field && data) {
                 try {
-                    const result = await getManager().findOne(Repository, {[field]: data});
+                    const result = await AppDataSource.manager.findBy(Repository, {[field]: data});
 
                     return result ? res.status(200).send(result) : res.status(404).send({message: "Record Not Found"});
 
@@ -75,30 +77,15 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
             } else {
                 return res.status(404).send({message: "Fields can't be empty"});
             }
+        } else if (Object.keys(req.params).length > 0) {
+            const id = req.params.id.fullTrim();
+
+            const result = await AppDataSource.manager.findBy(Repository, {id});
+            return result ? res.status(200).send(result) : res.status(404).send({message: "Record Not Found"});
         } else {
-
-            const result = await getManager().find(Repository).catch(() => {
-                return new Error()
-            });
-
-            if (result instanceof Error) {
-                return res.status(202).send({message: "Records loading pending"})
-            }
+            const result = await AppDataSource.manager.find(Repository);
 
             return res.status(200).send(result);
-        }
-    },
-
-
-    displayById: async (req: Request, res: Response): Promise<Response> => {
-        const id = req.params.id.fullTrim();
-
-        if (id) {
-            const result = await getManager().findOne(Repository, id);
-            return result ? res.status(200).send(result) : res.status(404).send({message: "Record Not Found"});
-
-        } else {
-            return res.status(404).send({message: "Field can't be empty"});
         }
     }
 });

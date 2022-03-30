@@ -1,9 +1,9 @@
 import {IEntityRepository, IJsonMessage, IRepository} from "../controllers/helpers/interfaces";
 import {validateOrReject} from "class-validator";
-import {getManager} from "typeorm";
 import {Task} from "../database/entities/Task";
 import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
+import {AppDataSource} from "../index";
 
 
 
@@ -22,7 +22,6 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             task.taskType = taskType;
             task.notificationDate = dateObj;
 
-
             result = await validItem(req, res, Repository, task);
             break;
 
@@ -36,11 +35,10 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
     return result
 }
 
-
 export const validItem = async (req, res, Repository, entityObject): Promise<IJsonMessage | IRepository> => {
     try {
         await validateOrReject(entityObject);
-        return getManager().create(Repository, entityObject);
+        return AppDataSource.manager.create(Repository, entityObject);
 
     } catch (err) {
         return createValidationErrors(res, err);
