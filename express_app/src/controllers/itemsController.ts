@@ -81,7 +81,8 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
             const id = req.params.id.fullTrim();
 
             const result = await AppDataSource.manager.findBy(Repository, {id});
-            return result ? res.status(200).send(result) : res.status(404).send({message: "Record Not Found"});
+
+            return Boolean(result.length) ? res.status(200).send(result[0]) : res.status(404).send({message: "Record Not Found"});
         } else {
             const result = await AppDataSource.manager.find(Repository);
 
