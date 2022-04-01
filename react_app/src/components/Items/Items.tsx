@@ -1,18 +1,18 @@
 import styles from "./Items.module.scss";
-import React, {useCallback, useEffect, useState} from "react";
+import React, {ReactNode, useCallback, useEffect, useState} from "react";
 import star from "../TaskForm/icons/star.svg";
 import deleteIcon from "../TaskForm/icons/delete.svg";
-import {NavLink, useLocation} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import Axios from "axios";
 import {ITask} from "../helpers/Interfaces";
-import {CirclesWithBar} from "react-loader-spinner";
+import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
+import CheckEmptiness from "../CheckEmptiness/CheckEmptiness";
 
 
-const Table: React.FC = (props) => {
-
+const Table: React.FC<{ children: ReactNode }> = ({children}) => {
     return <table>
         <tbody>
-        {props.children}
+        {children}
         </tbody>
     </table>
 }
@@ -21,9 +21,11 @@ const Table: React.FC = (props) => {
 
 const Items: React.FC<{ active: boolean }> = ({active}) => {
     const location = useLocation();
+    const checkLocation = location.pathname === "/active";
+
     const [items, setItems] = useState<ITask[]>([]);
-    const [loading, setLoading] = useState<Boolean>(true);
-    const [errorOccur, setErrorOccur] = useState<Boolean>(false);
+    const [loading, setLoading] = useState<boolean>(true);
+    const [errorOccur, setErrorOccur] = useState<boolean>(false);
 
 
     const fetchAll = useCallback(() => {
@@ -51,41 +53,12 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
         fetchAll().then()
     }, [fetchAll]);
 
-    const contentSwitcher = () => {
-        if (errorOccur) {
-            return <h3 className={styles["error-message"]}>Wystąpił problem, podczas łączenia z serwerem.</h3>;
-        } else if (loading) {
-            return <CirclesWithBar
-                color="#2d74e0"
-                outerCircleColor="#2678e1"
-                innerCircleColor="#4987f3"
-                barColor="#75716c"
-            />
-        } else if (items.length === 0) {
-            if (location.pathname === "/active") {
-                return <div className={styles["empty-massage-container"]}>
-                    <h3 className={styles["empty-message"]}> Nie ma żadnego zadania, dodaj je: </h3>
 
-                    <NavLink to={"/add-form"}>
-                        <button className={styles["add-button"]}>
-                            <b><i>Dodaj Zadanie</i></b>
-                        </button>
-                    </NavLink>
-                </div>
-            } else {
-                return <div className={styles["empty-massage-container"]}>
-                    <h3 className={styles["empty-message"]}> Nie ma żadnego zadania.</h3>
+    return <div className={className}>
+        <h1>{checkLocation ? "Aktywne" : "Zarchiwizowane"}</h1>
 
-                    <NavLink to={"active"}>
-                        <button className={styles["add-button"]}>
-                            <b><i>Przejdź do aktywnych</i></b>
-                        </button>
-                    </NavLink>
-                </div>
-            }
-
-        } else if (!loading) {
-            return <Table>
+        <ErrorLoadingProvider loading={loading} errorOccur={errorOccur}>
+            {Boolean(items.length) ? <Table>
                 {items.map(({id, title, description, important, taskType, notificationDate}) =>
                     <tr key={id}>
                         <td className={styles.title}>{title}</td>
@@ -107,15 +80,8 @@ const Items: React.FC<{ active: boolean }> = ({active}) => {
                             <button type="button"><img src={deleteIcon} alt="Delete button"/></button>
                         </td>
                     </tr>)}
-            </Table>
-        }
-    }
-
-    return <div className={className}>
-        <h1>{location.pathname === "/active" ? "Aktywne" : "Zarchiwizowane"}</h1>
-
-        {contentSwitcher()}
-
+            </Table> : <CheckEmptiness checkLocation={checkLocation}/>}
+        </ErrorLoadingProvider>
     </div>
 }
 

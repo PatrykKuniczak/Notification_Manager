@@ -1,20 +1,9 @@
 @import "../helpers/helpers";
 @import "../helpers/_variables";
 
+
 .form-container {
   @include main-content-shape;
-
-  .loading-spinner {
-    display: flex;
-    justify-content: center;
-  }
-
-  .error-message {
-    display: flex;
-    justify-content: center;
-    color: $text-color;
-    margin-top: 30px;
-  }
 
   h1 {
     color: $title-color;
@@ -40,9 +29,10 @@
       border: none;
       filter: invert(51%) sepia(2%) saturate(0%) hue-rotate(2deg) brightness(98%) contrast(93%);
 
-      &:focus-visible , &:focus {
+      &:focus-visible, &:focus {
         outline: none;
       }
+
       img {
         width: fit-content;
       }

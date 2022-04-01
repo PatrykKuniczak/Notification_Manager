@@ -1,0 +1,14 @@
+@import "../helpers/_variables";
+
+
+.loading-spinner {
+  display: flex;
+  justify-content: center;
+}
+
+.error-message {
+  display: flex;
+  justify-content: center;
+  color: $text-color;
+  margin-top: 30px;
+}

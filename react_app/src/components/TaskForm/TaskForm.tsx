@@ -1,154 +1,94 @@
 import styles from "./TaskForm.module.scss";
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Formik} from "formik";
-import * as yup from "yup";
-import {Button, Col, InputGroup, Modal, Row, Form} from "react-bootstrap";
+import {Button, Col, InputGroup, Row, Form, Modal} from "react-bootstrap";
 import Axios from "axios";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import dateFormat from "dateformat";
-import {toTitle} from "../helpers/helpers";
+import {formikSchema, toTitle} from "../helpers/helpers";
 import {ITask, TypeArray} from "../helpers/Interfaces";
-import addIcon from "./icons/add.svg";
-import closeIcon from "./icons/close.svg";
-import {CirclesWithBar} from "react-loader-spinner";
+import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 
 
-const formikSchema = yup.object().shape({
-    title: yup.string().required("Tytuł jest wymagany").min(5, "Tytuł jest za krótki").max(255, "Tytuł jest za długi"),
-    description: yup.string().required("Opis jest wymagany").min(10, "Opis jest za krótki"),
-    eventStartDate: yup.date().default(() => new Date()),
-    notificationDate: yup.date().required("Data jest wymagana").typeError("Data jest nieprawidłowa")
-        .when(
-            "eventStartDate",
-            (eventStartDate, schema) => eventStartDate && schema.min(eventStartDate,
-                `Date musi być późniejsza niż aktualna:
-                 ${String(eventStartDate.toISOString().slice(0, 16)).replace("T", " ")}`)),
-    taskType: yup.string().test('is-not-default', "Wybierz opcję!",
-        (value) => value !== "Default").required("Typ jest wymagany").min(3, "Typ jest za krótki"),
-    taskTypeInput: yup.string().test('is-not-default', "Wartość nie może być 'Default'!",
-        (value) => value !== "Default").required("Typ jest wymagany").min(3, "Typ jest za krótki"),
-    important: yup.boolean().required("Wartość true lub false jest wymagana")
-})
-
-
-// TODO: ZRÓB USUWANIE I EDYCJE TYPÓW
 const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const initialState = useMemo(() => ({
         notificationDate: "",
         description: "",
         important: false,
         taskType: "Default",
-        taskTypeInput: "Placeholder",
         title: ""
     }), [])
 
 
     const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [submitMessage, setSubmitMessage] = useState("");
-    const [showTaskInput, setShowTaskInput] = useState(false);
-    const [typeInputAction, setTypeInputAction] = useState("add");
     const [errorOccur, setErrorOccur] = useState(false);
     const [loading, setLoading] = useState(true);
     const [editData, setEditData] = useState<ITask>(initialState);
     const [typeArray, setTypeArray] = useState<TypeArray>([]);
-    const [preSelect, setPreSelect] = useState(false);
-
 
     const {id} = useParams();
     const navigate = useNavigate();
 
-    const submitHandler = async (data: (ITask | string), actionTypeValue: string) => {
-
-        if (typeof data === "object") {
-            delete data.taskTypeInput;
-        }
-
+    const submitHandler = async (data: ITask) => {
         try {
-            if (actionTypeValue === "addTask") {
+            if (actionType === "add") {
                 await Axios.post("/tasks", data);
-            } else if (actionTypeValue === "editTask") {
+            } else if (actionType === "edit") {
                 await Axios.put(`/tasks/${id}`, data);
-            } else if (actionTypeValue === "addType") {
-                await Axios.post('/types', {name: data});
-                setPreSelect(true);
-            } else {
-                setPreSelect(true);
-                // Axios.put(`/types/${id}, `)
             }
-
-            setSubmitMessage(`${actionTypeValue.startsWith("add") ? "Dodawanie" : "Edytowanie"} powiodło się.`);
+            setSubmitMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} powiodło się.`);
 
         } catch (err: any) {
-            setSubmitMessage(`${actionTypeValue.startsWith("add") ? "Dodawanie" : "Edytowanie"} nie powiodło się,
+            setSubmitMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} nie powiodło się,
              wystąpił błąd: ${err.message}`);
         } finally {
             setShowSubmitModal(true);
         }
     }
 
-
-    const closeTypeInputModal = (values: any, touched: any) => {
-        setShowSubmitModal(false);
-        setShowTaskInput(false);
-        values.taskTypeInput = "Placeholder"
-        touched.taskTypeInput = false;
-    }
-
-    useEffect(() => {
+    const fetchTypes = useCallback(() => {
         Axios.get('/types').then(({data}) => {
             const convertedDate: TypeArray = data.map(({id, name}: { id: number, name: string }) => {
                 return {id: id, name: toTitle(name)};
             })
 
-
             setTypeArray(convertedDate);
-            if (preSelect) {
-                const lastElem: { id: number, name: string } = Array.from(convertedDate.values()).pop()!;
-                setEditData((prevData) => ({...prevData, taskType: lastElem.name}))
-            }
-
             setLoading(false);
         }).catch(() => {
             setErrorOccur(true)
         });
+    }, [])
 
+
+    const fetchTasks = useCallback(() => {
         if (actionType === "edit") {
             Axios.get(`/tasks/${id}`).then(({data}) => {
-                const dateObj = new Date(data.notificationDate ? data.notificationDate : "");
-
-                data["taskTypeInput"] = "Placeholder"
-                data["notificationDate"] = dateFormat(dateObj, "yyyy-mm-dd'T'HH:MM");
-
-                setEditData(data)
+                setEditData({
+                    ...data,
+                    notificationDate: dateFormat(data.notificationDate, "yyyy-mm-dd'T'HH:MM")
+                })
             }).catch(() => setErrorOccur(true));
         } else {
             setEditData(initialState)
         }
+    }, [actionType, id, initialState])
 
-        return () => {
-            setPreSelect(false);
-        }
-    }, [actionType, id, initialState, preSelect])
 
-    const contentSwitcher = () => {
-        if (errorOccur) {
-            return <h3 className={styles["error-message"]}>Wystąpił problem, podczas łączenia z serwerem.</h3>
-        } else if (loading) {
-            return <div className={styles["loading-spinner"]}>
-                <CirclesWithBar
-                    color="#2d74e0"
-                    outerCircleColor="#2678e1"
-                    innerCircleColor="#4987f3"
-                    barColor="#75716c"
-                />
-            </div>
-        } else if (!loading) {
+    useEffect(() => {
+        fetchTypes()
+        fetchTasks()
+    }, [fetchTypes, fetchTasks])
 
-            return <Formik onSubmit={(value) => submitHandler(value, actionType + "Task")
-            }
-                           initialValues={editData}
-                           validationSchema={formikSchema}
-                           enableReinitialize={true}>
+
+    return <div className={styles["form-container"]}>
+        <h1>{actionType === "add" ? "Dodawanie" : "Edytowanie"} Zadania</h1>
+
+        <ErrorLoadingProvider loading={loading} errorOccur={errorOccur}>
+            <Formik onSubmit={submitHandler}
+                    initialValues={editData}
+                    validationSchema={formikSchema}
+                    enableReinitialize={true}>
                 {({
                       handleSubmit,
                       handleChange,
@@ -159,7 +99,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                   }) =>
                     (
                         <Form noValidate onSubmit={handleSubmit}>
-
                             <Row className="mb-5 mt-5">
                                 <Form.Group as={Col} md="max" controlId="titleForm">
                                     <Form.Label className={styles["form-label"]}>Tytuł</Form.Label>
@@ -245,57 +184,9 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.taskType}
                                         </Form.Control.Feedback>
-                                        <Button type="button" onClick={() => {
-                                            values.taskTypeInput = ""
-                                            setShowTaskInput(true)
-                                        }}><img src={addIcon}
-                                                alt="Add Type button"/></Button>
                                     </InputGroup>
                                 </Form.Group>
                             </Row>
-
-                            {showTaskInput && <Row className="mb-5 mt-5">
-                                <Form.Group className={styles["task-type-input"]} as={Col} md="max"
-                                            controlId="taskTypeInput">
-                                    <InputGroup hasValidation>
-                                        <Form.Control
-                                            type="text"
-                                            name="taskTypeInput"
-                                            value={values.taskTypeInput ? toTitle(values.taskTypeInput) : ""}
-                                            onChange={handleChange}
-                                            onBlur={handleBlur}
-                                            isValid={touched.taskTypeInput && !errors.taskTypeInput}
-                                            isInvalid={touched.taskTypeInput && !!errors.taskTypeInput}
-                                            autoFocus
-                                        />
-                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
-                                        <Form.Control.Feedback type="invalid" tooltip>
-                                            {errors.taskTypeInput}
-                                        </Form.Control.Feedback>
-                                        <Button type="button" className={styles["close-btn"]}
-                                                onClick={closeTypeInputModal.bind(this, values, touched)}>
-                                            <img
-                                                src={closeIcon} alt="Close Type Input"/></Button>
-
-                                        <Button className="ms-1" type="button"
-                                                onClick={!errors.taskTypeInput ?
-                                                    submitHandler.bind(this, values.taskTypeInput!, typeInputAction + "Type") :
-                                                    () => {
-                                                    }}>
-                                            {typeInputAction === "add" ? "Dodaj" : "Edytuj"}
-                                        </Button>
-                                    </InputGroup>
-                                </Form.Group>
-
-                                <Modal show={showSubmitModal && showTaskInput}
-                                       onHide={closeTypeInputModal.bind(this, values, touched)}>
-                                    <Modal.Body> {submitMessage} </Modal.Body>
-                                    <Modal.Footer>
-                                        <Button variant="secondary" type="button"
-                                                onClick={closeTypeInputModal.bind(this, values, touched)}> Ok </Button>
-                                    </Modal.Footer>
-                                </Modal>
-                            </Row>}
 
                             <Row className="mb-2">
                                 <Form.Group as={Col} md="max" controlId="importantForm">
@@ -320,7 +211,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                 </Form.Group>
                             </Row>
 
-                            <Modal show={showSubmitModal && !showTaskInput} onHide={() => {
+                            <Modal show={showSubmitModal} onHide={() => {
                                 navigate("/active")
                             }}>
                                 <Modal.Body>{submitMessage}</Modal.Body>
@@ -337,12 +228,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                     )
                 }
             </Formik>
-        }
-
-    }
-    return <div className={styles["form-container"]}>
-        <h1>{actionType === "add" ? "Dodawanie" : "Edytowanie"} Zadania</h1>
-        {contentSwitcher()}
+        </ErrorLoadingProvider>
     </div>
 }
 
