@@ -4,12 +4,13 @@ import {Task} from "../database/entities/Task";
 import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
 import {AppDataSource} from "../index";
-
+import {fullTrim, toTitle} from "../controllers/helpers/helpers";
 
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
     const [name, title, description, important, taskType, notificationDate] = validBody(req);
-    const dateObj = new Date(notificationDate);
+    const dateObj = new Date(notificationDate).toLocaleString("pl-PL", {timeZone: "Europe/Warsaw"});
+
 
     let result: IRepository | IJsonMessage;
 
@@ -20,7 +21,7 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             task.description = description;
             task.important = important;
             task.taskType = taskType;
-            task.notificationDate = dateObj;
+            task.notificationDate = new Date(dateObj);
 
             result = await validItem(req, res, Repository, task);
             break;
@@ -46,12 +47,12 @@ export const validItem = async (req, res, Repository, entityObject): Promise<IJs
 }
 
 export const validBody = (req) => {
-    const name = req.body.name ? req.body.name.fullTrim().toTitle() : undefined;
-    const title = req.body.title ? req.body.title.fullTrim().toTitle() : undefined;
-    const description = req.body.description ? req.body.description.fullTrim() : undefined;
-    const important = req.body.important === true || req.body.important === false ? req.body.important : undefined;
-    const taskType = req.body.taskType ? req.body.taskType.fullTrim().toTitle() : undefined;
-    const notificationDate = req.body.notificationDate ? req.body.notificationDate.fullTrim() : undefined;
+    const name = req.body.name && toTitle(fullTrim(req.body.name));
+    const title = req.body.title && toTitle(fullTrim(req.body.title));
+    const description = req.body.description && toTitle(fullTrim(req.body.description));
+    const important = (req.body.important === true || req.body.important === false) && req.body.important;
+    const taskType = req.body.taskType && toTitle(fullTrim(req.body.taskType));
+    const notificationDate = req.body.notificationDate && toTitle(fullTrim(req.body.notificationDate));
 
     return [name, title, description, important, taskType, notificationDate]
 }

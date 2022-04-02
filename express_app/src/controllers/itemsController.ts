@@ -2,7 +2,7 @@ import {Request, Response} from "express";
 import {DeleteResult} from "typeorm";
 import {createItem} from "../services/itemsService";
 import {IEntityRepository, IItems} from "./helpers/interfaces";
-import {instanceOfIJsonMessage} from "./helpers/helpers";
+import {fullTrim, instanceOfIJsonMessage} from "./helpers/helpers";
 import {AppDataSource} from "../index";
 
 
@@ -59,10 +59,11 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
     display: async (req: Request, res: Response): Promise<Response | Response[]> => {
         if (Object.keys(req.query).length > 0) {
-            let {field, data} = req.query;
+            // @ts-ignore
+            let {field, data}: { field: string, data: string } = req.query;
 
-            field = field.fullTrim();
-            data = data.fullTrim();
+            field = fullTrim(field);
+            data = fullTrim(data);
 
             if (field && data) {
                 try {
@@ -78,7 +79,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
                 return res.status(404).send({message: "Fields can't be empty"});
             }
         } else if (Object.keys(req.params).length > 0) {
-            const id = req.params.id.fullTrim();
+            const id = +req.params.id;
 
             const result = await AppDataSource.manager.findBy(Repository, {id});
 
