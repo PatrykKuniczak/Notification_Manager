@@ -3,7 +3,6 @@
 
 
 .toggle-menu {
-  height: 100%;
   width: fit-content;
   background-color: $background-color;
   border-radius: 0 20px 20px 0;
@@ -47,26 +46,12 @@
     }
 
     ul {
-      padding-inline: 0;
-      padding-block: 1em;
-      margin-top: 30%;
-
-      @media (height < 350px) {
-        & {
-          margin-top: 15%;
-        }
-      }
-
       li {
-        padding-right: 5px;
-
         a {
           display: flex;
           align-items: center;
           cursor: pointer;
-          width: fit-content;
-          height: 45px;
-          margin-bottom: 15px;
+          height: 35px;
 
           .icon-square {
             width: 5px;
@@ -126,6 +111,5 @@
         }
       }
     }
-
   }
 }

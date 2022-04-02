@@ -12,18 +12,18 @@ const ToggleMenu: React.FC<{ show: boolean, handleClose: () => void }> = ({show,
     return <Offcanvas className={styles["toggle-menu"]} show={show} onHide={handleClose} backdrop={true}>
         <Offcanvas.Header bsPrefix={styles["toggle-menu-header"]} closeButton/>
         <Offcanvas.Body bsPrefix={styles["toggle-menu-body"]}>
-            <NavLink className={styles.logo} to="/active"><img src={logo} alt="logo"/></NavLink>
-            <ul>
-                <li>
+            <NavLink className={styles.logo} to="/active" onClick={handleClose}><img src={logo} alt="logo"/></NavLink>
+            <ul className={"px-0 pt-4 mt-5"}>
+                <li className={"mb-3"}>
                     <NavLink className={({isActive}) => (isActive && styles.active) || ''}
-                             to="active">
+                             to="active" onClick={handleClose}>
                         <div className={styles["icon-square"]}/>
                         <img className={styles["icon"]} src={activeEye} alt="openEye"/>
                         <span>Aktywne</span></NavLink>
                 </li>
 
                 <li><NavLink className={({isActive}) => (isActive && styles.active) || ''}
-                             to="inactive">
+                             to="inactive" onClick={handleClose}>
                     <div className={styles["icon-square"]}/>
                     <img className={styles["icon"]} src={unActiveEye} alt="closeEye"/>
                     <span>Zarchiwizowane</span></NavLink>

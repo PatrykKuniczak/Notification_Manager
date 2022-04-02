@@ -6,9 +6,11 @@ import Axios from "axios";
 import {NavLink, useNavigate, useParams} from "react-router-dom";
 import dateFormat from "dateformat";
 import {formikSchema, toTitle} from "../helpers/helpers";
-import {ITask, TypeArray} from "../helpers/Interfaces";
+import {ITask} from "../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 
+
+type TypeArray = { id: number, name: string }[];
 
 const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const initialState = useMemo(() => ({
@@ -166,7 +168,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                             <Row className="mb-5">
                                 <Form.Group as={Col} md="max" controlId="taskTypeForm">
                                     <Form.Label className={styles["form-label"]}>Typ Aktywności</Form.Label>
-                                    <InputGroup hasValidation className={styles["task-input"]}>
+                                    <InputGroup hasValidation>
                                         <Form.Select
                                             name="taskType"
                                             onChange={handleChange}

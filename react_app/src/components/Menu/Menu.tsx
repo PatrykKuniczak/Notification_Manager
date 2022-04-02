@@ -9,17 +9,15 @@ import ToggleMenu from "./ToggleMenu";
 
 const Menu: React.FC = () => {
     const [show, setShow] = useState(false);
-    const handleClose = () => setShow(false);
     const toggleShow = () => setShow((s) => !s);
 
-    return <nav className={styles.menu}>
-        <Button onClick={toggleShow} className={styles["toggle-btn"]}><img src={listIcon} alt="List icon"/></Button>
-        <Button className={styles["add-btn"]}><NavLink to={"/add-form"}><img src={addIcon}
+    return <nav className={"m-2 d-inline-flex justify-content-between"}>
+        <Button onClick={toggleShow} className={styles["nav-btn"]}><img src={listIcon} alt="List icon"/></Button>
+        <Button className={styles["nav-btn"]}><NavLink to={"/add-form"}><img src={addIcon}
                                                                              alt="List icon"/></NavLink></Button>
 
-        <ToggleMenu show={show} handleClose={handleClose}/>
+        <ToggleMenu show={show} handleClose={toggleShow}/>
     </nav>
-
 }
 
 

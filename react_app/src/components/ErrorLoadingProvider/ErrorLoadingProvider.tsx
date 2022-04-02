@@ -1,19 +1,20 @@
-import styles from "../ErrorLoadingProvider/ErrorLoadingProvider.module.scss";
 import {CirclesWithBar} from "react-loader-spinner";
-import React, {ReactNode} from "react";
+import React from "react";
 
 
-type TErrorLoadingProvider = { children: ReactNode, loading: boolean, errorOccur: boolean };
+type TErrorLoadingProvider = { children: any, loading: boolean, errorOccur: boolean, errorMessage?: string };
 
 const ErrorLoadingProvider: React.FC<TErrorLoadingProvider> = ({
-                                                                  children,
-                                                                  loading,
-                                                                  errorOccur
-                                                              }): any => {
+                                                                   children,
+                                                                   loading,
+                                                                   errorOccur,
+                                                                   errorMessage
+                                                               }) => {
     if (errorOccur) {
-        return <h3 className={styles["error-message"]}>Wystąpił problem, podczas łączenia z serwerem.</h3>
+        return <h3
+            className={"d-flex justify-content-center mt-4"}>{errorMessage ? errorMessage : "Wystąpił problem, podczas łączenia z serwerem."}</h3>
     } else if (loading) {
-        return <div className={styles["loading-spinner"]}>
+        return <div className={"d-flex justify-content-center"}>
             <CirclesWithBar
                 color="#2d74e0"
                 outerCircleColor="#2678e1"

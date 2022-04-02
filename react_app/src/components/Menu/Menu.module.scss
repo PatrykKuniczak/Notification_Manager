@@ -2,40 +2,15 @@
 @import "../helpers/helpers";
 
 
-.menu {
-  margin: 10px;
-  display: inline-flex;
-  justify-content: space-between;
-
-  .toggle-btn {
+nav {
+  .nav-btn {
     background-color: $button-active-color;
     padding: 3px;
     border: none;
     outline: #2d74e0 1px solid;
-    height: fit-content;
 
     &:hover {
       outline: #4F95F1 3px solid;
-      transition: ease-in-out, outline, .30s;
     }
-
-    &:focus, &:focus-visible {
-      outline: #5495e8 3px solid;
-    }
-
-    img {
-      display: flex;
-    }
-
-    &:focus {
-      box-shadow: 0 0 0 0.1rem rgba(71, 144, 253, 0.5);
-    }
-  }
-
-  .add-btn {
-    background-color: #367DE1FF;
-    border: none;
-    height: fit-content;
-    padding: 3px;
   }
 }

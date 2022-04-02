@@ -13,29 +13,4 @@
     color: #5898f8;
     font-size: 1.25rem;
   }
-
-  .task-input {
-    gap: 15px;
-
-    button {
-      width: fit-content;
-      padding-inline: 8px;
-    }
-  }
-
-  .task-type-input {
-    .close-btn {
-      background: none;
-      border: none;
-      filter: invert(51%) sepia(2%) saturate(0%) hue-rotate(2deg) brightness(98%) contrast(93%);
-
-      &:focus-visible, &:focus {
-        outline: none;
-      }
-
-      img {
-        width: fit-content;
-      }
-    }
-  }
 }

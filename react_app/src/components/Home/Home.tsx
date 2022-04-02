@@ -1,5 +1,4 @@
 import Menu from "../Menu/Menu";
-import styles from './Home.module.scss';
 import {Outlet} from 'react-router-dom'
 import React from "react";
 
@@ -7,7 +6,7 @@ import React from "react";
 const Home: React.FC = () => {
 
     return (
-        <div className={styles.container}>
+        <div className={"d-flex flex-column"}>
             <Menu/>
             <Outlet/>
         </div>

@@ -6,5 +6,3 @@ export interface ITask {
     notificationDate: string | undefined
     taskType: string
 }
-
-export type TypeArray = { id: number, name: string }[]

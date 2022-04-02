@@ -1,19 +1,13 @@
 @import "../helpers/_variables";
 
 
-.error-message, .empty-message {
-  color: $text-color;
-}
-
-.empty-massage-container {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+div {
+  h3 {
+    color: $text-color;
+  }
 
   a {
     .nav-button {
-      display: block;
-      width: fit-content;
       border: none;
       color: white;
       outline: none;
