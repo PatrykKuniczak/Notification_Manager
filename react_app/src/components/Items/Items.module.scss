@@ -31,14 +31,8 @@
             padding-right: 15px;
           }
 
-          &.star-button-container, &.delete-button-container {
-            margin-right: 8px;
-
-            .star-button {
-              &-active {
-                filter: invert(70%) sepia(45%) saturate(805%) hue-rotate(6deg) brightness(114%) contrast(96%);
-              }
-            }
+          .star-button-active {
+            filter: invert(70%) sepia(45%) saturate(805%) hue-rotate(6deg) brightness(114%) contrast(96%);
           }
 
           button {

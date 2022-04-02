@@ -2,7 +2,8 @@ import styles from "./Items.module.scss";
 import React, {useEffect, useState} from "react";
 import star from "./icons/star.svg";
 import deleteIcon from "./icons/delete.svg";
-import {useLocation} from "react-router-dom";
+import editIcon from "./icons/edit.svg";
+import {useLocation, useNavigate} from "react-router-dom";
 import Axios from "axios";
 import {ITask} from "../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
@@ -16,12 +17,13 @@ const Table: React.FC = ({children}) => {
         </tbody>
     </table>
 }
-// TODO: WŁĄCZANIE EDYCJI PO KLIKNIĘCIU NA ITEM
+
 
 const Items: React.FC = () => {
 
     const location = useLocation();
     const checkLocation = location.pathname === "/active";
+    const navigate = useNavigate();
 
     const [items, setItems] = useState<ITask[]>([]);
     const [loading, setLoading] = useState<boolean>(true);
@@ -61,23 +63,26 @@ const Items: React.FC = () => {
         <ErrorLoadingProvider loading={loading} errorOccur={errorOccur} errorMessage={errorMessage}>
             {Boolean(items.length) ? <Table>
                 {items.map(({id, title, description, important, taskType, notificationDate}) =>
-                    <tr key={id} className={"d-flex flex-space-between align-items-center px-3 py-1"}>
+                    <tr key={id} className={"d-flex flex-space-between align-items-center px-2 py-1"}>
                         <td className={styles.title}>{title}</td>
                         <td className={styles.description}>{description}</td>
-                        <td className={styles["star-button-container"]}>
+                        <td className={"me-1"}>
                             <button onClick={() => eventHandler(id!, {
                                 title,
                                 description,
                                 important,
                                 taskType,
                                 notificationDate
-                            })}
-                                    className={important ? styles["star-button-active"] : ''} type="button"><img
+                            })} className={important ? styles["star-button-active"] : ''} type="button"><img
                                 src={star} alt="Star,Important button"/>
                             </button>
                         </td>
 
-                        <td className={styles["delete-button-container"]} onClick={() => eventHandler(id!)}>
+                        <td className={"me-1"} onClick={() => navigate(`/edit-form/${id}`)}>
+                            <button type="button"><img src={editIcon} alt="Edit button"/></button>
+                        </td>
+
+                        <td className={"me-1"} onClick={() => eventHandler(id!)}>
                             <button type="button"><img src={deleteIcon} alt="Delete button"/></button>
                         </td>
                     </tr>)}
