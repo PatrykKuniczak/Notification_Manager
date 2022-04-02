@@ -4,8 +4,7 @@ import {Task} from "../database/entities/Task";
 import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
 import {AppDataSource} from "../index";
-import {fullTrim} from "../controllers/helpers/helpers";
-import {toTitle} from "../controllers/helpers/helpers";
+import {fullTrim, toTitle} from "../controllers/helpers/helpers";
 
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
