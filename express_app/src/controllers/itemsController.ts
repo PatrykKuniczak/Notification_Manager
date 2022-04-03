@@ -59,7 +59,6 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
     display: async (req: Request, res: Response): Promise<Response | Response[]> => {
         if (Object.keys(req.query).length > 0) {
-            // @ts-ignore
             let {field, data}: { field: string, data: string } = req.query;
 
             field = fullTrim(field);

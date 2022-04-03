@@ -9,8 +9,7 @@ import {fullTrim, toTitle} from "../controllers/helpers/helpers";
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
     const [name, title, description, important, taskType, notificationDate] = validBody(req);
-    const dateObj = new Date(notificationDate).toLocaleString("pl-PL", {timeZone: "Europe/Warsaw"});
-
+    const dateObj = new Date(notificationDate);
 
     let result: IRepository | IJsonMessage;
 
@@ -21,7 +20,7 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             task.description = description;
             task.important = important;
             task.taskType = taskType;
-            task.notificationDate = new Date(dateObj);
+            task.notificationDate = dateObj;
 
             result = await validItem(req, res, Repository, task);
             break;
