@@ -13,7 +13,7 @@ import dateFormat from "dateformat";
 
 const Table: React.FC = ({children}) => {
     return <table>
-        <tbody className="d-flex flex-column gap-3">
+        <tbody className="d-flex flex-column gap-4">
         {children}
         </tbody>
     </table>
@@ -76,6 +76,7 @@ const Items: React.FC = () => {
                     <tr key={id} className={"d-flex justify-content-center align-items-center py-1"}>
                         <td className={checkLocation ? styles["title-active"] : styles.title}>{title}</td>
                         <td className={checkLocation ? styles["description-active"] : styles.description}>{description}</td>
+                        <td className={"pe-3"}>{dateFormat(notificationDate, "yy-mm-dd HH:MM")}</td>
                         {checkLocation && <td className={"me-1"}>
                             <button onClick={() => eventHandler(id!, {
                                 title,
