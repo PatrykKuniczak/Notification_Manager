@@ -93,10 +93,10 @@ const Items: React.FC = () => {
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu variant={"dark"}>
-                    <Dropdown.Item onClick={() => setFilter("A-Z")}>A-Z</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setFilter("Z-A")}>Z-A</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setFilter("EARLIER-DATE")}>Najwcześniejsza Data</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setFilter("LATEST-DATE")}>Najpóźniejsza Data</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilter("A-Z")} active={filter === "A-Z"}>A-Z</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilter("Z-A")} active={filter === "Z-A"}>Z-A</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilter("EARLIER-DATE")} active={filter === "EARLIER-DATE"}>Najwcześniejsza Data</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilter("LATEST-DATE")} active={filter === "LATEST-DATE"}>Najpóźniejsza Data</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </div>
