@@ -27,8 +27,13 @@
           text-overflow: ellipsis;
 
           &.title, &.description {
-            width: calc((100vw - 40px - 20px) / 2 - 64px);
+            width: calc((100vw - 40px - 20px) / 2 - 74px);
             padding-right: 15px;
+
+            &-active {
+              width: calc((100vw - 40px - 20px) / 2 - 64px - 20px);
+              padding-right: 15px;
+            }
           }
 
           .star-button-active {

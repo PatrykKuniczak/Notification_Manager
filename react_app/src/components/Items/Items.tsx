@@ -8,6 +8,7 @@ import Axios from "axios";
 import {ITask} from "../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 import CheckEmptiness from "../CheckEmptiness/CheckEmptiness";
+import dateFormat from "dateformat";
 
 
 const Table: React.FC = ({children}) => {
@@ -17,7 +18,6 @@ const Table: React.FC = ({children}) => {
         </tbody>
     </table>
 }
-
 
 const Items: React.FC = () => {
 
@@ -46,15 +46,25 @@ const Items: React.FC = () => {
 
 
     useEffect(() => {
-        Axios.get("/tasks").then(({data}) => {
-            setItems(data);
+        const filteredData: ITask[] = [];
+
+        Axios.get("/tasks").then(({data}: { data: ITask[] }) => {
+            const actualDate = dateFormat(new Date(), "yyyy-mm-dd'T'HH:MM");
+
+            data.forEach((item) => {
+                if (checkLocation ? item.notificationDate! > actualDate : item.notificationDate! <= actualDate) {
+                    filteredData.push(item)
+                }
+            })
+
+            setItems(filteredData);
             setLoading(false);
         }).catch(() => setErrorOccur(true));
 
         return () => {
             setReload(false)
         }
-    }, [reload]);
+    }, [reload, location, checkLocation]);
 
 
     return <div className={styles['main-content']}>
@@ -63,10 +73,10 @@ const Items: React.FC = () => {
         <ErrorLoadingProvider loading={loading} errorOccur={errorOccur} errorMessage={errorMessage}>
             {Boolean(items.length) ? <Table>
                 {items.map(({id, title, description, important, taskType, notificationDate}) =>
-                    <tr key={id} className={"d-flex flex-space-between align-items-center px-2 py-1"}>
-                        <td className={styles.title}>{title}</td>
-                        <td className={styles.description}>{description}</td>
-                        <td className={"me-1"}>
+                    <tr key={id} className={"d-flex justify-content-center align-items-center py-1"}>
+                        <td className={checkLocation ? styles["title-active"] : styles.title}>{title}</td>
+                        <td className={checkLocation ? styles["description-active"] : styles.description}>{description}</td>
+                        {checkLocation && <td className={"me-1"}>
                             <button onClick={() => eventHandler(id!, {
                                 title,
                                 description,
@@ -74,9 +84,9 @@ const Items: React.FC = () => {
                                 taskType,
                                 notificationDate
                             })} className={important ? styles["star-button-active"] : ''} type="button"><img
-                                src={star} alt="Star,Important button"/>
+                                src={star} alt="Star, Important button"/>
                             </button>
-                        </td>
+                        </td>}
 
                         <td className={"me-1"} onClick={() => navigate(`/edit-form/${id}`)}>
                             <button type="button"><img src={editIcon} alt="Edit button"/></button>
