@@ -5,9 +5,28 @@
 .main-content {
   @include main-content-shape;
 
-  h1 {
-    color: $title-color;
-    margin-bottom: 40px;
+  div {
+    outline: none;
+
+    h1 {
+      color: $title-color;
+    }
+
+    // DROPDOWN
+    div {
+      button {
+        &:focus {
+          box-shadow: none;
+        }
+
+        &::after {
+          display: none;
+        }
+
+      }
+    }
+
+
   }
 
   table {
