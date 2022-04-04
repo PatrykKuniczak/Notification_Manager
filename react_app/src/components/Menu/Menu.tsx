@@ -13,8 +13,9 @@ const Menu: React.FC = () => {
 
     return <nav className={"m-2 d-inline-flex justify-content-between"}>
         <Button onClick={toggleShow} className={styles["nav-btn"]}><img src={listIcon} alt="List icon"/></Button>
-        <Button className={styles["nav-btn"]}><NavLink to={"/add-form"}><img src={addIcon}
-                                                                             alt="List icon"/></NavLink></Button>
+        <Button className={styles["nav-btn"]}>
+            <NavLink to={"/add-form"}><img src={addIcon} alt="List icon"/></NavLink>
+        </Button>
 
         <ToggleMenu show={show} handleClose={toggleShow}/>
     </nav>
