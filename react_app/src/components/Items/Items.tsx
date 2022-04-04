@@ -86,7 +86,7 @@ const Items: React.FC = () => {
             case "LATEST-DATE":
                 return setItems(prevItems => sort(prevItems).desc(item => item.notificationDate));
         }
-    }, [filter])
+    }, [filter, loading])
 
 
     return <div className={styles['main-content']}>
