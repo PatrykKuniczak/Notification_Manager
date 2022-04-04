@@ -56,15 +56,14 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
             })
 
             setTypeArray(convertedDate);
-            setLoading(false);
         }).catch(() => {
             setErrorOccur(true)
         });
     }, [])
 
 
-    const fetchTasks = useCallback(() => {
-        if (actionType === "edit") {
+    const fetchTask = useCallback(() => {
+        if (actionType === "edit" || actionType === "display") {
             Axios.get(`/tasks/${id}`).then(({data}) => {
                 setEditData({
                     ...data,
@@ -78,14 +77,33 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
 
 
     useEffect(() => {
-        fetchTypes()
-        fetchTasks()
-    }, [fetchTypes, fetchTasks])
+        actionType !== "display" && fetchTypes()
+        fetchTask()
+        setLoading(false);
+    }, [fetchTypes, fetchTask, actionType])
 
+    const Title = () => {
+        if (actionType !== "display")
+            return <h1>{actionType === "add" ? "Dodawanie" : actionType === "edit" && "Edytowanie"} Zadania</h1>;
+        else
+            return <h1> Twoje Zadanie </h1>
+    }
+
+    const SubmitButton = () => {
+        if (actionType === "display") {
+            return <>
+                <Button type="button" onClick={() => navigate(`/active`)}> Powrót </Button>
+                <Button type="button" onClick={() => navigate(`/edit-form/${id}`)}> Edytuj </Button>
+            </>
+        } else {
+            return <Button className="btn mt-5" type="submit">
+                {actionType === "add" ? "Dodaj" : actionType === "edit" && "Potwierdź"}
+            </Button>
+        }
+    }
 
     return <div className={styles["form-container"]}>
-        <h1>{actionType === "add" ? "Dodawanie" : "Edytowanie"} Zadania</h1>
-
+        <Title/>
         <ErrorLoadingProvider loading={loading} errorOccur={errorOccur}>
             <Formik onSubmit={submitHandler}
                     initialValues={editData}
@@ -113,6 +131,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             onBlur={handleBlur}
                                             isValid={touched.title && !errors.title}
                                             isInvalid={touched.title && !!errors.title}
+                                            disabled={actionType === "display"}
                                             autoFocus
                                         />
                                         <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
@@ -135,6 +154,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             onBlur={handleBlur}
                                             isValid={touched.description && !errors.description}
                                             isInvalid={touched.description && !!errors.description}
+                                            disabled={actionType === "display"}
                                         />
                                         <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
@@ -156,6 +176,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             onBlur={handleBlur}
                                             isValid={touched.notificationDate && !errors.notificationDate}
                                             isInvalid={touched.notificationDate && !!errors.notificationDate}
+                                            disabled={actionType === "display"}
                                         />
                                         <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
@@ -176,6 +197,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             value={values.taskType}
                                             isValid={touched.taskType && !errors.taskType}
                                             isInvalid={touched.taskType && !!errors.taskType}
+                                            disabled={actionType === "display"}
                                         >
                                             <option value="Default" key="Default"> Wybierz opcję:</option>
                                             {typeArray.map(({id, name}) => <option value={name}
@@ -204,6 +226,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             onBlur={handleBlur}
                                             isValid={touched.important && !errors.important}
                                             isInvalid={touched.important && !!errors.important}
+                                            disabled={actionType === "display"}
                                         />
                                         <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
@@ -224,8 +247,9 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                 </Modal.Footer>
                             </Modal>
 
-                            <Button className="btn mt-5"
-                                    type="submit"> {actionType === "add" ? "Dodaj" : "Edytuj"} </Button>
+                            <div className={`d-flex justify-content-${actionType === "display" ? "between" : "end"} mt-5`}>
+                                <SubmitButton/>
+                            </div>
                         </Form>
                     )
                 }

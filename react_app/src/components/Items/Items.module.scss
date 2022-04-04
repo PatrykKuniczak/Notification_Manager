@@ -22,11 +22,8 @@
         &::after {
           display: none;
         }
-
       }
     }
-
-
   }
 
   table {
@@ -37,6 +34,11 @@
 
         &:nth-last-child(1) {
           margin-bottom: 10px;
+        }
+
+        &:hover {
+          cursor: pointer;
+          background-color: rgba(103, 149, 245, 0.37);
         }
 
         td {

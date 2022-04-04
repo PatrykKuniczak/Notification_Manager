@@ -17,6 +17,7 @@ const App: React.FC = () => {
                     <Route path="inactive" element={<Items/>}/>
                     <Route path="add-form" element={<TaskForm actionType={"add"}/>}/>
                     <Route path="edit-form/:id" element={<TaskForm actionType={"edit"}/>}/>
+                    <Route path="display/:id" element={<TaskForm actionType={"display"}/>}/>
                 </Route>
                 <Route path="*" element={<Navigate to="/"/>}/>
             </Routes>

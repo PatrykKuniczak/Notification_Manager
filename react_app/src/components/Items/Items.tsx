@@ -95,8 +95,10 @@ const Items: React.FC = () => {
                 <Dropdown.Menu variant={"dark"}>
                     <Dropdown.Item onClick={() => setFilter("A-Z")} active={filter === "A-Z"}>A-Z</Dropdown.Item>
                     <Dropdown.Item onClick={() => setFilter("Z-A")} active={filter === "Z-A"}>Z-A</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setFilter("EARLIER-DATE")} active={filter === "EARLIER-DATE"}>Najwcześniejsza Data</Dropdown.Item>
-                    <Dropdown.Item onClick={() => setFilter("LATEST-DATE")} active={filter === "LATEST-DATE"}>Najpóźniejsza Data</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilter("EARLIER-DATE")} active={filter === "EARLIER-DATE"}>
+                        Najwcześniejsza Data</Dropdown.Item>
+                    <Dropdown.Item onClick={() => setFilter("LATEST-DATE")} active={filter === "LATEST-DATE"}>
+                        Najpóźniejsza Data</Dropdown.Item>
                 </Dropdown.Menu>
             </Dropdown>
         </div>
@@ -104,10 +106,13 @@ const Items: React.FC = () => {
         <ErrorLoadingProvider loading={loading} errorOccur={errorOccur} errorMessage={errorMessage}>
             {Boolean(items.length) ? <Table>
                 {items.map(({id, title, description, important, taskType, notificationDate}) =>
-                    <tr key={id} className={"d-flex justify-content-center align-items-center py-1"}>
-                        <td className={checkLocation ? styles["title-active"] : styles.title}>{title}</td>
-                        <td className={checkLocation ? styles["description-active"] : styles.description}>{description}</td>
-                        <td className={"pe-3"}>{dateFormat(notificationDate, "yy-mm-dd HH:MM")}</td>
+                    <tr key={id} className={"d-flex justify-content-around align-items-center py-1 px-2"}>
+                        <td onClick={() => navigate(`/display/${id}`)}
+                            className={checkLocation ? styles["title-active"] : styles.title}>{title}</td>
+                        <td onClick={() => navigate(`/display/${id}`)}
+                            className={checkLocation ? styles["description-active"] : styles.description}>{description}</td>
+                        <td onClick={() => navigate(`/display/${id}`)}
+                            className={"pe-3"}>{dateFormat(notificationDate, "yy-mm-dd HH:MM")}</td>
                         {checkLocation && <td className={"me-1"}>
                             <button onClick={() => eventHandler(id!, {
                                 title,
@@ -124,7 +129,7 @@ const Items: React.FC = () => {
                             <button type="button"><img src={editIcon} alt="Edit button"/></button>
                         </td>
 
-                        <td className={"me-1"} onClick={() => eventHandler(id!)}>
+                        <td onClick={() => eventHandler(id!)}>
                             <button type="button"><img src={deleteIcon} alt="Delete button"/></button>
                         </td>
                     </tr>)}
