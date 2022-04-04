@@ -1,3 +1,10 @@
 # Notification_Manager
 
-This Application will make it possible for you take notes of your weekend, there you can add notification with tasks.
+[Notification Manager](https://notification-manager-patrykkuniczak.vercel.app)
+
+## Functionality:
+
+1. Create task, browse and manage it.
+2. Filtering tasks.
+3. Manage tasks which have passed and will follow separately.
+4. Check the task date.
