@@ -5,7 +5,7 @@ import Axios from "axios";
 import React from "react";
 import TaskForm from "./components/TaskForm/TaskForm";
 
-Axios.defaults.baseURL = "http://localhost:9000/api";
+Axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const App: React.FC = () => {
     return (
