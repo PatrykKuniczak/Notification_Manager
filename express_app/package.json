@@ -22,7 +22,11 @@
     "typescript": "4.6.2"
   },
   "scripts": {
-    "start": "nodemon src/index.ts",
+    "start": "cross-env NODE_ENV=production DATABASE=mysql nodemon src/index.ts",
+    "start:dev": "cross-env NODE_ENV=development DATABASE=mariadb nodemon src/index.ts",
     "typeorm": "typeorm-ts-node-commonjs"
+  },
+  "devDependencies": {
+    "cross-env": "^7.0.3"
   }
 }

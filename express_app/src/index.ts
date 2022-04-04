@@ -11,24 +11,26 @@ import {Type} from "./database/entities/Type";
 import dotenv from "dotenv";
 
 
-dotenv.config({path: "./src/.env"});
-
 const app: Express = express();
+
+if (process.env.NODE_ENV === "production") {
+    dotenv.config({path: "./src/production.env"});
+} else {
+    dotenv.config({path: "./src/development.env"});
+    app.use(morgan("dev"));
+}
+
+const db: any = process.env.DATABASE;
 
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
-app.use(morgan("dev"));
 app.use('/api', baseRouter);
 
 export const AppDataSource = new DataSource({
-    type: "mariadb",
-    host: process.env.HOST,
-    port: +process.env.PORT,
-    username: process.env.USER,
-    password: process.env.PASSWORD,
-    database: process.env.DATABASE,
+    type: db,
+    url: process.env.DB_URL,
     synchronize: true,
     entities: [Task, Type]
 })
