@@ -1,6 +1,6 @@
 {
-  "name": "your_project",
-  "version": "0.0.1",
+  "name": "express_app",
+  "version": "0.1.0",
   "description": "Awesome project developed with TypeScript, TypeORM and Express.",
   "dependencies": {
     "@types/morgan": "^1.9.3",

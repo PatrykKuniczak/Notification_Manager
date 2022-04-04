@@ -3,7 +3,7 @@ import React, {useCallback, useEffect, useMemo, useState} from "react";
 import {Formik} from "formik";
 import {Button, Col, InputGroup, Row, Form, Modal} from "react-bootstrap";
 import Axios from "axios";
-import {NavLink, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import dateFormat from "dateformat";
 import {formikSchema, toTitle} from "../helpers/helpers";
 import {ITask} from "../helpers/Interfaces";
@@ -241,13 +241,17 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                             }}>
                                 <Modal.Body>{submitMessage}</Modal.Body>
                                 <Modal.Footer>
-                                    <Button variant="secondary" onClick={() => setShowSubmitModal(false)}>
-                                        <NavLink to="/active"> Ok </NavLink>
+                                    <Button variant="secondary" type="button" onClick={() => {
+                                        setShowSubmitModal(false)
+                                        navigate("/active")
+                                    }}>
+                                        Ok
                                     </Button>
                                 </Modal.Footer>
                             </Modal>
 
-                            <div className={`d-flex justify-content-${actionType === "display" ? "between" : "end"} mt-5`}>
+                            <div
+                                className={`d-flex justify-content-${actionType === "display" ? "between mt-5" : "end mt-3"}`}>
                                 <SubmitButton/>
                             </div>
                         </Form>

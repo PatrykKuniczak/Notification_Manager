@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useEffect, useLayoutEffect, useState} from "react";
 import star from "./icons/star.svg";
 import deleteIcon from "./icons/delete.svg";
 import editIcon from "./icons/edit.svg";
@@ -32,7 +32,6 @@ const Items: React.FC = () => {
     const [loading, setLoading] = useState<boolean>(true);
     const [errorOccur, setErrorOccur] = useState<boolean>(false);
     const [errorMessage, setErrorMessage] = useState<string>("");
-    const [reload, setReload] = useState<boolean>(false);
     const [filter, setFilter] = useState<"A-Z" | "Z-A" | "LATEST-DATE" | "EARLIER-DATE">("A-Z");
 
 
@@ -42,7 +41,18 @@ const Items: React.FC = () => {
             important: !item.important
         }) : Axios.delete(`/tasks/${id}`);
 
-        return result.then(() => setReload(true)).catch((err) => {
+        return result.then(() => {
+            if (item) {
+                setItems(prevItems => {
+                    const itemForEdit = prevItems.filter(task => task.id === id)[0];
+
+                    return prevItems.map((item) => {
+                        return item.id === itemForEdit.id ? ({...item, important: !item.important}) : item;
+                    })
+                });
+            } else
+                setItems(prevItems => prevItems.filter(task => task.id !== id));
+        }).catch((err) => {
             setErrorOccur(true)
             setErrorMessage(err.message)
         })
@@ -61,26 +71,27 @@ const Items: React.FC = () => {
         }
     }, [filter])
 
-    useEffect(() => {
-        const filteredData: ITask[] = [];
 
+    useLayoutEffect(() => {
         Axios.get("/tasks").then(({data}: { data: ITask[] }) => {
             const actualDate = dateFormat(new Date(), "yyyy-mm-dd'T'HH:MM");
+            const filteredData: ITask[] = [];
 
             data.forEach((item) => {
                 if (checkLocation ? item.notificationDate! > actualDate : item.notificationDate! <= actualDate) {
                     filteredData.push(item)
                 }
             })
+            setItems(filteredData);
+        }).catch(() => setErrorOccur(true))
+    }, [checkLocation])
 
-            setItems(filterItems(filteredData)!);
-            setLoading(false);
-        }).catch(() => setErrorOccur(true));
 
-        return () => {
-            setReload(false)
-        }
-    }, [reload, location, checkLocation, filter, filterItems]);
+    useEffect(() => {
+        filterItems(items);
+
+        return () => setLoading(false);
+    }, [filterItems, items])
 
 
     return <div className={styles['main-content']}>
