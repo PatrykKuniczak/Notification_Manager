@@ -1,0 +1,16 @@
+@import "../helpers/helpers";
+@import "../helpers/_variables";
+
+
+.form-container {
+  @include main-content-shape;
+
+  h1 {
+    color: $title-color;
+  }
+
+  .form-label {
+    color: #5898f8;
+    font-size: 1.25rem;
+  }
+}

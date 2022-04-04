@@ -1,0 +1,21 @@
+@import "../helpers/_variables";
+
+
+div {
+  h3 {
+    color: $text-color;
+  }
+
+  a {
+    .nav-button {
+      border: none;
+      color: white;
+      outline: none;
+      -webkit-text-stroke: 1px black;
+      background-color: #1e28b6;
+      border-radius: 15px;
+      padding: 10px;
+      margin-top: 15px;
+    }
+  }
+}

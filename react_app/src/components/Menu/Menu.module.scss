@@ -1,0 +1,16 @@
+@import "../helpers/_variables";
+@import "../helpers/helpers";
+
+
+nav {
+  .nav-btn {
+    background-color: $button-active-color;
+    padding: 3px;
+    border: none;
+    outline: #2d74e0 1px solid;
+
+    &:hover {
+      outline: #4F95F1 3px solid;
+    }
+  }
+}
