@@ -5,8 +5,7 @@ import React from "react";
 
 const CheckEmptiness: React.FC<{ checkLocation: boolean }> = ({checkLocation}) => {
     return <div className={"d-flex flex-column align-items-center"}>
-        <h3>Nie ma żadnego zadania
-            {checkLocation && ", dodaj je:"}</h3>
+        <h3>Nie ma żadnego zadania{checkLocation && ", dodaj je:"}</h3>
 
         <NavLink to={checkLocation ? "/add-form" : "/active"}>
             <button className={styles["nav-button"]}>
