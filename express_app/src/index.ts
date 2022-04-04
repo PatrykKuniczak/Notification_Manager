@@ -37,7 +37,7 @@ export const AppDataSource = new DataSource({
 
 AppDataSource.initialize()
     .then(() => {
-        logger.info('Database is connected!')
+        logger.info(`${process.env.NODE_ENV === "development" && "DEVELOPMENT Database is connected!"}`)
         app.listen(process.env.PORT || 9000, () => {
             logger.info('Express server started on port: 9000');
         });
