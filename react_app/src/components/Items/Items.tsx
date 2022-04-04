@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useLayoutEffect, useState} from "react";
+import React, {useEffect, useLayoutEffect, useState} from "react";
 import star from "./icons/star.svg";
 import deleteIcon from "./icons/delete.svg";
 import editIcon from "./icons/edit.svg";
@@ -58,19 +58,6 @@ const Items: React.FC = () => {
         })
     }
 
-    const filterItems = useCallback((data: ITask[]) => {
-        switch (filter) {
-            case "A-Z":
-                return sort(data).asc(item => item.title)
-            case "Z-A":
-                return sort(data).desc(item => item.title)
-            case "EARLIER-DATE":
-                return sort(data).asc(item => item.notificationDate)
-            case "LATEST-DATE":
-                return sort(data).desc(item => item.notificationDate)
-        }
-    }, [filter])
-
 
     useLayoutEffect(() => {
         Axios.get("/tasks").then(({data}: { data: ITask[] }) => {
@@ -83,15 +70,23 @@ const Items: React.FC = () => {
                 }
             })
             setItems(filteredData);
+            setLoading(false);
         }).catch(() => setErrorOccur(true))
     }, [checkLocation])
 
 
     useEffect(() => {
-        filterItems(items);
-
-        return () => setLoading(false);
-    }, [filterItems, items])
+        switch (filter) {
+            case "A-Z":
+                return setItems(prevItems => sort(prevItems).asc(item => item.title));
+            case "Z-A":
+                return setItems(prevItems => sort(prevItems).desc(item => item.title));
+            case "EARLIER-DATE":
+                return setItems(prevItems => sort(prevItems).asc(item => item.notificationDate));
+            case "LATEST-DATE":
+                return setItems(prevItems => sort(prevItems).desc(item => item.notificationDate));
+        }
+    }, [filter, loading])
 
 
     return <div className={styles['main-content']}>
