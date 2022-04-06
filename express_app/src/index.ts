@@ -20,7 +20,6 @@ if (process.env.NODE_ENV === "production") {
     app.use(morgan("dev"));
 }
 
-const db: any = process.env.DATABASE;
 
 app.use(express.json());
 app.use(cors());
@@ -29,7 +28,7 @@ app.use(cookieParser());
 app.use('/api', baseRouter);
 
 export const AppDataSource = new DataSource({
-    type: db,
+    type: "mariadb",
     url: process.env.DB_URL,
     synchronize: true,
     entities: [Task, Type]
@@ -37,7 +36,8 @@ export const AppDataSource = new DataSource({
 
 AppDataSource.initialize()
     .then(() => {
-        logger.info(`${process.env.NODE_ENV === "development" && "DEVELOPMENT Database is connected!"}`)
+        logger.info(`${process.env.NODE_ENV === "development" ?
+            "DEVELOPMENT Database is connected!" : "Database is connected!"}`)
         app.listen(process.env.PORT || 9000, () => {
             logger.info('Express server started on port: 9000');
         });
