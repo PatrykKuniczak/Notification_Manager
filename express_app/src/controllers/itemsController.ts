@@ -12,7 +12,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
         const result = await createItem(req, res, Repository);
 
         if (instanceOfIJsonMessage(result)) {
-            return res.status(401).send(result)
+            return res.status(406).send(result)
         }
 
         return await AppDataSource.manager.save(result)

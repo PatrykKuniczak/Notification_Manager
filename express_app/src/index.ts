@@ -13,14 +13,9 @@ import dotenv from "dotenv";
 
 const app: Express = express();
 
-if (process.env.NODE_ENV === "production") {
-    dotenv.config({path: "./src/production.env"});
-} else {
-    dotenv.config({path: "./src/development.env"});
-    app.use(morgan("dev"));
-}
+dotenv.config({path: "./src/.env"});
+app.use(morgan("dev"));
 
-const db: any = process.env.DATABASE;
 
 app.use(express.json());
 app.use(cors());
@@ -29,15 +24,16 @@ app.use(cookieParser());
 app.use('/api', baseRouter);
 
 export const AppDataSource = new DataSource({
-    type: db,
-    url: process.env.DB_URL,
+    type: "postgres",
+    url: process.env.DATABASE_URL,
     synchronize: true,
     entities: [Task, Type]
 })
 
 AppDataSource.initialize()
     .then(() => {
-        logger.info(`${process.env.NODE_ENV === "development" && "DEVELOPMENT Database is connected!"}`)
+        logger.info(`${process.env.NODE_ENV === "development" ?
+            "DEVELOPMENT Database is connected!" : "Database is connected!"}`)
         app.listen(process.env.PORT || 9000, () => {
             logger.info('Express server started on port: 9000');
         });

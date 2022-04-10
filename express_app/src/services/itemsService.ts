@@ -4,14 +4,15 @@ import {Task} from "../database/entities/Task";
 import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
 import {AppDataSource} from "../index";
-import {fullTrim, toTitle} from "../controllers/helpers/helpers";
+import {createTimeStamp, fullTrim, toTitle} from "../controllers/helpers/helpers";
 
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
     const [name, title, description, important, taskType, notificationDate] = validBody(req);
-    const dateObj = new Date(notificationDate);
 
     let result: IRepository | IJsonMessage;
+
+    const reqTimeStamp = createTimeStamp(notificationDate);
 
     switch (Repository) {
         case Task:
@@ -20,7 +21,7 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             task.description = description;
             task.important = important;
             task.taskType = taskType;
-            task.notificationDate = dateObj;
+            task.notificationDate = reqTimeStamp;
 
             result = await validItem(req, res, Repository, task);
             break;
@@ -51,7 +52,7 @@ export const validBody = (req) => {
     const description = req.body.description && toTitle(fullTrim(req.body.description));
     const important = (req.body.important === true || req.body.important === false) && req.body.important;
     const taskType = req.body.taskType && toTitle(fullTrim(req.body.taskType));
-    const notificationDate = req.body.notificationDate && toTitle(fullTrim(req.body.notificationDate));
+    const notificationDate = req.body.notificationDate;
 
     return [name, title, description, important, taskType, notificationDate]
 }
