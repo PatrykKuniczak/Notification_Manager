@@ -65,8 +65,9 @@ const Items: React.FC = () => {
             const filteredData: ITask[] = [];
 
             data.forEach((item) => {
-                if (checkLocation ? item.notificationDate! > actualDate : item.notificationDate! <= actualDate) {
-                    filteredData.push(item)
+                const notificationDate = dateFormat(new Date(+item.notificationDate * 1000), "yyyy-mm-dd'T'HH:MM");
+                if (checkLocation ? notificationDate > actualDate : notificationDate <= actualDate) {
+                    filteredData.push({...item, notificationDate})
                 }
             })
             setItems(filteredData);

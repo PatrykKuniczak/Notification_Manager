@@ -3,6 +3,6 @@ export interface ITask {
     title: string
     description: string
     important: boolean
-    notificationDate: string | undefined
+    notificationDate: number | string
     taskType: string
 }

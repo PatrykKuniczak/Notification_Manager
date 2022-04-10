@@ -33,11 +33,14 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     const navigate = useNavigate();
 
     const submitHandler = async (data: ITask) => {
+        const utcString = new Date(data.notificationDate).toUTCString();
+        const timestamp = Date.parse(utcString);
+
         try {
             if (actionType === "add") {
-                await Axios.post("/tasks", data);
+                await Axios.post("/tasks", {...data, notificationDate: timestamp});
             } else if (actionType === "edit") {
-                await Axios.put(`/tasks/${id}`, data);
+                await Axios.put(`/tasks/${id}`, {...data, notificationDate: timestamp});
             }
             setSubmitMessage(`${actionType === "add" ? "Dodawanie" : "Edytowanie"} powiodło się.`);
 
@@ -57,28 +60,28 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
 
             setTypeArray(convertedDate);
         }).catch(() => {
-            setErrorOccur(true)
+            setErrorOccur(true);
         });
     }, [])
 
 
     const fetchTask = useCallback(() => {
         if (actionType === "edit" || actionType === "display") {
-            Axios.get(`/tasks/${id}`).then(({data}) => {
+            Axios.get(`/tasks/${id}`).then(({data}: { data: ITask }) => {
                 setEditData({
                     ...data,
-                    notificationDate: dateFormat(data.notificationDate, "yyyy-mm-dd'T'HH:MM")
+                    notificationDate: dateFormat(new Date(+data.notificationDate * 1000), "yyyy-mm-dd'T'HH:MM")
                 })
             }).catch(() => setErrorOccur(true));
         } else {
-            setEditData(initialState)
+            setEditData(initialState);
         }
     }, [actionType, id, initialState])
 
 
     useEffect(() => {
-        actionType !== "display" && fetchTypes()
-        fetchTask()
+        actionType !== "display" && fetchTypes();
+        fetchTask();
         setLoading(false);
     }, [fetchTypes, fetchTask, actionType])
 
@@ -115,7 +118,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                       handleBlur,
                       values,
                       touched,
-                      errors,
+                      errors
                   }) =>
                     (
                         <Form noValidate onSubmit={handleSubmit}>
@@ -244,9 +247,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                     <Button variant="secondary" type="button" onClick={() => {
                                         setShowSubmitModal(false)
                                         navigate("/active")
-                                    }}>
-                                        Ok
-                                    </Button>
+                                    }}> Ok </Button>
                                 </Modal.Footer>
                             </Modal>
 
