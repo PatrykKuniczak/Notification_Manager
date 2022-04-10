@@ -13,7 +13,7 @@ import dotenv from "dotenv";
 
 const app: Express = express();
 
-dotenv.config({path: "./src/.env"});
+dotenv.config({path: "./.env"});
 app.use(morgan("dev"));
 
 
