@@ -1,5 +1,6 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsBoolean, Length, Matches, MinDate, MinLength, NotEquals} from "class-validator";
+import {IsBoolean, Length, Matches, Max, Min, MinLength, NotEquals} from "class-validator";
+import {createTimeStamp} from "../../controllers/helpers/helpers";
 
 
 @Entity()
@@ -32,7 +33,8 @@ export class Task {
     })
     taskType: string
 
-    @Column("datetime")
-    @MinDate(new Date(), {message: "Date must be after: $constraint1."})
-    notificationDate: Date
+    @Column("bigint")
+    @Min(Date.parse(new Date().toUTCString()) / 1000, {message: "Date must be after actual date."})
+    @Max(createTimeStamp("2100-01-01 00:00"), {message: "Date must be before 2100-01-01 00:00."})
+    notificationDate: number
 }

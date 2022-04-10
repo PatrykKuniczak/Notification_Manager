@@ -13,12 +13,8 @@ import dotenv from "dotenv";
 
 const app: Express = express();
 
-if (process.env.NODE_ENV === "production") {
-    dotenv.config({path: "./src/production.env"});
-} else {
-    dotenv.config({path: "./src/development.env"});
-    app.use(morgan("dev"));
-}
+dotenv.config({path: "./src/.env"});
+app.use(morgan("dev"));
 
 
 app.use(express.json());
@@ -28,8 +24,8 @@ app.use(cookieParser());
 app.use('/api', baseRouter);
 
 export const AppDataSource = new DataSource({
-    type: "mariadb",
-    url: process.env.DB_URL,
+    type: "postgres",
+    url: process.env.DATABASE_URL,
     synchronize: true,
     entities: [Task, Type]
 })
