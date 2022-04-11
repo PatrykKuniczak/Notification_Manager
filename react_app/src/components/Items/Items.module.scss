@@ -4,6 +4,7 @@
 
 .main-content {
   @include main-content-shape;
+  min-height: 250px;
 
   div {
     outline: none;

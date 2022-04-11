@@ -137,7 +137,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             disabled={actionType === "display"}
                                             autoFocus
                                         />
-                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.title}
                                         </Form.Control.Feedback>
@@ -159,7 +158,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isInvalid={touched.description && !!errors.description}
                                             disabled={actionType === "display"}
                                         />
-                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.description}
                                         </Form.Control.Feedback>
@@ -181,7 +179,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isInvalid={touched.notificationDate && !!errors.notificationDate}
                                             disabled={actionType === "display"}
                                         />
-                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.notificationDate}
                                         </Form.Control.Feedback>
@@ -207,7 +204,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                                                                    key={id}> {name} </option>)}
                                         </Form.Select>
 
-                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.taskType}
                                         </Form.Control.Feedback>
@@ -231,7 +227,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isInvalid={touched.important && !!errors.important}
                                             disabled={actionType === "display"}
                                         />
-                                        <Form.Control.Feedback type="valid" tooltip> Zgodne </Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.important}
                                         </Form.Control.Feedback>
