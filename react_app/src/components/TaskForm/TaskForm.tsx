@@ -80,7 +80,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
 
 
     useEffect(() => {
-        actionType !== "display" && fetchTypes();
+        fetchTypes();
         fetchTask();
         setLoading(false);
     }, [fetchTypes, fetchTask, actionType])
