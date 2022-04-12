@@ -5,8 +5,8 @@ import {Button, Col, InputGroup, Row, Form, Modal} from "react-bootstrap";
 import Axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import dateFormat from "dateformat";
-import {formikSchema, toTitle} from "../helpers/helpers";
-import {ITask} from "../helpers/Interfaces";
+import {formikSchema, toTitle} from "../../helpers/helpers";
+import {ITask} from "../../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 
 
@@ -179,6 +179,8 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isInvalid={touched.notificationDate && !!errors.notificationDate}
                                             disabled={actionType === "display"}
                                         />
+
+                                        <Form.Control.Feedback type="valid" tooltip>Zgodne</Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.notificationDate}
                                         </Form.Control.Feedback>

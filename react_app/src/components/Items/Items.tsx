@@ -5,7 +5,7 @@ import editIcon from "./icons/edit.svg";
 import filterIcon from "./icons/filter.svg";
 import {useLocation, useNavigate} from "react-router-dom";
 import Axios from "axios";
-import {ITask} from "../helpers/Interfaces";
+import {ITask} from "../../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 import CheckEmptiness from "../CheckEmptiness/CheckEmptiness";
 import dateFormat from "dateformat";
