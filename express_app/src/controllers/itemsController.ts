@@ -13,7 +13,8 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
         if (instanceOfIJsonMessage(result)) {
             return res.status(406).send(result)
-        }
+        }else if (result instanceof Error)
+            return res.status(406).send(result.message)
 
         return await AppDataSource.manager.save(result)
             .then(() => {
