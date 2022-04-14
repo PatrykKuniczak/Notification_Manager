@@ -130,7 +130,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isValid={touched.title && !errors.title}
                                             isInvalid={touched.title && !!errors.title}
                                             disabled={actionType === "display"}
-                                            autoFocus
                                         />
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.title}

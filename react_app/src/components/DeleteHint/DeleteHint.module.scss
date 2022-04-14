@@ -1,0 +1,17 @@
+@import "../../helpers/helpers";
+@import "../../helpers/_variables";
+
+.popover {
+  color: #b4b3a3;
+  background-color: rgb(47, 46, 46);
+
+  .popover-header {
+    padding: 10px;
+  }
+
+  .popover-body {
+    padding-inline: 10px;
+    padding-bottom: 15px;
+    background-color: rgb(40, 38, 38);
+  }
+}
