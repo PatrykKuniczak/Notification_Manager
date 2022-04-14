@@ -12,9 +12,6 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
 
     let result: IRepository | IJsonMessage;
 
-    if (notificationDate === "Invalid Date")
-        return new Error("Date is invalid")
-
     const reqTimeStamp = createTimeStamp(notificationDate);
 
     switch (Repository) {
