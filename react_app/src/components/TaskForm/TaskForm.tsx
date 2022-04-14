@@ -174,7 +174,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             disabled={actionType === "display"}
                                         />
 
-                                        <Form.Control.Feedback type="valid" tooltip>Zgodne</Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.notificationDate}
                                         </Form.Control.Feedback>
