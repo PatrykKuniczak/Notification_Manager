@@ -5,8 +5,8 @@ import {Button, Col, InputGroup, Row, Form, Modal} from "react-bootstrap";
 import Axios from "axios";
 import {useNavigate, useParams} from "react-router-dom";
 import dateFormat from "dateformat";
-import {formikSchema, toTitle} from "../helpers/helpers";
-import {ITask} from "../helpers/Interfaces";
+import {formikSchema, toTitle} from "../../helpers/helpers";
+import {ITask} from "../../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 
 
@@ -93,16 +93,11 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
     }
 
     const SubmitButton = () => {
-        if (actionType === "display") {
-            return <>
-                <Button type="button" onClick={() => navigate(`/active`)}> Powrót </Button>
-                <Button type="button" onClick={() => navigate(`/edit-form/${id}`)}> Edytuj </Button>
-            </>
-        } else {
-            return <Button className="btn mt-5" type="submit">
+        return actionType === "display" ?
+            <Button type="button" onClick={() => navigate(`/edit-form/${id}`)}> Edytuj </Button> :
+            <Button className="btn mt-5" type="submit">
                 {actionType === "add" ? "Dodaj" : actionType === "edit" && "Potwierdź"}
             </Button>
-        }
     }
 
     return <div className={styles["form-container"]}>
@@ -135,7 +130,6 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isValid={touched.title && !errors.title}
                                             isInvalid={touched.title && !!errors.title}
                                             disabled={actionType === "display"}
-                                            autoFocus
                                         />
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.title}
@@ -179,6 +173,8 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                             isInvalid={touched.notificationDate && !!errors.notificationDate}
                                             disabled={actionType === "display"}
                                         />
+
+                                        <Form.Control.Feedback type="valid" tooltip>Zgodne</Form.Control.Feedback>
                                         <Form.Control.Feedback type="invalid" tooltip>
                                             {errors.notificationDate}
                                         </Form.Control.Feedback>
@@ -211,7 +207,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                                 </Form.Group>
                             </Row>
 
-                            <Row className="mb-2">
+                            <Row className="mb-1">
                                 <Form.Group as={Col} md="max" controlId="importantForm">
                                     <Form.Label className={styles["form-label"]}> Ważne </Form.Label>
                                     <InputGroup hasValidation>
@@ -247,7 +243,7 @@ const TaskForm: React.FC<{ actionType: string }> = ({actionType}) => {
                             </Modal>
 
                             <div
-                                className={`d-flex justify-content-${actionType === "display" ? "between mt-5" : "end mt-3"}`}>
+                                className={`d-flex justify-content-end ${actionType === "display" && "mt-5"}`}>
                                 <SubmitButton/>
                             </div>
                         </Form>

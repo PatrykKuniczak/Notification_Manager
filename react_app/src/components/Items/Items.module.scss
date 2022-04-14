@@ -1,5 +1,5 @@
-@import "../helpers/_variables";
-@import "../helpers/helpers";
+@import "../../helpers/_variables";
+@import "../../helpers/helpers";
 
 
 .main-content {
@@ -47,6 +47,7 @@
           overflow: hidden;
           white-space: nowrap;
           text-overflow: ellipsis;
+          display: inline-flex;
 
           &.title, &.description {
             width: calc((100vw - 40px - 20px) / 2 - 130px);
@@ -64,12 +65,19 @@
 
           button {
             @include listButton;
+            display: inline-flex;
+
+            img {
+              height: 100%;
+              width: 100%;
+            }
           }
         }
       }
     }
   }
 }
+
 
 ::-webkit-scrollbar {
   width: 10px;
