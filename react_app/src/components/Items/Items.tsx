@@ -1,17 +1,17 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import star from "./icons/star.svg";
+import deleteIcon from "./icons/delete.svg";
 import editIcon from "./icons/edit.svg";
 import filterIcon from "./icons/filter.svg";
 import {useLocation, useNavigate} from "react-router-dom";
 import Axios from "axios";
-import {ITask} from "../../helpers/Interfaces";
+import {ITask} from "../helpers/Interfaces";
 import ErrorLoadingProvider from "../ErrorLoadingProvider/ErrorLoadingProvider";
 import CheckEmptiness from "../CheckEmptiness/CheckEmptiness";
 import dateFormat from "dateformat";
 import {Dropdown} from "react-bootstrap";
 import styles from "./Items.module.scss";
 import {sort} from "fast-sort";
-import DeleteHint from "../DeleteHint/DeleteHint";
 
 
 const Table: React.FC = ({children}) => {
@@ -132,13 +132,12 @@ const Items: React.FC = () => {
                             </button>
                         </td>}
 
-                        <td className={"me-1 h-fit-content"} onClick={() => navigate(`/edit-form/${id}`)}>
-                            <button type="button"><img src={editIcon} alt="Edit button"/>
-                            </button>
+                        <td className={"me-1"} onClick={() => navigate(`/edit-form/${id}`)}>
+                            <button type="button"><img src={editIcon} alt="Edit button"/></button>
                         </td>
 
-                        <td>
-                            <DeleteHint id={id!} eventHandler={eventHandler}/>
+                        <td onClick={() => eventHandler(id!)}>
+                            <button type="button"><img src={deleteIcon} alt="Delete button"/></button>
                         </td>
                     </tr>)}
             </Table> : <CheckEmptiness checkLocation={checkLocation}/>}
