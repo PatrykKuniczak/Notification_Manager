@@ -11,8 +11,10 @@ const App: React.FC = () => {
             <GlobalStyles/>
             <BrowserRouter>
                 <Routes>
-                    <Route path="" element={<Navigate to={'active'}/>}/>
-                    <Route path="active" element={<Home/>}/>
+                    <Route path="/" element={<Home/>}>
+                        <Route path="active" element={<div>XD</div>}/>
+                    </Route>
+                    <Route path="*" element={<Navigate to={'active'}/>}/>
                 </Routes>
             </BrowserRouter>
         </>
