@@ -1,6 +1,6 @@
 # Task_Manager
 
-[Task_Manager](https://notification-manager-patrykkuniczak.vercel.app)
+[Task_Manager](https://task-manager-patrykkuniczak.vercel.app)
 
 ## Functionality:
 
