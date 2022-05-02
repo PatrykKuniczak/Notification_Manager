@@ -3,6 +3,8 @@ import Axios from "axios";
 import React from "react";
 import Home from './pages/Home';
 import GlobalStyles from "./components/GlobalStyles.styled";
+import Items from "./components/items/Items";
+
 
 Axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
@@ -12,7 +14,8 @@ const App: React.FC = () => {
             <BrowserRouter>
                 <Routes>
                     <Route path="/" element={<Home/>}>
-                        <Route path="active" element={<div>XD</div>}/>
+                        <Route path="" element={<Navigate to={'active'}/>}/>
+                        <Route path="active" element={<Items/>}/>
                     </Route>
                     <Route path="*" element={<Navigate to={'active'}/>}/>
                 </Routes>
