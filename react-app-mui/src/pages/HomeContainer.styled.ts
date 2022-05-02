@@ -3,9 +3,11 @@ import styled from "styled-components";
 
 const HomeContainer = styled.div`
   display: flex;
-  width: 100vw;
-  height: 100vh;
-  background: linear-gradient(to right top, #203E70, #10397B);
+  min-height: 100vh;
+  
+  @media(max-width: 700px){
+    flex-direction: column;
+  }
 `
 
 export default HomeContainer;
