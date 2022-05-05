@@ -1,0 +1,5 @@
+export const XXS_SIZE = "500px";
+export const XS_SIZE = "650px";
+export const S_SIZE = "850px";
+export const M_SIZE = "1100px";
+export const L_SIZE = "1500px";
