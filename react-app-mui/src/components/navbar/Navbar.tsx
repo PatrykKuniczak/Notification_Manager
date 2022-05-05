@@ -1,49 +1,38 @@
 import * as React from 'react';
-import NavbarItem from "./NavbarItem.styled";
-import activeEye from "../icons/activeEye.svg";
-import inactiveEye from "../icons/inactiveEye.svg";
 import addIcon from "../icons/addIcon.svg";
-import styled from "styled-components";
+import itemsIcon from "../icons/itemsIcon.svg";
+import logo from "../icons/logo.svg";
+import {AddButtonContainer} from './styles/AddPart';
+import {DisplayTaskContainer, Logo} from './styles/DisplayPart';
+import {NavLink} from "react-router-dom";
+import { ListElement, NavbarIcon } from './styles/NavbarContainer';
+import { NavbarContainer } from './styles/NavbarContainer';
 
-
-const NavbarList = styled.ul`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-around;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 40px;
-  list-style-type: none;
-
-  @media (max-width: 700px) {
-    flex-direction: row;
-    margin: 0;
-  }
-`
-
-const NavbarContainer = styled.nav`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  padding: 15px;
-  background: linear-gradient(to right top, #163C94, #1A47AF);
-
-  @media (max-width: 700px) {
-    flex-direction: row;
-  }
-`
 
 const Navbar = () => {
     return (
         <NavbarContainer>
-            <NavbarList>
-                <NavbarItem src={activeEye} alt={"Active Tasks Button"}/>
-                <NavbarItem src={inactiveEye} alt={"Inactive Tasks Button"}/>
-            </NavbarList>
+            <DisplayTaskContainer>
+                <NavLink to="/active">
+                    <Logo src={logo} alt="Logo"/>
+                </NavLink>
+                <ListElement>
+                    <NavLink to="/active">
+                        <NavbarIcon src={itemsIcon} alt="Przycisk Aktywnych Zadań" name="active"/>
+                    </NavLink>
+                </ListElement>
+                <ListElement>
+                    <NavLink to="/inactive">
+                        <NavbarIcon src={itemsIcon} alt="Przycisk Nie Aktywnych Zadań" name="inactive"/>
+                    </NavLink>
+                </ListElement>
+            </DisplayTaskContainer>
 
-            <NavbarList>
-                <NavbarItem src={addIcon} alt={"Add Tasks Button"}/>
-            </NavbarList>
+            <AddButtonContainer>
+                <ListElement>
+                    <NavbarIcon src={addIcon} alt={"Przycisk Dodawania Zadań"} name="add"/>
+                </ListElement>
+            </AddButtonContainer>
         </NavbarContainer>
     );
 }
