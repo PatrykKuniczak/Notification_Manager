@@ -1,37 +1,36 @@
 import Item from "./Item";
-import styled from "styled-components";
 import filterIcon from "../icons/filter.svg";
+import {FilterButton, ItemsHeader } from "./styles/Item/ItemsHeader";
+import { ItemsContainer, ItemsList } from "./styles/Items/ItemsContainer";
 
 
-const ItemsHeader = styled.header`
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 30px;
-`
-
-const ItemsContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  width: calc(100vw - 100px);
-  padding: 20px;
-  margin: 20px;
-  background-color: #0C40B7;
-
-  @media (max-width: 700px){
-    width: calc(100vw - 40px);
-  }
-`
-
-const Items = () => {
-    return (
-        <ItemsContainer>
+const Items = ({active}: { active: boolean }) => {
+    return (<ItemsContainer>
             <ItemsHeader>
-                <h1>Aktywne</h1>
-                <input type="image" src={filterIcon} alt="Przycisk Filtrowania" height={"40"}/>
+                <h1>{active ? "Aktywne" : "Zarchiwizowane"}</h1>
+                <FilterButton type="image" src={filterIcon} alt="Przycisk Filtrowania"/>
             </ItemsHeader>
 
-            <Item/>
+            <ItemsList>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+                <Item/>
+            </ItemsList>
         </ItemsContainer>
     )
 }
