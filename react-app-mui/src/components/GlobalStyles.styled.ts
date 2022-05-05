@@ -14,7 +14,8 @@ const GlobalStyles = createGlobalStyle`
     sans-serif;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
-    background: linear-gradient(to right top, #203E70, #10397B);
+    background: linear-gradient(0deg, #9455F2, #8137E2);
+    overflow-y: hidden;
   }
 
   a {
