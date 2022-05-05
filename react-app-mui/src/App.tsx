@@ -15,7 +15,8 @@ const App: React.FC = () => {
                 <Routes>
                     <Route path="/" element={<Home/>}>
                         <Route path="" element={<Navigate to={'active'}/>}/>
-                        <Route path="active" element={<Items/>}/>
+                        <Route path="active" element={<Items active={true}/>}/>
+                        <Route path="inactive" element={<Items active={false}/>}/>
                     </Route>
                     <Route path="*" element={<Navigate to={'active'}/>}/>
                 </Routes>
