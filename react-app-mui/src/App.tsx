@@ -1,7 +1,7 @@
 import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Axios from "axios";
 import React from "react";
-import Home from './pages/Home';
+import Home from './pages/home/Home';
 import GlobalStyles from "./components/GlobalStyles.styled";
 import Items from "./components/items/Items";
 import {Provider} from "react-redux";
