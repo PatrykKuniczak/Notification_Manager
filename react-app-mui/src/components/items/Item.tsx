@@ -4,7 +4,7 @@ import deleteIcon from "../icons/delete.svg";
 import {TextContainer, TextElement, DateElement} from "./styles/Item/TextContainer";
 import {ButtonContainer, IconElement} from "./styles/Item/ButtonContainer";
 import {useState} from "react";
-import { ListContainer } from "./styles/Item/ListContainer";
+import {ListContainer} from "./styles/Item/ListContainer";
 
 
 const Item = () => {

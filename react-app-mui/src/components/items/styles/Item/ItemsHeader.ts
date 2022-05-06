@@ -11,9 +11,3 @@ export const ItemsHeader = styled.span`
     color: #DABBF1;
   }
 `
-
-export const FilterButton = styled.input`
-  height: 40px;
-  width: 40px;
-  filter: invert(73%) sepia(37%) saturate(433%) hue-rotate(229deg) brightness(97%) contrast(92%);
-`

@@ -52,7 +52,7 @@ export const TextElement = styled.span`
 
   @media (max-width: ${XXS_SIZE}) {
     width: 100%;
-    
+
     &:last-child {
       display: none;
     }

@@ -11,7 +11,7 @@ export const FilterButton = styled.input`
   }
 `
 
-export const FilterContainer = styled.div<{ ref: any }>`
+export const FilterContainer = styled.div`
   position: relative;
 `
 
