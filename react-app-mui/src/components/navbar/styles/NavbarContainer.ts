@@ -1,6 +1,5 @@
 import styled from "styled-components";
 import {M_SIZE, S_SIZE, XXS_SIZE} from "../../../helpers/constants";
-import {addIconFilter} from "./AddPart";
 import {activeIconFilter, inactiveIconFilter} from "./DisplayPart";
 
 
@@ -20,16 +19,20 @@ export const NavbarContainer = styled.nav`
 export const ListElement = styled.li`
   background: none;
   border: none;
-  cursor: pointer;
 `
 
-export const NavbarIcon = styled.img<{ name: string }>`
+export const NavbarIcon = styled.img<{ name: string, location?: string }>`
   width: 45px;
+  
+  filter: ${props => props.name === "add" ? activeIconFilter :
+          `/${props.name}` === props.location ? inactiveIconFilter : activeIconFilter};
+  
+  pointer-events: ${props => `/${props.name}` === props.location && "none"};
 
-  filter: ${props => props.name === "add" ?
-    addIconFilter : props.name === "active" ?
-        activeIconFilter : inactiveIconFilter
-};
+  &:hover {
+    filter: ${inactiveIconFilter};
+    cursor: ${props => props.name === "add" || "active" ? "pointer" : "default"};
+  }
 
   @media (max-width: ${M_SIZE}) {
     width: 40px;

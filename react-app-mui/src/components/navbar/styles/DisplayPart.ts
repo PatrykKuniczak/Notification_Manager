@@ -17,6 +17,10 @@ export const Logo = styled.img`
   @media (max-width: ${S_SIZE}) {
     margin-bottom: 0;
   }
+  
+  &:hover {
+    cursor: pointer;
+  }
 `
 
 export const DisplayTaskContainer = styled.ul`
