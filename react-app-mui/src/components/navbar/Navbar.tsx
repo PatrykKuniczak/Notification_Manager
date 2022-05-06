@@ -7,7 +7,7 @@ import {DisplayTaskContainer, Logo} from './styles/DisplayPart';
 import {useLocation} from "react-router-dom";
 import {ListElement, NavbarIcon} from './styles/NavbarContainer';
 import {NavbarContainer} from './styles/NavbarContainer';
-import NavbarFunc from "./logical/NavbarFunc/NavbarFunc";
+import NavbarFunc from "./logic/NavbarFunc/NavbarFunc";
 
 
 const Navbar = () => {

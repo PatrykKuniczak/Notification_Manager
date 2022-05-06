@@ -6,7 +6,7 @@ import {FilterButton, FilterContainer, FilterContent} from "./styles/Items/Filte
 import {useRef} from "react";
 import {useSelector} from "react-redux";
 import {selectFilter} from "../store/store";
-import ItemsFunc from "./logical/Items/ItemsFunc";
+import ItemsFunc from "./logic/Items/ItemsFunc";
 
 
 const Items = ({active}: { active: boolean }) => {
