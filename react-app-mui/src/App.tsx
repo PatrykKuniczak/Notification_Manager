@@ -4,12 +4,14 @@ import React from "react";
 import Home from './pages/Home';
 import GlobalStyles from "./components/GlobalStyles.styled";
 import Items from "./components/items/Items";
+import {Provider} from "react-redux";
+import store from "./components/store/store";
 
 
 Axios.defaults.baseURL = process.env.REACT_APP_API_URL;
 
 const App: React.FC = () => {
-    return (<>
+    return (<Provider store={store}>
             <GlobalStyles/>
             <BrowserRouter>
                 <Routes>
@@ -21,7 +23,7 @@ const App: React.FC = () => {
                     <Route path="*" element={<Navigate to={'active'}/>}/>
                 </Routes>
             </BrowserRouter>
-        </>
+        </Provider>
     );
 }
 
