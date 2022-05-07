@@ -38,7 +38,6 @@ export const ButtonContainer = styled.div`
 export const IconElement = styled.input<{ name: string, active?: boolean }>`
   width: 35px;
   height: 35px;
-
   filter: ${props => props.name === "star" ?
           (props.active ? activeStarIconFilter : inactiveStarIconFilter) :
           props.name === "edit" ? editIconFilter : deleteIconFilter};

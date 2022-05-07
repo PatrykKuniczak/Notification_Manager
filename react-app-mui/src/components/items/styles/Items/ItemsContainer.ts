@@ -11,6 +11,7 @@ export const ItemsContainer = styled.div`
     height: calc(100vh - 74px);
     border-radius: 35px;
   }
+}
 `
 
 export const ItemsList = styled.ul`
