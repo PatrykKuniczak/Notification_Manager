@@ -16,7 +16,7 @@ import TaskFunc from "./logic/TaskFunc";
 
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
-    const {active, changeImportant, navAhead, confirmButtonType} = TaskFunc(type);
+    const {active, changeImportant, navAhead, confirmButtonType, displayTypes} = TaskFunc(type);
 
 
     return (<TaskFormContainer>
@@ -44,7 +44,9 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
 
                 <InputGroup>
                     <Label> Typ Aktywności </Label>
-                    <Select disabled={type === "display"}/>
+                    <Select disabled={type === "display"}>
+                        {displayTypes()}
+                    </Select>
                 </InputGroup>
 
                 <SwitchInputGroup>

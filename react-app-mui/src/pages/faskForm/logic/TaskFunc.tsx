@@ -6,6 +6,7 @@ const TaskFunc = (type: "display" | "add" | "edit") => {
     const [active, setActive] = useState(false);
     const navigate = useNavigate();
 
+    const typesList = ["Wybierz opcję", "Aktywność fizyczna", "Sport", "Gotowanie"]
 
     const changeImportant = () => {
         type !== "display" && setActive(prevState => !prevState);
@@ -23,7 +24,10 @@ const TaskFunc = (type: "display" | "add" | "edit") => {
             return "submit";
     };
 
-    return {active, changeImportant, navAhead, confirmButtonType};
+    const displayTypes = () => typesList.map(item => <option key={item} value={item}>{item}</option>)
+
+
+    return {active, changeImportant, navAhead, confirmButtonType, displayTypes};
 }
 
 export default TaskFunc;
