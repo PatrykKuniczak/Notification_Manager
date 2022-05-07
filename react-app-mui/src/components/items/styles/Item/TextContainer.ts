@@ -33,7 +33,7 @@ export const TextContainer = styled.div`
 
 export const TextElement = styled.span`
   width: 45%;
-  font-size: clamp(1.25rem, 1.5vw, 2rem);
+  font-size: clamp(1rem, 1.5vw, 2rem);
   overflow: hidden;
   white-space: nowrap;
   text-overflow: ellipsis;
