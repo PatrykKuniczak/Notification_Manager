@@ -7,7 +7,9 @@ const NavbarFunc = () => {
     const dispatch = useDispatch();
     const navigate = useNavigate();
 
-    const setDefaultFilterOptionWithNav = (path: "/active" | "/inactive") => {
+    type IPath = "/active" | "/inactive" | "add-form";
+
+    const setDefaultFilterOptionWithNav = (path: IPath) => {
         dispatch(changeOption("A-Z"));
         navigate(path);
     }

@@ -37,7 +37,8 @@ const Navbar = () => {
 
             <AddButtonContainer>
                 <ListElement>
-                    <NavbarIcon src={addIcon} alt={"Przycisk Dodawania Zadań"} name="add"/>
+                    <NavbarIcon src={addIcon} alt={"Przycisk Dodawania Zadań"} name="add"
+                                onClick={() => setDefaultFilterOptionWithNav("add-form")}/>
                 </ListElement>
             </AddButtonContainer>
         </NavbarContainer>
