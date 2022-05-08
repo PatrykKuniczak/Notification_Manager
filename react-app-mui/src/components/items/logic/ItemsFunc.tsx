@@ -19,6 +19,7 @@ const ItemsFunc = () => {
     const ref = useRef(null);
     const checkLocation = useLocation().pathname === "/active";
 
+
     useOnClickOutside(ref, () => dispatch(closeFilterDropdown()));
 
     const selectFilterOption = (item: IOptions) => {
@@ -31,21 +32,17 @@ const ItemsFunc = () => {
         </FilterOption>)
 
     const toggleFilterContainer = () => dispatch(toggleFilterDropdown());
-    // const eventHandler = (id: number, item?: ITask) => {
-    //     const result = item ? Axios.put(`/tasks/${id}`, {
-    //         ...item,
-    //         important: !item.important
-    //     }) : Axios.delete(`/tasks/${id}`);
+
     useLayoutEffect(() => {
         dispatch(getAllItems(checkLocation));
     }, [checkLocation, dispatch])
 
 
     useEffect(() => {
-        dispatch(filterItems(filterOption))
+        dispatch(filterItems(filterOption));
     }, [filterOption, dispatch])
 
-    return {show, ref, loading, items, displayOptions, toggleFilterContainer, selectFilterOption}
+    return {show, ref, loading, items, displayOptions, toggleFilterContainer, selectFilterOption};
 }
 
 

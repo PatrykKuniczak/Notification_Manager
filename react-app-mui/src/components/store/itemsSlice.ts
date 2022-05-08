@@ -46,7 +46,16 @@ export const getAllItems = createAsyncThunk(
             }
         })
 
-        return filteredData;
+        return sort(filteredData).asc(item => item.title);
+    }
+)
+
+export const deleteItem = createAsyncThunk(
+    "items/deleteItem",
+    async (id: number) => {
+        await Axios.delete(`/tasks/${id}`);
+
+        return id;
     }
 )
 
@@ -83,11 +92,16 @@ const itemsSlice = createSlice({
             })
 
         builders.addCase(changeItemImportant.fulfilled,
-            (state, action) => {
+            (state, {payload}: PayloadAction<number>) => {
                 state.items.forEach(item => {
-                    if (item.id === action.payload)
+                    if (item.id === payload)
                         item.important = !item.important;
                 })
+            })
+
+        builders.addCase(deleteItem.fulfilled,
+            (state, {payload}: PayloadAction<number>) => {
+                state.items = state.items.filter(item => item.id !== payload);
             })
     }
 });

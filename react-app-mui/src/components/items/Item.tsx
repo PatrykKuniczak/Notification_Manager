@@ -8,8 +8,13 @@ import ItemFunc from "./logic/ItemFunc";
 import {ITask} from "../../helpers/interfaces";
 
 
-const Item = ({item, active}: { item: ITask, active: boolean }) => {
-    const {changeImportant, displayFormNav, editFormNav, convertedDate} = ItemFunc(item);
+interface IItem {
+    item: ITask
+    active: boolean
+}
+
+const Item = ({item, active,}: IItem) => {
+    const {changeImportant, displayFormNav, editFormNav, convertedDate, removeItem} = ItemFunc(item);
 
     return (<ListContainer>
             <TextContainer onClick={displayFormNav}>
@@ -19,11 +24,10 @@ const Item = ({item, active}: { item: ITask, active: boolean }) => {
             </TextContainer>
 
             <ButtonContainer>
-                {active && <IconElement name="star" active={item.important} onClick={changeImportant} type="image" src={starIcon}
-                              alt="Przycisk Ważne"/>}
-                <IconElement name="edit" type="image" onClick={editFormNav} src={editIcon}
-                             alt="Przycisk Edycji"/>
-                <IconElement name="delete" type="image" src={deleteIcon} alt="Przycisk Usuwania"/>
+                {active && <IconElement name="star" active={item.important} onClick={changeImportant} type="image"
+                                        src={starIcon} alt="Przycisk Ważne"/>}
+                <IconElement name="edit" type="image" onClick={editFormNav} src={editIcon} alt="Przycisk Edycji"/>
+                <IconElement name="delete" type="image" onClick={removeItem} src={deleteIcon} alt="Przycisk Usuwania"/>
             </ButtonContainer>
         </ListContainer>
     )
