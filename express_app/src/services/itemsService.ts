@@ -8,14 +8,14 @@ import {createTimeStamp, fullTrim, toTitle} from "../controllers/helpers/helpers
 
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
-    const [name, title, description, important, taskType, notificationDate] = validBody(req);
+    const [name, title, description, important, taskType, date] = validBody(req);
 
     let result: IRepository | IJsonMessage;
 
-    if (notificationDate === "Invalid Date")
+    if (date === "Invalid Date")
         return new Error("Date is invalid")
 
-    const reqTimeStamp = createTimeStamp(notificationDate);
+    const reqTimeStamp = createTimeStamp(date);
 
     switch (Repository) {
         case Task:
@@ -24,7 +24,7 @@ export const createItem = async (req: Request, res: Response, Repository: IEntit
             task.description = description;
             task.important = important;
             task.taskType = taskType;
-            task.notificationDate = reqTimeStamp;
+            task.date = reqTimeStamp;
 
             result = await validItem(req, res, Repository, task);
             break;
@@ -55,9 +55,9 @@ export const validBody = (req) => {
     const description = req.body.description && toTitle(fullTrim(req.body.description));
     const important = (req.body.important === true || req.body.important === false) && req.body.important;
     const taskType = req.body.taskType && toTitle(fullTrim(req.body.taskType));
-    const notificationDate = req.body.notificationDate;
+    const date = req.body.date;
 
-    return [name, title, description, important, taskType, notificationDate]
+    return [name, title, description, important, taskType, date]
 }
 
 export const createValidationErrors = (res, err): IJsonMessage => {

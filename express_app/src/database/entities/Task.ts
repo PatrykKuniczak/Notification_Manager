@@ -36,5 +36,5 @@ export class Task {
     @Column("bigint")
     @Min(Date.parse(new Date().toUTCString()) / 1000, {message: "Date must be after actual date."})
     @Max(createTimeStamp("2100-01-01 00:00"), {message: "Date must be before 2100-01-01 00:00."})
-    notificationDate: number
+    date: number
 }
