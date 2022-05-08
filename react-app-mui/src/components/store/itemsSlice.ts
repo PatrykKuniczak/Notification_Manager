@@ -47,7 +47,7 @@ export const getAllItems = createAsyncThunk(
             const date = dateFormat(new Date(+item.date * 1000), "yyyy-mm-dd'T'HH:MM");
 
             if (checkLocation ? date > actualDate : date <= actualDate) {
-                filteredData.push({...item, date})
+                filteredData.push({...item, date});
             }
         })
 

@@ -6,7 +6,7 @@ const TaskFunc = (type: "display" | "add" | "edit") => {
     const [active, setActive] = useState(false);
     const navigate = useNavigate();
 
-    const typesList = ["Wybierz opcję", "Aktywność fizyczna", "Sport", "Gotowanie"]
+    const typesList = ["Wybierz opcję", "Aktywność fizyczna", "Sport", "Gotowanie"];
 
     const changeImportant = () => {
         type !== "display" && setActive(prevState => !prevState);
