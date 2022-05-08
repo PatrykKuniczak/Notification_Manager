@@ -3,17 +3,11 @@ import filterIcon from "../icons/filter.svg";
 import {ItemsHeader} from "./styles/Item/ItemsHeader";
 import {ItemsContainer, ItemsList} from "./styles/Items/ItemsContainer";
 import {FilterButton, FilterContainer, FilterContent} from "./styles/Items/FilterContainer";
-import {useRef} from "react";
-import {useSelector} from "react-redux";
-import {selectFilter} from "../store/store";
 import ItemsFunc from "./logic/ItemsFunc";
 
 
 const Items = ({active}: { active: boolean }) => {
-    const ref = useRef(null);
-
-    const {show} = useSelector(selectFilter);
-    const {displayOptions, toggleFilterContainer} = ItemsFunc(ref);
+    const {displayOptions, toggleFilterContainer, show, ref, items} = ItemsFunc();
 
     return (<ItemsContainer>
             <ItemsHeader>
@@ -28,24 +22,7 @@ const Items = ({active}: { active: boolean }) => {
             </ItemsHeader>
 
             <ItemsList>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
-                <Item/>
+                {items.map(item => <Item key={item.id} item={item}/>)}
             </ItemsList>
         </ItemsContainer>
     )

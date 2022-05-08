@@ -5,16 +5,17 @@ import {TextContainer, TextElement, DateElement} from "./styles/Item/TextContain
 import {ButtonContainer, IconElement} from "./styles/Item/ButtonContainer";
 import {ListContainer} from "./styles/Item/ListContainer";
 import ItemFunc from "./logic/ItemFunc";
+import {ITask} from "../../helpers/interfaces";
 
 
-const Item = () => {
+const Item = ({item}: { item: ITask }) => {
     const {active, changeImportant, displayFormNav, editFormNav} = ItemFunc();
 
     return (<ListContainer>
             <TextContainer onClick={displayFormNav}>
-                <TextElement>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</TextElement>
-                <TextElement>aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa</TextElement>
-                <DateElement>17.05.22</DateElement>
+                <TextElement>{item.title}</TextElement>
+                <TextElement>{item.description}</TextElement>
+                <DateElement>{item.date}</DateElement>
             </TextContainer>
 
             <ButtonContainer>
