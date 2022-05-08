@@ -7,7 +7,7 @@ export interface ITask {
     taskType: string
 }
 
-export type IOptions = "A-Z" | "Z-A" | "Najwcześniejsza Data" | "Najpóźniejsza Data";
+export type IOptions = "A-Z" | "Z-A" | "Najwcześniejsza Data" | "Najpóźniejsza Data" | "Ważne";
 
 export interface IFilterStateEvent {
     filterOption: IOptions

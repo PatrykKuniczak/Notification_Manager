@@ -2,8 +2,13 @@ import {IOptions, ITask} from "../../helpers/interfaces";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import Axios from "axios";
 import dateFormat from "dateformat";
-import {sort} from "fast-sort";
+import {createNewSortInstance, inPlaceSort} from "fast-sort";
 
+
+const sortByBoolean = createNewSortInstance({
+    comparer: (a, b) => (a === b) ? 0 : a ? -1 : 1,
+    inPlaceSorting: true
+});
 
 type IInitialState = { items: ITask[], loading: boolean };
 
@@ -46,7 +51,7 @@ export const getAllItems = createAsyncThunk(
             }
         })
 
-        return sort(filteredData).asc(item => item.title);
+        return inPlaceSort(filteredData).asc(item => item.title);
     }
 )
 
@@ -66,16 +71,19 @@ const itemsSlice = createSlice({
         filterItems: (state, {payload}: PayloadAction<IOptions>) => {
             switch (payload) {
                 case "A-Z":
-                    state.items = sort(state.items).asc(item => item.title);
+                    inPlaceSort(state.items).asc(item => item.title);
                     break;
                 case "Z-A":
-                    state.items = sort(state.items).desc(item => item.title);
+                    inPlaceSort(state.items).desc(item => item.title);
+                    break;
+                case "Ważne":
+                    sortByBoolean(state.items).asc(item => item.important);
                     break;
                 case "Najwcześniejsza Data":
-                    state.items = sort(state.items).asc(item => item.date);
+                    inPlaceSort(state.items).asc(item => item.date);
                     break;
                 case "Najpóźniejsza Data":
-                    state.items = sort(state.items).desc(item => item.date);
+                    inPlaceSort(state.items).desc(item => item.date);
             }
         }
     },
@@ -93,7 +101,7 @@ const itemsSlice = createSlice({
 
         builders.addCase(changeItemImportant.fulfilled,
             (state, {payload}: PayloadAction<number>) => {
-                state.items.forEach(item => {
+                return state.items.forEach(item => {
                     if (item.id === payload)
                         item.important = !item.important;
                 })

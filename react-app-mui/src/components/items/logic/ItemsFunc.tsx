@@ -9,7 +9,7 @@ import {useLocation} from "react-router-dom";
 import {filterItems, getAllItems} from "../../store/itemsSlice";
 
 
-const options: IOptions[] = ["A-Z", "Z-A", "Najwcześniejsza Data", "Najpóźniejsza Data"];
+const options: IOptions[] = ["A-Z", "Z-A", "Ważne", "Najwcześniejsza Data", "Najpóźniejsza Data"];
 
 const ItemsFunc = () => {
     const dispatch = useDispatch<any>();
