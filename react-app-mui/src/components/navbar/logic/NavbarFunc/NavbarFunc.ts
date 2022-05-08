@@ -1,6 +1,6 @@
-import {changeOption} from "../../../store/store";
 import {useDispatch} from "react-redux";
 import {useNavigate} from "react-router-dom";
+import {changeOption} from "../../../store/filterSlice";
 
 
 const NavbarFunc = () => {
