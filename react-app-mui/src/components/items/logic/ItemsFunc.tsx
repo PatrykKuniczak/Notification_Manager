@@ -4,9 +4,9 @@ import {FilterOption} from "../styles/Items/FilterContainer";
 import {useOnClickOutside} from "usehooks-ts";
 import {useEffect, useLayoutEffect, useRef} from "react";
 import {IOptions} from "../../../helpers/interfaces";
-import {changeOption, closeFilterDropdown, toggleFilterDropdown} from "../../../store/filterSlice";
+import {changeOption, closeFilterDropdown, toggleFilterDropdown} from "../../../store/slices/filterSlice";
 import {useLocation} from "react-router-dom";
-import {filterItems, getAllItems} from "../../../store/itemsSlice";
+import {filterItems, getAllItems} from "../../../store/slices/itemsSlice";
 
 
 const options: IOptions[] = ["A-Z", "Z-A", "Ważne", "Najwcześniejsza Data", "Najpóźniejsza Data"];

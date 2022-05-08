@@ -2,7 +2,7 @@ import {useNavigate} from "react-router-dom";
 import dateFormat from "dateformat";
 import {useDispatch, useSelector} from "react-redux";
 import {ITask} from "../../../helpers/interfaces";
-import {changeItemImportant, deleteItem, filterItems} from "../../../store/itemsSlice";
+import {changeItemImportant, deleteItem, filterItems} from "../../../store/slices/itemsSlice";
 import {useCallback, useEffect} from "react";
 import {selectFilter} from "../../../store/store";
 

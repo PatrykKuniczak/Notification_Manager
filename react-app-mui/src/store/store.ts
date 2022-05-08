@@ -1,6 +1,6 @@
 import {configureStore} from "@reduxjs/toolkit";
-import filterReducer from "./filterSlice";
-import itemsReducer from "./itemsSlice";
+import filterReducer from "./slices/filterSlice";
+import itemsReducer from "./slices/itemsSlice";
 import thunkMiddleware from 'redux-thunk';
 
 
