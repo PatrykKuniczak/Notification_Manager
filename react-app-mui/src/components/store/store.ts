@@ -1,41 +1,22 @@
-import {configureStore, createSlice, PayloadAction} from "@reduxjs/toolkit";
-import {IFilterStateEvent, IOptions} from "../../helpers/interfaces";
+import {configureStore} from "@reduxjs/toolkit";
+import filterReducer from "./filterSlice";
+import itemsReducer from "./itemsSlice";
+import thunkMiddleware from 'redux-thunk';
 
-
-const initialState: IFilterStateEvent = {
-    filterOption: "A-Z",
-    show: false
-};
-
-export const filterSlice = createSlice({
-        name: "filter",
-        initialState,
-        reducers: {
-            changeOption: (state, actions: PayloadAction<IOptions>) => {
-               return {filterOption: actions.payload, show: false};
-            },
-
-            toggleFilterDropdown: (state) => {
-                state.show = !state.show;
-            },
-
-            closeFilterDropdown: (state) => {
-                state.show = false;
-            }
-        }
-    })
-;
-
-export const {changeOption, toggleFilterDropdown, closeFilterDropdown} = filterSlice.actions;
-
-const store = configureStore({
-    reducer: {
-        filtering: filterSlice.reducer,
-    },
-});
 
 type RootState = ReturnType<typeof store.getState>;
 
+
+const store = configureStore({
+    reducer: {
+        filtering: filterReducer,
+        items: itemsReducer
+    },
+    middleware: [thunkMiddleware]
+});
+
+
 export const selectFilter = (state: RootState) => state.filtering;
+export const selectItems = (state: RootState) => state.items;
 
 export default store;
