@@ -35,12 +35,18 @@ export const ButtonContainer = styled.div`
   }
 `
 
-export const IconElement = styled.input<{ name: string, active?: boolean }>`
+export const IconElement = styled.input<{ name: string, activeImportant?: boolean, active?: boolean }>`
   width: 35px;
   height: 35px;
   filter: ${props => props.name === "star" ?
-          (props.active ? activeStarIconFilter : inactiveStarIconFilter) :
+          (props.activeImportant ? activeStarIconFilter : inactiveStarIconFilter) :
           props.name === "edit" ? editIconFilter : deleteIconFilter};
+
+  
+  &:first-child {
+    pointer-events: ${props => !props.active && "none"};
+    opacity: ${props => !props.active && "0.5"};
+  }
 
   @media (max-width: ${L_SIZE}) {
     width: 32px;
