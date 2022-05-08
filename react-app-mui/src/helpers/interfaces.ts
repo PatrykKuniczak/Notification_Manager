@@ -3,7 +3,7 @@ export interface ITask {
     title: string
     description: string
     important: boolean
-    date: number | string
+    date: string
     taskType: string
 }
 
