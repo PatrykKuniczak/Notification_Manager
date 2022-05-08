@@ -1,4 +1,4 @@
-import {IFilterStateEvent, IOptions} from "../../helpers/interfaces";
+import {IFilterStateEvent, IOptions} from "../helpers/interfaces";
 import {createSlice, PayloadAction} from "@reduxjs/toolkit";
 
 

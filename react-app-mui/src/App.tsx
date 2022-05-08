@@ -2,10 +2,10 @@ import {BrowserRouter, Navigate, Route, Routes} from 'react-router-dom';
 import Axios from "axios";
 import React from "react";
 import Home from './pages/home/Home';
-import GlobalStyles from "./components/GlobalStyles.styled";
+import GlobalStyles from "./GlobalStyles.styled";
 import Items from "./components/items/Items";
 import {Provider} from "react-redux";
-import store from "./components/store/store";
+import store from "./store/store";
 import TaskForm from "./pages/form/TaskForm";
 
 

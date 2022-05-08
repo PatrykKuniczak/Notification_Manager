@@ -1,4 +1,4 @@
-import {IOptions, ITask} from "../../helpers/interfaces";
+import {IOptions, ITask} from "../helpers/interfaces";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import Axios from "axios";
 import dateFormat from "dateformat";
