@@ -6,7 +6,7 @@ import GlobalStyles from "./components/GlobalStyles.styled";
 import Items from "./components/items/Items";
 import {Provider} from "react-redux";
 import store from "./components/store/store";
-import TaskForm from "./pages/faskForm/TaskForm";
+import TaskForm from "./pages/form/TaskForm";
 
 
 Axios.defaults.baseURL = process.env.REACT_APP_API_URL;

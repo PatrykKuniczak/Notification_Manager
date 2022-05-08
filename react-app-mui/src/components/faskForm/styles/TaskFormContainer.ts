@@ -1,7 +1,7 @@
 import styled from "styled-components";
-import {ItemsContainer, ItemsList} from "../../../components/items/styles/Items/ItemsContainer";
+import {ItemsContainer, ItemsList} from "../../items/styles/Items/ItemsContainer";
 import {S_SIZE} from "../../../helpers/constants";
-import {ItemsHeader} from "../../../components/items/styles/Item/ItemsHeader";
+import {ItemsHeader} from "../../items/styles/Item/ItemsHeader";
 
 
 export const TaskFormContainer = styled(ItemsContainer)`

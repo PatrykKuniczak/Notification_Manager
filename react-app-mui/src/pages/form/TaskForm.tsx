@@ -11,12 +11,12 @@ import Form, {
     SwitchInputGroup,
     TaskFormContainer,
     Title
-} from "./styles/FormContainer";
-import TaskFunc from "./logic/TaskFunc";
+} from "../../components/faskForm/styles/TaskFormContainer";
+import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
 
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
-    const {active, changeImportant, navAhead, confirmButtonType, displayTypes} = TaskFunc(type);
+    const {active, changeImportant, navAhead, confirmButtonType, displayTypes} = TaskFormFunc(type);
 
 
     return (<TaskFormContainer>

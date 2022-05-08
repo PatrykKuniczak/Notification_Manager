@@ -2,7 +2,7 @@ import {useState} from "react";
 import {useNavigate} from "react-router-dom";
 
 
-const TaskFunc = (type: "display" | "add" | "edit") => {
+const TaskFormFunc = (type: "display" | "add" | "edit") => {
     const [active, setActive] = useState(false);
     const navigate = useNavigate();
 
@@ -30,4 +30,4 @@ const TaskFunc = (type: "display" | "add" | "edit") => {
     return {active, changeImportant, navAhead, confirmButtonType, displayTypes};
 }
 
-export default TaskFunc;
+export default TaskFormFunc;
