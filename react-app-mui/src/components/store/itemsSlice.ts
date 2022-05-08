@@ -4,16 +4,6 @@ import Axios from "axios";
 import dateFormat from "dateformat";
 
 
-// export const changeItemImportant = createAsyncThunk(
-//     "items/put",
-//     async (dispatch, getState) => {
-//         return await Axios.put(`/tasks/${getState.id}`, {
-//             ...item,
-//             important: !item.important
-//         })
-//     }
-// )
-
 type IInitialState = { items: ITask[], loading: boolean };
 
 const initialState: IInitialState = {
@@ -28,6 +18,18 @@ const initialState: IInitialState = {
     loading: false
 };
 
+export const changeItemImportant = createAsyncThunk(
+    "items/changeImportant",
+    async (item: ITask) => {
+        await Axios.put(`/tasks/${item.id}`, {
+            ...item,
+            important: !item.important
+        })
+
+        return item.id;
+    }
+);
+
 export const getAllItems = createAsyncThunk(
     "items/getAllItems",
     async (checkLocation: boolean) => {
@@ -37,6 +39,7 @@ export const getAllItems = createAsyncThunk(
 
         data.forEach((item: ITask) => {
             const date = dateFormat(new Date(+item.date * 1000), "yyyy-mm-dd'T'HH:MM");
+
             if (checkLocation ? date > actualDate : date <= actualDate) {
                 filteredData.push({...item, date})
             }
@@ -60,6 +63,14 @@ const itemsSlice = createSlice({
             (state, {payload}: PayloadAction<ITask[]>) => {
                 state.items = payload;
                 state.loading = false;
+            })
+
+        builders.addCase(changeItemImportant.fulfilled,
+            (state, action) => {
+                state.items.forEach(item => {
+                    if (item.id === action.payload)
+                        item.important = !item.important;
+                })
             })
     }
 });

@@ -22,7 +22,7 @@ const Items = ({active}: { active: boolean }) => {
             </ItemsHeader>
 
             <ItemsList>
-                {items.map(item => <Item key={item.id} item={item}/>)}
+                {items.map(item => <Item key={item.id} item={item} active={active}/>)}
             </ItemsList>
         </ItemsContainer>
     )

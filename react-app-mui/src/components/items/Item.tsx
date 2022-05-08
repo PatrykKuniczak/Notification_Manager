@@ -8,19 +8,19 @@ import ItemFunc from "./logic/ItemFunc";
 import {ITask} from "../../helpers/interfaces";
 
 
-const Item = ({item}: { item: ITask }) => {
-    const {active, changeImportant, displayFormNav, editFormNav} = ItemFunc();
+const Item = ({item, active}: { item: ITask, active: boolean }) => {
+    const {changeImportant, displayFormNav, editFormNav, convertedDate} = ItemFunc(item);
 
     return (<ListContainer>
             <TextContainer onClick={displayFormNav}>
                 <TextElement>{item.title}</TextElement>
                 <TextElement>{item.description}</TextElement>
-                <DateElement>{item.date}</DateElement>
+                <DateElement>{convertedDate()}</DateElement>
             </TextContainer>
 
             <ButtonContainer>
-                <IconElement name="star" active={active} onClick={changeImportant} type="image" src={starIcon}
-                             alt="Przycisk Ważne"/>
+                {active && <IconElement name="star" active={item.important} onClick={changeImportant} type="image" src={starIcon}
+                              alt="Przycisk Ważne"/>}
                 <IconElement name="edit" type="image" onClick={editFormNav} src={editIcon}
                              alt="Przycisk Edycji"/>
                 <IconElement name="delete" type="image" src={deleteIcon} alt="Przycisk Usuwania"/>
