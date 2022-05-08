@@ -3,7 +3,7 @@ export interface ITask {
     title: string
     description: string
     important: boolean
-    notificationDate: number | string
+    date: number | string
     taskType: string
 }
 
@@ -13,6 +13,3 @@ export interface IFilterStateEvent {
     filterOption: IOptions
     show: boolean
 }
-
-
-
