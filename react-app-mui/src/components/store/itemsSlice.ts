@@ -1,7 +1,8 @@
-import {ITask} from "../../helpers/interfaces";
+import {IOptions, ITask} from "../../helpers/interfaces";
 import {createAsyncThunk, createSlice, PayloadAction} from "@reduxjs/toolkit";
 import Axios from "axios";
 import dateFormat from "dateformat";
+import {sort} from "fast-sort";
 
 
 type IInitialState = { items: ITask[], loading: boolean };
@@ -52,7 +53,23 @@ export const getAllItems = createAsyncThunk(
 const itemsSlice = createSlice({
     name: "items",
     initialState,
-    reducers: {},
+    reducers: {
+        filterItems: (state, {payload}: PayloadAction<IOptions>) => {
+            switch (payload) {
+                case "A-Z":
+                    state.items = sort(state.items).asc(item => item.title);
+                    break;
+                case "Z-A":
+                    state.items = sort(state.items).desc(item => item.title);
+                    break;
+                case "Najwcześniejsza Data":
+                    state.items = sort(state.items).asc(item => item.date);
+                    break;
+                case "Najpóźniejsza Data":
+                    state.items = sort(state.items).desc(item => item.date);
+            }
+        }
+    },
     extraReducers: (builders) => {
         builders.addCase(getAllItems.pending,
             (state) => {
@@ -74,6 +91,8 @@ const itemsSlice = createSlice({
             })
     }
 });
+
+export const {filterItems} = itemsSlice.actions;
 
 
 export default itemsSlice.reducer;

@@ -11,8 +11,8 @@ const filterSlice = createSlice({
     name: "filter",
     initialState,
     reducers: {
-        changeOption: (state, actions: PayloadAction<IOptions>) => {
-            return {filterOption: actions.payload, show: false};
+        changeOption: (state, {payload}: PayloadAction<IOptions>) => {
+            return {filterOption: payload, show: false};
         },
 
         toggleFilterDropdown: (state) => {
