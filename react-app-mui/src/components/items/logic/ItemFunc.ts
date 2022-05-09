@@ -12,9 +12,9 @@ const ItemFunc = (item: ITask) => {
     const dispatch = useDispatch<any>();
     const {filterOption} = useSelector(selectFilter);
 
-    const displayFormNav = () => navigate("/display-form");
+    const displayFormNav = () => navigate(`/display-form/${item.id}`);
 
-    const editFormNav = () => navigate("/edit-form");
+    const editFormNav = () => navigate(`/edit-form/${item.id}`);
 
     const convertedDate = () => dateFormat(item.date, "yy-mm-dd HH:MM");
 

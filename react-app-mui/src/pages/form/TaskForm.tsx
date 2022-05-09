@@ -16,7 +16,7 @@ import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
 
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
-    const {active, changeImportant, navAhead, confirmButtonType, displayTypes} = TaskFormFunc(type);
+    const {active, item, changeImportant, navAhead, confirmButtonType, displayTypes} = TaskFormFunc(type);
 
 
     return (<TaskFormContainer>
@@ -29,22 +29,22 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
             <Form>
                 <InputGroup>
                     <Label> Tytuł </Label>
-                    <Input autoFocus disabled={type === "display"}/>
+                    <Input autoFocus value={type !== "add" ? item.title : ""} disabled={type === "display"}/>
                 </InputGroup>
 
                 <InputGroup>
                     <Label> Opis </Label>
-                    <Input disabled={type === "display"}/>
+                    <Input value={type !== "add" ? item.description: ""} disabled={type === "display"}/>
                 </InputGroup>
 
                 <InputGroup>
                     <Label> Data </Label>
-                    <DateInput type="datetime-local" disabled={type === "display"}/>
+                    <DateInput value={type !== "add" ? item.date: ""} type="datetime-local" disabled={type === "display"}/>
                 </InputGroup>
 
                 <InputGroup>
                     <Label> Typ Aktywności </Label>
-                    <Select disabled={type === "display"}>
+                    <Select value={type !== "add" ? item.taskType : ""} disabled={type === "display"}>
                         {displayTypes()}
                     </Select>
                 </InputGroup>

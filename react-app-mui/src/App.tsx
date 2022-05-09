@@ -20,9 +20,9 @@ const App: React.FC = () => {
                         <Route path="" element={<Navigate to={'active'}/>}/>
                         <Route path="active" element={<Items active={true}/>}/>
                         <Route path="inactive" element={<Items active={false}/>}/>
+                        <Route path="display-form/:id" element={<TaskForm type={"display"}/>}/>
+                        <Route path="edit-form/:id" element={<TaskForm type={"edit"}/>}/>
                         <Route path="add-form" element={<TaskForm type={"add"}/>}/>
-                        <Route path="display-form" element={<TaskForm type={"display"}/>}/>
-                        <Route path="edit-form" element={<TaskForm type={"edit"}/>}/>
                     </Route>
                     <Route path="*" element={<Navigate to={'active'}/>}/>
                 </Routes>

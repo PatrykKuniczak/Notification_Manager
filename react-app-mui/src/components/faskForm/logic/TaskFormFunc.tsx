@@ -1,19 +1,44 @@
-import {useState} from "react";
-import {useNavigate} from "react-router-dom";
+import {useCallback, useLayoutEffect, useState} from "react";
+import {useNavigate, useParams} from "react-router-dom";
+import {useDispatch, useSelector} from "react-redux";
+import {getItem} from "../../../store/slices/itemsSlice";
+import {selectItems} from "../../../store/store";
 
 
 const TaskFormFunc = (type: "display" | "add" | "edit") => {
-    const [active, setActive] = useState(false);
+    const {id} = useParams();
+    const {item} = useSelector(selectItems)
     const navigate = useNavigate();
+    const dispatch = useDispatch<any>();
+
+    const [active, setActive] = useState(false);
+
+    const changeActive = useCallback(() => {
+        type !== "add" && setActive(item.important);
+    }, [type, item.important])
+
+    const getTaskItem = useCallback(async () => {
+        id && dispatch(getItem(+id));
+    }, [id, dispatch])
+
+
+    useLayoutEffect(() => {
+        const fetchItem = async () => {
+            await getTaskItem();
+            changeActive();
+        }
+
+        fetchItem();
+    }, [getTaskItem, changeActive])
 
     const typesList = ["Wybierz opcję", "Aktywność fizyczna", "Sport", "Gotowanie"];
 
     const changeImportant = () => {
-        type !== "display" && setActive(prevState => !prevState);
+        setActive(prevState => !prevState);
     }
 
     const navAhead = () => {
-        const path = type === "add" || type === "edit" ? "/active" : "/edit-form";
+        const path = type === "add" || type === "edit" ? "/active" : `/edit-form/${id}`;
         navigate(path);
     }
 
@@ -26,8 +51,7 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
 
     const displayTypes = () => typesList.map(item => <option key={item} value={item}>{item}</option>)
 
-
-    return {active, changeImportant, navAhead, confirmButtonType, displayTypes};
+    return {item, active, changeImportant, navAhead, confirmButtonType, displayTypes};
 }
 
 export default TaskFormFunc;

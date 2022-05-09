@@ -10,7 +10,7 @@ const sortByBoolean = createNewSortInstance({
     inPlaceSorting: true
 });
 
-type IInitialState = { items: ITask[], loading: boolean };
+type IInitialState = { items: ITask[], item: ITask, loading: boolean };
 
 const initialState: IInitialState = {
     items: [{
@@ -21,6 +21,14 @@ const initialState: IInitialState = {
         taskType: "",
         title: ""
     }],
+    item: {
+        description: "",
+        id: 0,
+        important: false,
+        date: "",
+        taskType: "",
+        title: ""
+    },
     loading: false
 };
 
@@ -52,6 +60,14 @@ export const getAllItems = createAsyncThunk(
         })
 
         return inPlaceSort(filteredData).asc(item => item.title);
+    }
+)
+
+export const getItem = createAsyncThunk(
+    "items/getItem",
+    async (id: number) => {
+        const {data} = await Axios.get(`/tasks/${id}`);
+        return data;
     }
 )
 
@@ -110,6 +126,14 @@ const itemsSlice = createSlice({
         builders.addCase(deleteItem.fulfilled,
             (state, {payload}: PayloadAction<number>) => {
                 state.items = state.items.filter(item => item.id !== payload);
+            })
+
+        builders.addCase(getItem.fulfilled,
+            (state, {payload}: PayloadAction<ITask>) => {
+                state.item = {
+                    ...payload,
+                    date: dateFormat(new Date(+payload.date * 1000), "yyyy-mm-dd'T'HH:MM")
+                }
             })
     }
 });

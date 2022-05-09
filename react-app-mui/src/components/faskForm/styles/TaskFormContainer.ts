@@ -85,7 +85,8 @@ export const Slider = styled.span<{ active: boolean, disabled: boolean }>`
   opacity: ${props => props.disabled && "0.8"};
   box-shadow: 0 0 1.2rem 0.2em #5a018c;
   background-color: ${props => props.active ? "#9958fd" : "#BAB5BF"};
-
+  pointer-events: ${props => props.disabled && "none"};
+  
   &::before {
     content: "";
     display: block;
