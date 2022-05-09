@@ -16,35 +16,44 @@ import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
 
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
-    const {active, item, changeImportant, navAhead, confirmButtonType, displayTypes} = TaskFormFunc(type);
+    const {
+        active,
+        taskItem,
+        changeImportant,
+        navAhead,
+        confirmButtonType,
+        displayTypes,
+        buttonName,
+        title
+    } = TaskFormFunc(type);
 
 
     return (<TaskFormContainer>
             <Title>
                 <h1>
-                    {type === "add" ? "Dodawanie Zadania " : type === "edit" ? "Edytowanie Zadania " : "Twoje Zadanie"}
+                    {title()}
                 </h1>
             </Title>
 
             <Form>
                 <InputGroup>
                     <Label> Tytuł </Label>
-                    <Input autoFocus value={type !== "add" ? item.title : ""} disabled={type === "display"}/>
+                    <Input autoFocus value={taskItem.title} disabled={type === "display"}/>
                 </InputGroup>
 
                 <InputGroup>
                     <Label> Opis </Label>
-                    <Input value={type !== "add" ? item.description: ""} disabled={type === "display"}/>
+                    <Input value={taskItem.description} disabled={type === "display"}/>
                 </InputGroup>
 
                 <InputGroup>
                     <Label> Data </Label>
-                    <DateInput value={type !== "add" ? item.date: ""} type="datetime-local" disabled={type === "display"}/>
+                    <DateInput value={taskItem.date} type="datetime-local" disabled={type === "display"}/>
                 </InputGroup>
 
                 <InputGroup>
                     <Label> Typ Aktywności </Label>
-                    <Select value={type !== "add" ? item.taskType : ""} disabled={type === "display"}>
+                    <Select value={taskItem.taskType} disabled={type === "display"}>
                         {displayTypes()}
                     </Select>
                 </InputGroup>
@@ -57,7 +66,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
 
                 <ButtonContainer>
                     <Button type={confirmButtonType()} onClick={navAhead}>
-                        {type === "add" ? "Dodaj" : type === "edit" ? "Potwierdź" : "Przejdź do edycji"}
+                        {buttonName()}
                     </Button>
                 </ButtonContainer>
             </Form>

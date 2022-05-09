@@ -1,35 +1,39 @@
-import {useCallback, useLayoutEffect, useState} from "react";
+import {useCallback, useLayoutEffect, useMemo, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {useDispatch, useSelector} from "react-redux";
-import {getItem} from "../../../store/slices/itemsSlice";
-import {selectItems} from "../../../store/store";
+import {ITask} from "../../../helpers/interfaces";
+import Axios from "axios";
+import dateFormat from "dateformat";
 
 
 const TaskFormFunc = (type: "display" | "add" | "edit") => {
     const {id} = useParams();
-    const {item} = useSelector(selectItems)
     const navigate = useNavigate();
-    const dispatch = useDispatch<any>();
 
     const [active, setActive] = useState(false);
 
-    const changeActive = useCallback(() => {
-        type !== "add" && setActive(item.important);
-    }, [type, item.important])
+    const initialState = useMemo(() => {
+        return {date: "", description: "", id: 0, important: false, taskType: "", title: ""}
+    }, []);
+
+    const [taskItem, setTaskItem] = useState<ITask>(initialState);
 
     const getTaskItem = useCallback(async () => {
-        id && dispatch(getItem(+id));
-    }, [id, dispatch])
+        if (type !== "add") {
+            const {data} = await Axios.get(`/tasks/${id}`);
+            setTaskItem({
+                ...data,
+                date: dateFormat(new Date(+data.date * 1000), "yyyy-mm-dd'T'HH:MM")
+            })
+            setActive(data.important);
+        } else {
+            setTaskItem(initialState)
+        }
+    }, [type, id, initialState])
 
 
     useLayoutEffect(() => {
-        const fetchItem = async () => {
-            await getTaskItem();
-            changeActive();
-        }
-
-        fetchItem();
-    }, [getTaskItem, changeActive])
+        getTaskItem();
+    }, [getTaskItem])
 
     const typesList = ["Wybierz opcję", "Aktywność fizyczna", "Sport", "Gotowanie"];
 
@@ -49,9 +53,14 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
             return "submit";
     };
 
+    const title = () =>
+        type === "add" ? "Dodawanie Zadania " : type === "edit" ? "Edytowanie Zadania " : "Twoje Zadanie";
+
+    const buttonName = () => type === "add" ? "Dodaj" : type === "edit" ? "Potwierdź" : "Przejdź do edycji";
+
     const displayTypes = () => typesList.map(item => <option key={item} value={item}>{item}</option>)
 
-    return {item, active, changeImportant, navAhead, confirmButtonType, displayTypes};
+    return {taskItem, active, changeImportant, navAhead, confirmButtonType, displayTypes, title, buttonName};
 }
 
 export default TaskFormFunc;
