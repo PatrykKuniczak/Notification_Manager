@@ -10,7 +10,7 @@ const sortByBoolean = createNewSortInstance({
     inPlaceSorting: true
 });
 
-type IInitialState = { items: ITask[], loading: boolean };
+type IInitialState = { items: ITask[], loading: boolean, error: boolean };
 
 const initialState: IInitialState = {
     items: [{
@@ -21,7 +21,8 @@ const initialState: IInitialState = {
         taskType: "",
         title: ""
     }],
-    loading: false
+    loading: false,
+    error: false,
 };
 
 export const changeItemImportant = createAsyncThunk(
@@ -95,9 +96,15 @@ const itemsSlice = createSlice({
 
         builders.addCase(getAllItems.fulfilled,
             (state, {payload}: PayloadAction<ITask[]>) => {
-                state.items = payload;
+                state.items = payload
                 state.loading = false;
             })
+
+        builders.addCase(getAllItems.rejected,
+            (state) => {
+                state.error = true;
+            })
+
 
         builders.addCase(changeItemImportant.fulfilled,
             (state, {payload}: PayloadAction<number>) => {
@@ -107,11 +114,20 @@ const itemsSlice = createSlice({
                 })
             })
 
+        builders.addCase(changeItemImportant.rejected,
+            (state) => {
+                state.error = true;
+            })
+
         builders.addCase(deleteItem.fulfilled,
             (state, {payload}: PayloadAction<number>) => {
                 state.items = state.items.filter(item => item.id !== payload);
             })
 
+        builders.addCase(deleteItem.rejected,
+            (state) => {
+                state.error = true;
+            })
     }
 });
 
