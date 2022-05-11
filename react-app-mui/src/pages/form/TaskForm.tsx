@@ -3,12 +3,11 @@ import Form, {
     ButtonContainer,
     DateInput,
     Input,
-    InputGroup,
     Label,
     Select,
     Slider,
     Switch,
-    SwitchInputGroup,
+    SwitchLabel,
     TaskFormContainer,
     Title
 } from "../../components/faskForm/styles/TaskFormContainer";
@@ -17,57 +16,68 @@ import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
     const {
-        active,
         taskItem,
-        changeImportant,
         navAhead,
-        confirmButtonType,
         displayTypes,
-        buttonName,
-        title
+        handleSubmit,
+        errors,
+        register,
+        submitHandler,
+        watch
     } = TaskFormFunc(type);
-
 
     return (<TaskFormContainer>
             <Title>
                 <h1>
-                    {title()}
+                    {type === "add" ? "Dodawanie Zadania " : type === "edit" ? "Edytowanie Zadania " : "Twoje Zadanie"}
                 </h1>
             </Title>
 
-            <Form>
-                <InputGroup>
-                    <Label> Tytuł </Label>
-                    <Input autoFocus value={taskItem.title} disabled={type === "display"}/>
-                </InputGroup>
+            <Form onSubmit={handleSubmit(async data => {
+                await submitHandler(data);
+                navAhead()
+            })}>
+                <Label htmlFor="title" error={errors.title?.message}>
+                    Tytuł
+                    <Input id="title" autoFocus disabled={type === "display"}
+                           placeholder={"Podaj tytuł:"} {...register("title")}/>
+                </Label>
 
-                <InputGroup>
-                    <Label> Opis </Label>
-                    <Input value={taskItem.description} disabled={type === "display"}/>
-                </InputGroup>
+                <Label htmlFor="description" error={errors.description?.message}>
+                    Opis
+                    <Input disabled={type === "display"} placeholder={"Podaj opis:"}
+                           {...register("description")}/>
+                </Label>
 
-                <InputGroup>
-                    <Label> Data </Label>
-                    <DateInput value={taskItem.date} type="datetime-local" disabled={type === "display"}/>
-                </InputGroup>
+                <Label htmlFor="date" error={errors.date?.message}>
+                    Data
+                    <DateInput type="datetime-local" disabled={type === "display"}
+                               {...register("date")}/>
+                </Label>
 
-                <InputGroup>
-                    <Label> Typ Aktywności </Label>
-                    <Select value={taskItem.taskType} disabled={type === "display"}>
+                <Label htmlFor="taskType" error={errors.taskType?.message}>
+                    Typ Aktywności
+                    <Select disabled={type === "display"} {...register("taskType")}>
+                        <option key="Default" value="Default">Wybierz opcję:</option>
                         {displayTypes()}
                     </Select>
-                </InputGroup>
+                </Label>
 
-                <SwitchInputGroup>
-                    <Label> Ważne </Label>
-                    <Switch type={"radio"}/>
-                    <Slider active={active} onClick={changeImportant} disabled={type === "display"}/>
-                </SwitchInputGroup>
+                <SwitchLabel htmlFor="important" error={errors.important?.message!}>
+                    Ważne
+                    <Switch type={"checkbox"} {...register("important")}/>
+                    <Slider active={watch("important")} disabled={type === "display"}/>
+                </SwitchLabel>
 
                 <ButtonContainer>
-                    <Button type={confirmButtonType()} onClick={navAhead}>
-                        {buttonName()}
+                    {type === "display" && <Button type={"button"} onClick={navAhead}>
+                        Przejdź do edycji
+                    </Button>}
+
+                    {type !== "display" && <Button type={"submit"}>
+                        {type === "add" ? "Dodaj" : "Potwierdź"}
                     </Button>
+                    }
                 </ButtonContainer>
             </Form>
         </TaskFormContainer>

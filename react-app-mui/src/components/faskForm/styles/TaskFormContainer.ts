@@ -1,16 +1,15 @@
-import styled from "styled-components";
+import styled, {css} from "styled-components";
 import {ItemsContainer, ItemsList} from "../../items/styles/Items/ItemsContainer";
 import {S_SIZE} from "../../../helpers/constants";
 import {ItemsHeader} from "../../items/styles/Item/ItemsHeader";
 
 
 export const TaskFormContainer = styled(ItemsContainer)`
-
 `
 
 const Form = styled(ItemsList).attrs({
     as: "form"
-})`
+})<{ onSubmit: any }>`
   height: calc(100vh - 82.5px);
   gap: 45px;
 
@@ -21,21 +20,31 @@ const Form = styled(ItemsList).attrs({
 export const Title = styled(ItemsHeader)`
 `
 
-export const InputGroup = styled.div`
+export const Label = styled.label<{ error: string | undefined }>`
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-`
-
-export const SwitchInputGroup = styled(InputGroup)`
-  display: flex;
-  flex-direction: column;
-  position: relative;
-`
-
-export const Label = styled.label`
   font-size: 1.5em;
   color: #fff;
+  position: relative;
+
+  &::after {
+    ${props => props.error && css`
+      content: "${props.error}";
+    `}
+    position: absolute;
+    top: 95px;
+    left: 10px;
+    width: fit-content;
+    padding: 5px;
+    border-radius: 5px;
+    font-size: 1rem;
+    background-color: #ba0404;
+  }
+`
+
+export const SwitchLabel = styled(Label)`
+  position: relative;
 `
 
 export const Input = styled.input`
@@ -43,6 +52,7 @@ export const Input = styled.input`
   padding-inline: 10px;
   font-size: 1.3rem;
   border-radius: 10px;
+  //border: props => props.border || '1px solid #ccc';
   opacity: ${props => props.disabled ? "0.8" : "1"};
   box-shadow: 0 0 0.8em 0.1em #56018c;
   background-color: #f8f3ff;
@@ -67,10 +77,16 @@ export const Select = styled(Input).attrs({
 `
 
 export const Switch = styled(Input)`
-  width: 0;
-  height: 0;
+  z-index: 1;
+  width: 60px;
+  height: 30px;
   opacity: 0;
+  border-radius: 15px;
   cursor: pointer;
+  
+  &:hover {
+    opacity: 0;
+  }
 `
 
 export const Slider = styled.span<{ active: boolean, disabled: boolean }>`
@@ -86,7 +102,7 @@ export const Slider = styled.span<{ active: boolean, disabled: boolean }>`
   box-shadow: 0 0 1.2rem 0.2em #5a018c;
   background-color: ${props => props.active ? "#9958fd" : "#BAB5BF"};
   pointer-events: ${props => props.disabled && "none"};
-  
+
   &::before {
     content: "";
     display: block;
