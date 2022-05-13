@@ -16,7 +16,6 @@ import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
     const {
-        taskItem,
         navAhead,
         displayTypes,
         handleSubmit,
@@ -26,6 +25,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
         watch
     } = TaskFormFunc(type);
 
+
     return (<TaskFormContainer>
             <Title>
                 <h1>
@@ -33,10 +33,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
                 </h1>
             </Title>
 
-            <Form onSubmit={handleSubmit(async data => {
-                await submitHandler(data);
-                navAhead()
-            })}>
+            <Form onSubmit={handleSubmit(data => submitHandler(data))}>
                 <Label htmlFor="title" error={errors.title?.message}>
                     Tytuł
                     <Input id="title" autoFocus disabled={type === "display"}
@@ -65,7 +62,8 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
 
                 <SwitchLabel htmlFor="important" error={errors.important?.message!}>
                     Ważne
-                    <Switch type={"checkbox"} {...register("important")}/>
+                    <Switch type={"checkbox"} {...register("important")}
+                            disabled={type === "display"}/>
                     <Slider active={watch("important")} disabled={type === "display"}/>
                 </SwitchLabel>
 
@@ -74,7 +72,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
                         Przejdź do edycji
                     </Button>}
 
-                    {type !== "display" && <Button type={"submit"}>
+                    {type !== "display" && <Button type="submit">
                         {type === "add" ? "Dodaj" : "Potwierdź"}
                     </Button>
                     }

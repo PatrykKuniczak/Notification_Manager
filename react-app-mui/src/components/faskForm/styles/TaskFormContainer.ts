@@ -3,7 +3,7 @@ import {ItemsContainer, ItemsList} from "../../items/styles/Items/ItemsContainer
 import {S_SIZE} from "../../../helpers/constants";
 import {ItemsHeader} from "../../items/styles/Item/ItemsHeader";
 
-
+// TODO: ZRÓB BORDER PRZY FORM
 export const TaskFormContainer = styled(ItemsContainer)`
 `
 
@@ -76,14 +76,15 @@ export const Select = styled(Input).attrs({
   border: black solid 2px;
 `
 
-export const Switch = styled(Input)`
+export const Switch = styled(Input)<{ disabled: boolean }>`
   z-index: 1;
   width: 60px;
   height: 30px;
   opacity: 0;
   border-radius: 15px;
   cursor: pointer;
-  
+  pointer-events: ${props => props.disabled && "none"};
+
   &:hover {
     opacity: 0;
   }

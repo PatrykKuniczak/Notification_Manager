@@ -1,4 +1,4 @@
-import {useCallback, useLayoutEffect, useState} from "react";
+import {useCallback, useEffect, useMemo} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {ITask} from "../../../helpers/interfaces";
 import Axios from "axios";
@@ -8,6 +8,8 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 
 
+// TODO: WYSZARZAJ ADD BUTON
+// TODO: IKONY NAVBAR KOLORY
 const formikSchema = yup.object().shape({
     title: yup.string().required("Tytuł jest wymagany").min(5, "Tytuł jest za krótki").max(255, "Tytuł jest za długi"),
     description: yup.string().required("Opis jest wymagany").min(10, "Opis jest za krótki"),
@@ -19,17 +21,21 @@ const formikSchema = yup.object().shape({
     important: yup.boolean().required("Wartość true lub false jest wymagana")
 });
 
-
 const TaskFormFunc = (type: "display" | "add" | "edit") => {
     const {id} = useParams();
     const navigate = useNavigate();
 
-    const initialState = {date: "", description: "", id: 0, important: false, taskType: "Default", title: ""};
+    const initialValue = useMemo(() => ({
+        date: "",
+        description: "",
+        id: 0,
+        important: false,
+        taskType: "Default",
+        title: ""
+    }), [])
 
-    const [taskItem, setTaskItem] = useState<ITask>(initialState);
-
-    const {register, handleSubmit, formState: {errors}, reset, watch} = useForm({
-        defaultValues: taskItem,
+    const {register, handleSubmit, formState: {errors, isDirty}, watch, reset} = useForm({
+        defaultValues: initialValue,
         resolver: yupResolver(formikSchema),
         mode: "onTouched"
     });
@@ -38,17 +44,15 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         if (type !== "add") {
             const {data} = await Axios.get(`/tasks/${id}`);
 
-            setTaskItem({
+            const convertedData = {
                 ...data,
                 date: dateFormat(new Date(+data.date * 1000), "yyyy-mm-dd'T'HH:MM")
-            })
+            }
+
+            reset(convertedData);
         }
-    }, [type, id])
+    }, [type, id, reset])
 
-
-    useLayoutEffect(() => {
-        getTaskItem();
-    }, [getTaskItem])
 
     const typesObject = {"Activity": "Aktywność fizyczna", "Sport": "Sport", "Cooking": "Gotowanie"};
 
@@ -57,32 +61,41 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         navigate(path);
     }
 
-    const displayTypes = () => Object.entries(typesObject).map(item => <option key={item[0]}
-                                                                               value={item[0]}>{item[1]}</option>)
+    const displayTypes = () => Object.entries(typesObject).map(item =>
+        <option key={item[0]} value={item[0]}>{item[1]}</option>);
+
+
+    const clearInputs = useCallback(() => !isDirty && reset(initialValue), [isDirty, reset, initialValue]);
 
     const submitHandler = async (data: ITask) => {
-        const utcString = new Date(data.date).toUTCString();
-        const timestamp = Date.parse(utcString);
+        if (isDirty) {
+            const utcString = new Date(data.date).toUTCString();
+            const timestamp = Date.parse(utcString);
 
-        try {
-            if (type === "add") {
-                await Axios.post("/tasks", {...data, date: timestamp});
-            } else if (type === "edit") {
-                await Axios.put(`/tasks/${id}`, {...data, date: timestamp});
+            try {
+                if (type === "add") {
+                    await Axios.post("/tasks", {...data, date: timestamp});
+                } else if (type === "edit") {
+                    await Axios.put(`/tasks/${id}`, {...data, date: timestamp});
+                }
+            } catch (err: any) {
+                console.log(err)
             }
-
-        } catch (err: any) {
-            console.log(err)
         }
+        navAhead()
     }
 
+    useEffect(() => {
+        clearInputs();
+        getTaskItem();
+    }, [getTaskItem, clearInputs])
+
+
     return {
-        taskItem,
         navAhead,
         displayTypes,
         formikSchema,
         submitHandler,
-        setTaskItem,
         register,
         handleSubmit,
         errors,
