@@ -4,7 +4,7 @@ import {Task} from "../database/entities/Task";
 import {Type} from "../database/entities/Type";
 import {Request, Response} from "express";
 import {AppDataSource} from "../index";
-import {createTimeStamp, fullTrim, toTitle} from "../controllers/helpers/helpers";
+import {createTimeStamp, fullTrim} from "../controllers/helpers/helpers";
 
 
 export const createItem = async (req: Request, res: Response, Repository: IEntityRepository) => {
@@ -50,11 +50,11 @@ export const validItem = async (req, res, Repository, entityObject): Promise<IJs
 }
 
 export const validBody = (req) => {
-    const name = req.body.name && toTitle(fullTrim(req.body.name));
-    const title = req.body.title && toTitle(fullTrim(req.body.title));
-    const description = req.body.description && toTitle(fullTrim(req.body.description));
+    const name = req.body.name && fullTrim(req.body.name);
+    const title = req.body.title && fullTrim(req.body.title);
+    const description = req.body.description && fullTrim(req.body.description);
     const important = (req.body.important === true || req.body.important === false) && req.body.important;
-    const taskType = req.body.taskType && toTitle(fullTrim(req.body.taskType));
+    const taskType = req.body.taskType && fullTrim(req.body.taskType);
     const date = req.body.date;
 
     return [name, title, description, important, taskType, date]
