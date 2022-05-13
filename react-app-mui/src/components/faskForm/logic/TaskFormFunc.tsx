@@ -34,7 +34,7 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         title: ""
     }), [])
 
-    const {register, handleSubmit, formState: {errors, isDirty}, watch, reset} = useForm({
+    const {register, handleSubmit, formState: {errors, isDirty, touchedFields}, watch, reset} = useForm({
         defaultValues: initialValue,
         resolver: yupResolver(formikSchema),
         mode: "onTouched"
@@ -85,6 +85,18 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         navAhead()
     }
 
+    type IInputType = "title" | "description" | "taskType" | "date";
+
+    const checkValidity = (field: IInputType) => {
+        if (touchedFields[field]) {
+            if (errors[field])
+                return false;
+            else if (!errors[field])
+                return true;
+        } else
+            return null;
+    }
+
     useEffect(() => {
         clearInputs();
         getTaskItem();
@@ -94,12 +106,12 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
     return {
         navAhead,
         displayTypes,
-        formikSchema,
         submitHandler,
         register,
         handleSubmit,
         errors,
-        watch
+        watch,
+        checkValidity
     }
 }
 

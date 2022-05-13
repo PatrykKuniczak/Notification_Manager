@@ -22,7 +22,8 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
         errors,
         register,
         submitHandler,
-        watch
+        watch,
+        checkValidity
     } = TaskFormFunc(type);
 
 
@@ -37,24 +38,26 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
                 <Label htmlFor="title" error={errors.title?.message}>
                     Tytuł
                     <Input id="title" autoFocus disabled={type === "display"}
-                           placeholder={"Podaj tytuł:"} {...register("title")}/>
+                           placeholder={"Podaj tytuł:"} {...register("title")}
+                           border={checkValidity("title")}/>
                 </Label>
 
                 <Label htmlFor="description" error={errors.description?.message}>
                     Opis
                     <Input disabled={type === "display"} placeholder={"Podaj opis:"}
-                           {...register("description")}/>
+                           {...register("description")} border={checkValidity("description")}/>
                 </Label>
 
                 <Label htmlFor="date" error={errors.date?.message}>
                     Data
                     <DateInput type="datetime-local" disabled={type === "display"}
-                               {...register("date")}/>
+                               {...register("date")} border={checkValidity("date")}/>
                 </Label>
 
                 <Label htmlFor="taskType" error={errors.taskType?.message}>
                     Typ Aktywności
-                    <Select disabled={type === "display"} {...register("taskType")}>
+                    <Select disabled={type === "display"} {...register("taskType")}
+                            border={checkValidity("taskType")}>
                         <option key="Default" value="Default">Wybierz opcję:</option>
                         {displayTypes()}
                     </Select>

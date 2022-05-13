@@ -3,7 +3,6 @@ import {ItemsContainer, ItemsList} from "../../items/styles/Items/ItemsContainer
 import {S_SIZE} from "../../../helpers/constants";
 import {ItemsHeader} from "../../items/styles/Item/ItemsHeader";
 
-// TODO: ZRÓB BORDER PRZY FORM
 export const TaskFormContainer = styled(ItemsContainer)`
 `
 
@@ -47,12 +46,12 @@ export const SwitchLabel = styled(Label)`
   position: relative;
 `
 
-export const Input = styled.input`
+export const Input = styled.input<{ border?: boolean | null }>`
   height: 35px;
   padding-inline: 10px;
   font-size: 1.3rem;
   border-radius: 10px;
-  //border: props => props.border || '1px solid #ccc';
+  outline: ${props => props.border === null ? "transparent" : props.border ? "1px solid #00ff00" : "1px solid #ff0000"};
   opacity: ${props => props.disabled ? "0.8" : "1"};
   box-shadow: 0 0 0.8em 0.1em #56018c;
   background-color: #f8f3ff;
