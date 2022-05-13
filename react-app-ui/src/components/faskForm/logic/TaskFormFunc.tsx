@@ -8,8 +8,6 @@ import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
 
 
-// TODO: WYSZARZAJ ADD BUTON
-// TODO: IKONY NAVBAR KOLORY
 const formikSchema = yup.object().shape({
     title: yup.string().required("Tytuł jest wymagany").min(5, "Tytuł jest za krótki").max(255, "Tytuł jest za długi"),
     description: yup.string().required("Opis jest wymagany").min(10, "Opis jest za krótki"),

@@ -14,6 +14,7 @@ import Form, {
 import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
 
 
+// TODO: WYKONAJ MODAL PRZY SUBMIT
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
     const {
         navAhead,

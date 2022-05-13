@@ -5,7 +5,8 @@ import {ItemsContainer, ItemsList} from "./styles/Items/ItemsContainer";
 import {FilterButton, FilterContainer, FilterContent} from "./styles/Items/FilterContainer";
 import ItemsFunc from "./logic/ItemsFunc";
 
-
+// TODO: UTWÓRZ HINT DELETE
+// TODO: SPRAWDŹ CZY PUSTE, LOADING I ERROR
 const Items = ({active}: { active: boolean }) => {
     const {displayOptions, toggleFilterContainer, show, ref, items} = ItemsFunc();
 
