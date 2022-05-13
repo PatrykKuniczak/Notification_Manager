@@ -12,6 +12,7 @@ import NavbarFunc from "./logic/NavbarFunc/NavbarFunc";
 
 const Navbar = () => {
     const location = useLocation();
+    const {pathname} = location;
 
     const {setDefaultFilterOptionWithNav} = NavbarFunc();
 
@@ -24,20 +25,21 @@ const Navbar = () => {
 
                 <ListElement>
                     <NavbarIcon src={itemsIcon} alt="Przycisk Aktywnych Zadań" name="active"
-                                location={location.pathname} onClick={() => setDefaultFilterOptionWithNav("/active")}>
+                                location={pathname} onClick={() => setDefaultFilterOptionWithNav("/active")}>
                     </NavbarIcon>
                 </ListElement>
 
                 <ListElement>
                     <NavbarIcon src={itemsIcon} alt="Przycisk Nie Aktywnych Zadań" name="inactive"
-                                location={location.pathname}
+                                location={pathname}
                                 onClick={() => setDefaultFilterOptionWithNav("/inactive")}/>
                 </ListElement>
             </DisplayTaskContainer>
 
             <AddButtonContainer>
                 <ListElement>
-                    <NavbarIcon src={addIcon} alt={"Przycisk Dodawania Zadań"} name="add"
+                    <NavbarIcon src={addIcon} alt={"Przycisk Dodawania Zadań"} name="add-form"
+                                location={pathname}
                                 onClick={() => setDefaultFilterOptionWithNav("add-form")}/>
                 </ListElement>
             </AddButtonContainer>
