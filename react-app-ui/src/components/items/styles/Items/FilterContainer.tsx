@@ -25,7 +25,7 @@ export const FilterContent = styled.ul`
   list-style: none;
   color: #e8dbf3;
   background-color: #6929c4;
-
+  
   @media (max-width: ${M_SIZE}){
     left: -160px;
   }

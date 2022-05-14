@@ -6,6 +6,11 @@ const GlobalStyles = createGlobalStyle`
     margin: 0;
     padding: 0;
     box-sizing: border-box;
+
+    &:focus-visible {
+      outline: #b49af8 solid 4px;
+      border-radius: 8px;
+    }
   }
 
   body {
