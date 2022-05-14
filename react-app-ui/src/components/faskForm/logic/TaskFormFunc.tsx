@@ -62,9 +62,6 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
     const displayTypes = () => Object.entries(typesObject).map(item =>
         <option key={item[0]} value={item[0]}>{item[1]}</option>);
 
-
-    const clearInputs = useCallback(() => !isDirty && reset(initialValue), [isDirty, reset, initialValue]);
-
     const submitHandler = async (data: ITask) => {
         if (isDirty) {
             const utcString = new Date(data.date).toUTCString();
@@ -96,10 +93,12 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
     }
 
     useEffect(() => {
-        clearInputs();
         getTaskItem();
-    }, [getTaskItem, clearInputs])
+    }, [getTaskItem])
 
+    useEffect(() => {
+        type === "add" && reset(initialValue);
+    }, [type, reset, initialValue])
 
     return {
         navAhead,
