@@ -6,6 +6,7 @@ import {ButtonContainer, IconElement} from "./styles/Item/ButtonContainer";
 import {ListContainer} from "./styles/Item/ListContainer";
 import ItemFunc from "./logic/ItemFunc";
 import {ITask} from "../../helpers/interfaces";
+import DeletePopUp from "../deletePopUp/DeletePopUp";
 
 
 interface IItemProps {
@@ -14,7 +15,16 @@ interface IItemProps {
 }
 
 const Item = ({item, active}: IItemProps) => {
-    const {changeImportant, displayFormNav, editFormNav, convertedDate, removeItem} = ItemFunc(item);
+    const {
+        changeImportant,
+        displayFormNav,
+        editFormNav,
+        convertedDate,
+        showDeletePopUp,
+        showPopUp,
+        removeTask,
+        closeDeletePopUp
+    } = ItemFunc(item);
 
     return (<ListContainer>
             <TextContainer onClick={displayFormNav}>
@@ -24,12 +34,16 @@ const Item = ({item, active}: IItemProps) => {
             </TextContainer>
 
             <ButtonContainer>
-                <IconElement name="star" type="image" src={starIcon} activeImportant={item.important} active={active}
+                <IconElement name="star" type="image" src={starIcon} activeImportant={item.important}
+                             active={active}
                              onClick={changeImportant} alt="Przycisk Ważne"/>
                 <IconElement name="edit" type="image" src={editIcon} onClick={editFormNav} alt="Przycisk Edycji"/>
-                <IconElement name="delete" type="image" src={deleteIcon} onClick={removeItem} alt="Przycisk Usuwania"/>
+                <IconElement name="delete" type="image" src={deleteIcon} onClick={showDeletePopUp}
+                             alt="Przycisk Usuwania"/>
+                {showPopUp && <DeletePopUp closePopUp={closeDeletePopUp} deleteTask={removeTask}/>}
             </ButtonContainer>
         </ListContainer>
+
     )
 }
 

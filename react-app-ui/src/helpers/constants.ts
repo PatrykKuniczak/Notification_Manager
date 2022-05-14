@@ -5,4 +5,4 @@ export const M_SIZE = "1100px";
 export const L_SIZE = "1500px";
 
 
-export const textColor = "#DABBF1"
+export const textColor = "#e6d2ff"

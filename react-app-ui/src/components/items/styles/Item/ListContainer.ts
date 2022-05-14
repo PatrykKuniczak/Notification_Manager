@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { XXS_SIZE } from "../../../../helpers/constants";
+import {XXS_SIZE} from "../../../../helpers/constants";
 
 
 export const ListContainer = styled.li`
@@ -10,12 +10,12 @@ export const ListContainer = styled.li`
   border-radius: 15px;
   cursor: pointer;
   background-color: #EAD9F9;
-  
+
   &:hover {
-    opacity: 0.9;
+    background-color: rgba(234, 217, 249, 0.85);
   }
-  
-  @media (max-width: ${XXS_SIZE}){
+
+  @media (max-width: ${XXS_SIZE}) {
     gap: 20px;
   }
 `

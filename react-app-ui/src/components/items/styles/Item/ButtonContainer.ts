@@ -42,7 +42,6 @@ export const IconElement = styled.input<{ name: string, activeImportant?: boolea
           (props.activeImportant ? activeStarIconFilter : inactiveStarIconFilter) :
           props.name === "edit" ? editIconFilter : deleteIconFilter};
 
-  
   &:first-child {
     pointer-events: ${props => !props.active && "none"};
     opacity: ${props => !props.active && "0.5"};

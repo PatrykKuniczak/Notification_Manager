@@ -7,7 +7,7 @@ import ItemsFunc from "./logic/ItemsFunc";
 import CheckEmptiness from "../checkEmptiness/CheckEmptiness";
 import ErrorLoadingProvider from "../errorLoadingProvider/ErrorLoadingProvider";
 
-// TODO: UTWÓRZ HINT DELETE
+
 const Items = ({active}: { active: boolean }) => {
     const {displayOptions, toggleFilterContainer, show, ref, items, error, loading, errorMessage} = ItemsFunc();
 
