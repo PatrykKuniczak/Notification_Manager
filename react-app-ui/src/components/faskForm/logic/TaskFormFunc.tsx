@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo} from "react";
+import {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
 import {ITask} from "../../../helpers/interfaces";
 import Axios from "axios";
@@ -22,6 +22,8 @@ const formikSchema = yup.object().shape({
 const TaskFormFunc = (type: "display" | "add" | "edit") => {
     const {id} = useParams();
     const navigate = useNavigate();
+    const [showSubmitModal, setShowSubmitModal] = useState(false);
+    const [submitMessage, setSubmitMessage] = useState("");
 
     const initialValue = useMemo(() => ({
         date: "",
@@ -74,10 +76,13 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
                     await Axios.put(`/tasks/${id}`, {...data, date: timestamp});
                 }
             } catch (err: any) {
-                console.log(err)
+                setSubmitMessage(err.message);
+            } finally {
+                setSubmitMessage(`${type === "add" ? "Dodawanie" : "Edytowanie"} zadania powiodło się!`)
+                setShowSubmitModal(true);
             }
-        }
-        navAhead()
+        } else
+            navAhead()
     }
 
     type IInputType = "title" | "description" | "taskType" | "date";
@@ -108,7 +113,9 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         handleSubmit,
         errors,
         watch,
-        checkValidity
+        checkValidity,
+        showSubmitModal,
+        submitMessage
     }
 }
 
