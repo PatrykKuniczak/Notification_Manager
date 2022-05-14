@@ -13,7 +13,7 @@ const options: IOptions[] = ["A-Z", "Z-A", "Ważne", "Najwcześniejsza Data", "N
 
 const ItemsFunc = () => {
     const dispatch = useDispatch<any>();
-    const {loading, items} = useSelector(selectItems);
+    const {loading, items, error, errorMessage} = useSelector(selectItems);
     const {filterOption} = useSelector(selectFilter);
     const {show} = useSelector(selectFilter);
     const ref = useRef(null);
@@ -42,7 +42,7 @@ const ItemsFunc = () => {
         dispatch(filterItems(filterOption));
     }, [filterOption, dispatch])
 
-    return {show, ref, loading, items, displayOptions, toggleFilterContainer, selectFilterOption};
+    return {show, ref, loading, items, displayOptions, toggleFilterContainer, selectFilterOption, error, errorMessage};
 }
 
 

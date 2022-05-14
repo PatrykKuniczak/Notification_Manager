@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import { textColor } from "../../../../helpers/constants";
 
 export const ItemsHeader = styled.span`
   display: flex;
@@ -8,6 +9,6 @@ export const ItemsHeader = styled.span`
   padding: 20px 30px;
 
   h1 {
-    color: #DABBF1;
+    color: ${textColor};
   }
 `

@@ -10,7 +10,7 @@ const sortByBoolean = createNewSortInstance({
     inPlaceSorting: true
 });
 
-type IInitialState = { items: ITask[], loading: boolean, error: boolean };
+type IInitialState = { items: ITask[], loading: boolean, error: boolean, errorMessage: string };
 
 const initialState: IInitialState = {
     items: [{
@@ -23,6 +23,7 @@ const initialState: IInitialState = {
     }],
     loading: false,
     error: false,
+    errorMessage: ""
 };
 
 export const changeItemImportant = createAsyncThunk(
@@ -101,7 +102,8 @@ const itemsSlice = createSlice({
             })
 
         builders.addCase(getAllItems.rejected,
-            (state) => {
+            (state, {error}) => {
+                state.errorMessage = error.message!;
                 state.error = true;
             })
 
@@ -115,7 +117,8 @@ const itemsSlice = createSlice({
             })
 
         builders.addCase(changeItemImportant.rejected,
-            (state) => {
+            (state, {error}) => {
+                state.errorMessage = error.message!;
                 state.error = true;
             })
 
@@ -125,7 +128,8 @@ const itemsSlice = createSlice({
             })
 
         builders.addCase(deleteItem.rejected,
-            (state) => {
+            (state, {error}) => {
+                state.errorMessage = error.message!;
                 state.error = true;
             })
     }
