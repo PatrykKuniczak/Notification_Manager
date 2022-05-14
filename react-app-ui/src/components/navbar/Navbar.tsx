@@ -11,8 +11,7 @@ import NavbarFunc from "./logic/NavbarFunc/NavbarFunc";
 
 
 const Navbar = () => {
-    const location = useLocation();
-    const {pathname} = location;
+    const {pathname} = useLocation();
 
     const {setDefaultFilterOptionWithNav} = NavbarFunc();
 
