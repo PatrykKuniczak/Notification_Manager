@@ -20,12 +20,12 @@ export const Title = styled(ItemsHeader)`
 `
 
 export const Label = styled.label<{ error: string | undefined }>`
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
   font-size: 1.5em;
   color: #fff;
-  position: relative;
 
   &::after {
     ${props => props.error && css`
@@ -90,11 +90,11 @@ export const Switch = styled(Input)<{ disabled: boolean }>`
 `
 
 export const Slider = styled.span<{ active: boolean, disabled: boolean }>`
+  position: absolute;
+  top: 50px;
   display: block;
   height: 30px;
   width: 60px;
-  position: absolute;
-  top: 50px;
   cursor: pointer;
   border-radius: 15px;
   outline: 2px solid #6700A2;
@@ -105,12 +105,12 @@ export const Slider = styled.span<{ active: boolean, disabled: boolean }>`
 
   &::before {
     content: "";
-    display: block;
-    width: 20px;
-    height: 20px;
     position: absolute;
     top: 3px;
     left: 10px;
+    display: block;
+    width: 20px;
+    height: 20px;
     border: ${props => props.active ? "#7806AB 2px solid" : "#8B868D 2px solid"};
     border-radius: 30%;
     transition: transform 0.4s ease-in-out;
