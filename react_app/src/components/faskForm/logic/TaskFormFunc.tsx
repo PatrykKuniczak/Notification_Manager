@@ -71,6 +71,8 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
 
             try {
                 if (type === "add") {
+                    // @ts-ignore
+                    delete data.id;
                     await Axios.post("/tasks", {...data, date: timestamp});
                 } else if (type === "edit") {
                     await Axios.put(`/tasks/${id}`, {...data, date: timestamp});
