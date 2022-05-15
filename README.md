@@ -1,6 +1,6 @@
 # Task_Manager
 
-[Task_Manager](https://task-manager-patrykkuniczak.vercel.app)
+[Task Manager](https://task-manager-patrykkuniczak.vercel.app)
 
 ## Functionality:
 

@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="67" height="67"
+     viewBox="0 0 67 67">
+    <defs>
+        <linearGradient id="linear-gradient" x1="0.062" y1="0.091" x2="0.934" y2="0.914"
+        >
+            <stop offset="0" stop-color="#6c39e1"/>
+            <stop offset="1" stop-color="#7237ec"/>
+        </linearGradient>
+    </defs>
+    <g transform="translate(-10 -22)">
+        <g>
+            <g>
+                <rect width="67" height="67" rx="16"
+                      transform="translate(10 22)" fill="url(#linear-gradient)"/>
+                <text id="T" transform="translate(21 29)" fill="#9d65c4" font-size="28"
+                      font-family="Arial-BoldMT, Arial" font-weight="700">
+                    <tspan x="0" y="25">T</tspan>
+                </text>
+                <text id="M" transform="translate(44 54)" fill="#9d65c4" font-size="28"
+                      font-family="Arial-BoldMT, Arial" font-weight="700">
+                    <tspan x="0" y="25">M</tspan>
+                </text>
+            </g>
+        </g>
+    </g>
+</svg>
