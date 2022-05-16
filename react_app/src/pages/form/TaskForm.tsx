@@ -60,7 +60,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
                 Typ Aktywności
                 <Select disabled={type === "display"} {...register("taskType")}
                         border={checkValidity("taskType")}>
-                    <option key="Default" value="Default">Wybierz opcję:</option>
+                    <option value="Default" key={"Default"} disabled selected hidden>Wybierz opcję:</option>
                     {displayTypes()}
                 </Select>
             </Label>
