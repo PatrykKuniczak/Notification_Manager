@@ -87,6 +87,9 @@ const itemsSlice = createSlice({
                 case "Najpóźniejsza Data":
                     inPlaceSort(state.items).desc(item => item.date);
             }
+        },
+        filterItemsByTerm: (state, {payload}: PayloadAction<string>) => {
+            inPlaceSort(state.items).desc(item => item.title.toLowerCase().startsWith(payload));
         }
     },
     extraReducers: (builders) => {
@@ -135,7 +138,7 @@ const itemsSlice = createSlice({
     }
 });
 
-export const {filterItems} = itemsSlice.actions;
+export const {filterItems, filterItemsByTerm} = itemsSlice.actions;
 
 
 export default itemsSlice.reducer;
