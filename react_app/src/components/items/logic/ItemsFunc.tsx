@@ -9,7 +9,8 @@ import {useLocation} from "react-router-dom";
 import {filterItems, getAllItems} from "../../../store/slices/itemsSlice";
 
 
-const options: IOptions[] = ["A-Z", "Z-A", "Ważne", "Najwcześniejsza Data", "Najpóźniejsza Data"];
+const options: IOptions[] = ["A-Z", "Z-A", "Important", "Earlier Date", "Latest Date"];
+const translatedOptions = ["A-Z", "Z-A", "Ważne", "Najwcześniejsza Data", "Najpóźniejsza Data"];
 
 const ItemsFunc = () => {
     const dispatch = useDispatch<any>();
@@ -27,7 +28,7 @@ const ItemsFunc = () => {
 
     const displayOptions = () => options.map(option =>
         <FilterOption key={option} onClick={() => selectFilterOption(option)} disabled={option === filterOption}>
-            {option}
+            {translatedOptions[options.indexOf(option)]}
         </FilterOption>)
 
     const toggleFilterContainer = () => dispatch(toggleFilterDropdown());
