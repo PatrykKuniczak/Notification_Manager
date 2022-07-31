@@ -6,6 +6,7 @@ import dateFormat from "dateformat";
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
+import {usePrompt} from "../../../helpers/usePrompt";
 
 
 const formikSchema = yup.object().shape({
@@ -22,6 +23,7 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
     const navigate = useNavigate();
     const [showSubmitModal, setShowSubmitModal] = useState(false);
     const [submitMessage, setSubmitMessage] = useState("");
+
 
     const initialValue = useMemo(() => ({
         date: "",
@@ -96,6 +98,8 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
     useEffect(() => {
         type === "add" && reset(initialValue);
     }, [type, reset, initialValue])
+
+    usePrompt("Zacząłeś wypełniać formularz, czy chcesz stracić dane??", isDirty);
 
     return {
         navAhead,
