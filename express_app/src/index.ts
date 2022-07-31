@@ -7,30 +7,27 @@ import morgan from 'morgan';
 import cors from "cors"
 import cookieParser from "cookie-parser"
 import {Task} from "./database/entities/Task";
-import {Type} from "./database/entities/Type";
 import dotenv from "dotenv";
 
 
 const app: Express = express();
 
 dotenv.config({path: "./.env"});
+
 app.use(morgan("dev"));
-
-
 app.use(express.json());
 app.use(cors());
 app.use(express.urlencoded({extended: true}));
 app.use(cookieParser());
 app.use('/api', baseRouter);
 
-
 export const AppDataSource = new DataSource({
     type: "postgres",
     url: process.env.DATABASE_URL,
     synchronize: true,
     ssl: process.env.NODE_ENV === 'production'
-        ? { rejectUnauthorized: false } : false,
-    entities: [Task, Type]
+        ? {rejectUnauthorized: false} : false,
+    entities: [Task]
 })
 
 AppDataSource.initialize()

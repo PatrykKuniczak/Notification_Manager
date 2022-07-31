@@ -1,7 +1,7 @@
 import {Request, Response} from "express";
 import {DeleteResult} from "typeorm";
 import {createItem} from "../services/itemsService";
-import {IEntityRepository, IItems} from "./helpers/interfaces";
+import {IEntityRepository, IItems, IJsonMessage} from "./helpers/interfaces";
 import {fullTrim, instanceOfIJsonMessage} from "./helpers/helpers";
 import {AppDataSource} from "../index";
 
@@ -11,9 +11,9 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
     create: async (req: Request, res: Response): Promise<Response> => {
         const result = await createItem(req, res, Repository);
 
-        if (instanceOfIJsonMessage(result)) {
+        if (instanceOfIJsonMessage(result as IJsonMessage))
             return res.status(406).send(result)
-        }else if (result instanceof Error)
+        else if (result instanceof Error)
             return res.status(406).send(result.message)
 
         return await AppDataSource.manager.save(result)
@@ -27,11 +27,11 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
     edit: async (req: Request, res: Response): Promise<Response> => {
         const result = await createItem(req, res, Repository);
 
-        if (instanceOfIJsonMessage(result))
+        if (instanceOfIJsonMessage(result as IJsonMessage))
             return res.status(401).send(result);
 
         try {
-            const updateResult = await AppDataSource.manager.update(Repository, req.params.id, result);
+            const updateResult = await AppDataSource.manager.update(Repository, req.params.id, result as any);
             const status = !updateResult.affected ? 404 : 200;
 
             return status === 404 ? res.status(status).send({message: "Record Not Found"}) : res.sendStatus(status);
