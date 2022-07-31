@@ -65,7 +65,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
                     Przejdź do edycji
                 </Button>}
 
-                {type !== "display" && <Button type="submit">
+                {type !== "display" && <Button type="submit" disabled={showSubmitModal}>
                     {type === "add" ? "Dodaj" : "Potwierdź"}
                 </Button>
                 }
