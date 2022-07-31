@@ -5,7 +5,7 @@ export const fullTrim = (str: string) => {
     return str.replace(/ +/g, ' ').trim();
 }
 
-export const instanceOfIJsonMessage = (jsonObject: any): jsonObject is IJsonMessage => {
+export const instanceOfIJsonMessage = (jsonObject: IJsonMessage) => {
     return 'error' in jsonObject;
 }
 

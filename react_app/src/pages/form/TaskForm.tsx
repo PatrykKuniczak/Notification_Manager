@@ -1,10 +1,8 @@
 import Form, {
     Button,
     ButtonContainer,
-    DateInput,
     Input,
     Label,
-    Select,
     Slider,
     Switch,
     SwitchLabel,
@@ -18,7 +16,6 @@ import SubmitModal from "../../components/submitModal/SubmitModal";
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
     const {
         navAhead,
-        displayTypes,
         handleSubmit,
         errors,
         register,
@@ -52,17 +49,8 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
 
             <Label htmlFor="date" error={errors.date?.message}>
                 Data
-                <DateInput type="datetime-local" disabled={type === "display"}
-                           {...register("date")} border={checkValidity("date")}/>
-            </Label>
-
-            <Label htmlFor="taskType" error={errors.taskType?.message}>
-                Typ Aktywności
-                <Select disabled={type === "display"} {...register("taskType")}
-                        border={checkValidity("taskType")}>
-                    <option key="Default" value="Default">Wybierz opcję:</option>
-                    {displayTypes()}
-                </Select>
+                <Input type="datetime-local" disabled={type === "display"}
+                       {...register("date")} border={checkValidity("date")}/>
             </Label>
 
             <SwitchLabel htmlFor="important" error={errors.important?.message!}>

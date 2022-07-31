@@ -65,10 +65,6 @@ export const Input = styled.input<{ border?: boolean | null }>`
   }
 `
 
-export const DateInput = styled(Input)`
-
-`
-
 export const Select = styled(Input).attrs({
     as: "select"
 })`

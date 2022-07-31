@@ -18,7 +18,6 @@ const initialState: IInitialState = {
         id: 0,
         important: false,
         date: "",
-        taskType: "",
         title: ""
     }],
     loading: false,
@@ -78,15 +77,18 @@ const itemsSlice = createSlice({
                 case "Z-A":
                     inPlaceSort(state.items).desc(item => item.title);
                     break;
-                case "Ważne":
+                case "Important":
                     sortByBoolean(state.items).asc(item => item.important);
                     break;
-                case "Najwcześniejsza Data":
+                case "Earlier Date":
                     inPlaceSort(state.items).asc(item => item.date);
                     break;
-                case "Najpóźniejsza Data":
+                case "Latest Date":
                     inPlaceSort(state.items).desc(item => item.date);
             }
+        },
+        filterItemsByTerm: (state, {payload}: PayloadAction<string>) => {
+            inPlaceSort(state.items).desc(item => item.title.toLowerCase().startsWith(payload));
         }
     },
     extraReducers: (builders) => {
@@ -135,7 +137,7 @@ const itemsSlice = createSlice({
     }
 });
 
-export const {filterItems} = itemsSlice.actions;
+export const {filterItems, filterItemsByTerm} = itemsSlice.actions;
 
 
 export default itemsSlice.reducer;

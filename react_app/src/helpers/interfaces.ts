@@ -4,10 +4,9 @@ export interface ITask {
     description: string
     important: boolean
     date: string
-    taskType: string
 }
 
-export type IOptions = "A-Z" | "Z-A" | "Najwcześniejsza Data" | "Najpóźniejsza Data" | "Ważne";
+export type IOptions = "A-Z" | "Z-A" | "Earlier Date" | "Latest Date" | "Important";
 
 export interface IFilterStateEvent {
     filterOption: IOptions

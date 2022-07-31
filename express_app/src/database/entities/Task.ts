@@ -1,5 +1,5 @@
 import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
-import {IsBoolean, Length, Matches, Max, Min, MinLength, NotEquals} from "class-validator";
+import {IsBoolean, Length, Max, Min, MinLength} from "class-validator";
 import {createTimeStamp} from "../../controllers/helpers/helpers";
 
 
@@ -24,14 +24,6 @@ export class Task {
     @IsBoolean({message: "Important must be a boolean value."})
     @Column()
     important: boolean;
-
-    @Column()
-    @Matches(/^[a-żA-Ż\s]+$/, {message: "Type must have only letters."})
-    @NotEquals("Default", {message: "taskType can't be 'Default'"})
-    @Length(3, 255, {
-        message: "Name must have minimum length $constraint1 and maximal length is $constraint2."
-    })
-    taskType: string
 
     @Column("bigint")
     @Min(Date.parse(new Date().toUTCString()) / 1000, {message: "Date must be after actual date."})

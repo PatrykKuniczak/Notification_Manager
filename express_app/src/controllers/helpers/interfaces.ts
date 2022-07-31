@@ -1,9 +1,8 @@
 import {Request, Response} from "express";
-import {Type} from "../../database/entities/Type";
 import {Task} from "../../database/entities/Task";
 import {EntityTarget} from "typeorm";
 
-export type IRepository = Type | Task
+export type IRepository = Task
 export type IEntityRepository = EntityTarget<IRepository>;
 export type IJsonMessage = { error: string[] };
 
