@@ -22,5 +22,4 @@ const TaskSearch = () => {
     )
 }
 
-
 export default TaskSearch;

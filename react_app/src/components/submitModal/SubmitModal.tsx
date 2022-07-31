@@ -17,5 +17,4 @@ const SubmitModal = ({submitMessage, navAhead}: { submitMessage: string, navAhea
     </SubmitModalContainer>)
 }
 
-
 export default SubmitModal;

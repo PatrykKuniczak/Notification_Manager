@@ -14,5 +14,4 @@ const TaskSearchInput = styled.input`
   }
 `
 
-
 export default TaskSearchInput;

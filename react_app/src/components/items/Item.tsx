@@ -47,5 +47,4 @@ const Item = ({item, active}: IItemProps) => {
     )
 }
 
-
 export default Item;

@@ -18,7 +18,6 @@ const initialState: IInitialState = {
         id: 0,
         important: false,
         date: "",
-        taskType: "",
         title: ""
     }],
     loading: false,

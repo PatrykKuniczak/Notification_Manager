@@ -14,8 +14,6 @@ const formikSchema = yup.object().shape({
     date: yup.date().required("Data jest nie prawidłowa").typeError("Data jest nieprawidłowa")
         .min(new Date(), "Data musi być późniejsza niż teraźniejsza")
         .max(new Date("2100-01-01 00:00"), "Data nie może być późniejsza niż 2100-01-01 00:00"),
-    taskType: yup.string().test('is-not-default', "Wybierz opcję!",
-        value => value !== "Default").required("Typ jest wymagany").min(3, "Typ jest za krótki"),
     important: yup.boolean().required("Wartość true lub false jest wymagana")
 });
 
@@ -30,7 +28,6 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         description: "",
         id: 0,
         important: false,
-        taskType: "Default",
         title: ""
     }), [])
 
@@ -53,16 +50,9 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         }
     }, [type, id, reset])
 
-
-    const typesObject = {"Activity": "Aktywność fizyczna", "Sport": "Sport", "Cooking": "Gotowanie"};
-
     const navAhead = () => {
-        const path = type === "add" || type === "edit" ? "/active" : `/edit-form/${id}`;
-        navigate(path);
+        navigate(type === "add" || type === "edit" ? "/active" : `/edit-form/${id}`);
     }
-
-    const displayTypes = () => Object.entries(typesObject).map(item =>
-        <option key={item[0]} value={item[0]}>{item[1]}</option>);
 
     const submitHandler = async (data: ITask) => {
         if (isDirty) {
@@ -87,7 +77,7 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
             navAhead()
     }
 
-    type IInputType = "title" | "description" | "taskType" | "date";
+    type IInputType = "title" | "description" | "date";
 
     const checkValidity = (field: IInputType) => {
         if (touchedFields[field]) {
@@ -109,7 +99,6 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
 
     return {
         navAhead,
-        displayTypes,
         submitHandler,
         register,
         handleSubmit,
