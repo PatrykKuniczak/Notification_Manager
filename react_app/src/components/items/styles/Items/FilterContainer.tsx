@@ -25,12 +25,12 @@ export const FilterContent = styled.ul`
   list-style: none;
   color: #e8dbf3;
   background-color: #6929c4;
-  
-  @media (max-width: ${M_SIZE}){
+
+  @media (max-width: ${M_SIZE}) {
     left: -160px;
   }
-  
-  @media (max-width: ${S_SIZE}){
+
+  @media (max-width: ${S_SIZE}) {
     left: -130px;
   }
 `
@@ -48,12 +48,12 @@ export const FilterOption = styled.li<{ disabled: boolean }>`
     opacity: 0.7;
     cursor: pointer;
   }
-  
-  @media (max-width: ${M_SIZE}){
+
+  @media (max-width: ${M_SIZE}) {
     font-size: 1rem;
   }
 
-  @media (max-width: ${S_SIZE}){
+  @media (max-width: ${S_SIZE}) {
     font-size: 0.8rem;
   }
 `

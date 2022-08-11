@@ -1,12 +1,13 @@
 import {selectFilter, selectItems} from "../../../store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {FilterOption} from "../styles/Items/FilterContainer";
-import {useOnClickOutside} from "usehooks-ts";
-import {useDeferredValue, useEffect, useLayoutEffect, useRef} from "react";
+import {useOnClickOutside, useWindowSize} from "usehooks-ts";
+import {useDeferredValue, useEffect, useLayoutEffect, useRef, useState} from "react";
 import {IOptions} from "../../../helpers/interfaces";
 import {changeOption, closeFilterDropdown, toggleFilterDropdown} from "../../../store/slices/filterSlice";
 import {useLocation} from "react-router-dom";
 import {filterItems, getAllItems} from "../../../store/slices/itemsSlice";
+import {VERY_SMALL_SIZE} from "../../../helpers/constants";
 
 
 const options: IOptions[] = ["A-Z", "Z-A", "Important", "Earlier Date", "Latest Date"];
@@ -19,6 +20,8 @@ const ItemsFunc = () => {
     const ref = useRef(null);
     const checkLocation = useLocation().pathname === "/active";
     const deferredItems = useDeferredValue(items);
+    const {width} = useWindowSize()
+    const [searchBarVisibility, setSearchBarVisibility] = useState(false);
 
     useOnClickOutside(ref, () => dispatch(closeFilterDropdown()));
 
@@ -33,6 +36,8 @@ const ItemsFunc = () => {
 
     const toggleFilterContainer = () => dispatch(toggleFilterDropdown());
 
+    const changeSearchBarVisibility = () => setSearchBarVisibility(prevState => !prevState);
+
     useLayoutEffect(() => {
         dispatch(getAllItems(checkLocation));
     }, [checkLocation, dispatch])
@@ -41,6 +46,10 @@ const ItemsFunc = () => {
     useEffect(() => {
         dispatch(filterItems(filterOption));
     }, [filterOption, dispatch])
+
+    useEffect(() => {
+        width > Number(VERY_SMALL_SIZE.slice(0, -2)) && setSearchBarVisibility(false);
+    }, [width])
 
     return {
         show,
@@ -51,7 +60,10 @@ const ItemsFunc = () => {
         toggleFilterContainer,
         selectFilterOption,
         error,
-        errorMessage
+        errorMessage,
+        width,
+        changeSearchBarVisibility,
+        searchBarVisibility
     };
 }
 

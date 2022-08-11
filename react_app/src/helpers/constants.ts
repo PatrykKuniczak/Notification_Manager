@@ -1,3 +1,4 @@
+export const VERY_SMALL_SIZE = "420px";
 export const XXS_SIZE = "500px";
 export const XS_SIZE = "650px";
 export const S_SIZE = "850px";

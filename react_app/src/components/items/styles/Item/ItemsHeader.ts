@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { textColor } from "../../../../helpers/constants";
+import {textColor, XS_SIZE} from "../../../../helpers/constants";
 
 export const ItemsHeader = styled.span`
   display: flex;
@@ -10,5 +10,9 @@ export const ItemsHeader = styled.span`
 
   h1 {
     color: ${textColor};
+  }
+
+  @media (max-width: ${XS_SIZE}) {
+    font-size: 12px;
   }
 `
