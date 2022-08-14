@@ -7,7 +7,7 @@ export const TaskSearchContainer = styled.div`
   gap: 10px;
 `
 
-const TaskSearchInput = styled.input`
+const TaskSearchInput = styled.input<{ searchBarVisibility: boolean }>`
   width: 250px;
   height: 40px;
   border-radius: 5px;
@@ -15,7 +15,7 @@ const TaskSearchInput = styled.input`
   padding-left: 10px;
 
   &::placeholder {
-    color: #000000;
+    color: #000;
     font-weight: bold;
   }
 
@@ -36,11 +36,11 @@ const TaskSearchInput = styled.input`
   }
 
   @media (max-width: ${VERY_SMALL_SIZE}) {
-    width: calc(100vw - 100px);
+    width: ${props => props.searchBarVisibility && "calc(100vw - 100px)"};
   }
 `
 
-export const SearchIcon = styled.input<{ active: boolean }>`
+export const SearchIcon = styled.img<{ active: boolean }>`
   height: 35px;
   width: 35px;
   align-self: center;
@@ -55,7 +55,7 @@ export const SearchIcon = styled.input<{ active: boolean }>`
   }
 `
 
-export const CloseSearchBarButton = styled.input`
+export const CloseSearchBarButton = styled.img`
   display: inline-flex;
   align-self: center;
   width: 28px;
