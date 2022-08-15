@@ -1,12 +1,19 @@
 import {selectFilter, selectItems} from "../../../store/store";
 import {useDispatch, useSelector} from "react-redux";
 import {FilterOption} from "../styles/Items/FilterContainer";
-import {useOnClickOutside} from "usehooks-ts";
-import {useDeferredValue, useEffect, useLayoutEffect, useRef} from "react";
+import {useOnClickOutside, useWindowSize} from "usehooks-ts";
+import {
+    useDeferredValue,
+    useEffect,
+    useLayoutEffect,
+    useRef,
+    useState
+} from "react";
 import {IOptions} from "../../../helpers/interfaces";
 import {changeOption, closeFilterDropdown, toggleFilterDropdown} from "../../../store/slices/filterSlice";
 import {useLocation} from "react-router-dom";
 import {filterItems, getAllItems} from "../../../store/slices/itemsSlice";
+import {VERY_SMALL_SIZE} from "../../../helpers/constants";
 
 
 const options: IOptions[] = ["A-Z", "Z-A", "Important", "Earlier Date", "Latest Date"];
@@ -16,24 +23,26 @@ const ItemsFunc = () => {
     const dispatch = useDispatch<any>();
     const {loading, items, error, errorMessage} = useSelector(selectItems);
     const {filterOption, show} = useSelector(selectFilter);
-    const ref = useRef(null);
+    const closeFilterRef = useRef(null);
     const checkLocation = useLocation().pathname === "/active";
     const deferredItems = useDeferredValue(items);
+    const {width} = useWindowSize();
+    const [searchBarVisibility, setSearchBarVisibility] = useState(false);
+    const searchBarRef = useRef<any>(null!);
 
-    useOnClickOutside(ref, () => dispatch(closeFilterDropdown()));
-
-    const selectFilterOption = (option: IOptions) => {
-        dispatch(changeOption(option));
-    }
+    useOnClickOutside(closeFilterRef, () => dispatch(closeFilterDropdown()));
 
     const displayOptions = () => options.map(option =>
-        <FilterOption key={option} onClick={() => selectFilterOption(option)} disabled={option === filterOption}>
+        <FilterOption key={option} onClick={() => dispatch(changeOption(option))} disabled={option === filterOption}>
             {translatedOptions[options.indexOf(option)]}
         </FilterOption>)
 
     const toggleFilterContainer = () => dispatch(toggleFilterDropdown());
 
+    const changeSearchBarVisibility = () => setSearchBarVisibility(prevState => !prevState);
+
     useLayoutEffect(() => {
+        setSearchBarVisibility(false);
         dispatch(getAllItems(checkLocation));
     }, [checkLocation, dispatch])
 
@@ -42,16 +51,27 @@ const ItemsFunc = () => {
         dispatch(filterItems(filterOption));
     }, [filterOption, dispatch])
 
+    useEffect(() => {
+        width > Number(VERY_SMALL_SIZE.slice(0, -2)) && setSearchBarVisibility(false);
+
+        if (width <= Number(VERY_SMALL_SIZE.slice(0, -2)) && !searchBarVisibility)
+            dispatch(filterItems(filterOption));
+    }, [width, dispatch, filterOption, searchBarVisibility])
+
+
     return {
         show,
-        ref,
+        closeFilterRef,
         loading,
         deferredItems,
         displayOptions,
         toggleFilterContainer,
-        selectFilterOption,
         error,
-        errorMessage
+        errorMessage,
+        width,
+        changeSearchBarVisibility,
+        searchBarVisibility,
+        searchBarRef
     };
 }
 

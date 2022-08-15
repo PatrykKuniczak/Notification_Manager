@@ -8,24 +8,60 @@ import CheckEmptiness from "../checkEmptiness/CheckEmptiness";
 import ErrorLoadingProvider from "../errorLoadingProvider/ErrorLoadingProvider";
 import TaskSearch from "../taskSearch/TaskSearch";
 import SearchFilterContainer from "./styles/Items/SearchFilterContainer";
+import {CloseSearchBarButton, SearchIcon, TaskSearchContainer} from "../taskSearch/styles/TaskSearchContainer";
+import {VERY_SMALL_SIZE} from "../../helpers/constants";
+import searchIcon from "../icons/searchIcon.svg";
+import closeSearchBarArrow from "../icons/closeSearchBarArrow.svg";
 
 
 const Items = ({active}: { active: boolean }) => {
-    const {displayOptions, toggleFilterContainer, show, ref, deferredItems, error, loading, errorMessage} = ItemsFunc();
+    const {
+        displayOptions,
+        toggleFilterContainer,
+        show,
+        closeFilterRef,
+        deferredItems,
+        error,
+        loading,
+        errorMessage,
+        width,
+        changeSearchBarVisibility,
+        searchBarVisibility,
+        searchBarRef
+    } = ItemsFunc();
 
     return (
         <ItemsContainer>
             <ItemsHeader>
-                <h1>{active ? "Aktywne" : "Zarchiwizowane"}</h1>
+                {!searchBarVisibility && <h1>{active ? "Aktywne" : "Zarchiwizowane"}</h1>}
                 <SearchFilterContainer>
-                    <TaskSearch/>
-                    <FilterContainer ref={ref}>
-                        <FilterButton type="image" src={filterIcon} alt="Przycisk Filtrowania"
-                                      onClick={toggleFilterContainer}/>
-                        {show && <FilterContent>
-                            {displayOptions()}
-                        </FilterContent>}
-                    </FilterContainer>
+                    <TaskSearchContainer>
+                        {(searchBarVisibility || width > Number(VERY_SMALL_SIZE.slice(0, -2))) &&
+                            <TaskSearch ref={searchBarRef} width={width} searchBarVisibility={searchBarVisibility}/>}
+
+                        {searchBarVisibility && <CloseSearchBarButton src={closeSearchBarArrow}
+                                                                      onClick={async () => {
+                                                                          await searchBarRef.current.clearSearchTerm();
+                                                                          changeSearchBarVisibility();
+                                                                      }}/>}
+                    </TaskSearchContainer>
+
+                    {(!searchBarVisibility && width <= Number(VERY_SMALL_SIZE.slice(0, -2))) &&
+                        <SearchIcon src={searchIcon} active={active}
+                                    onClick={async () => {
+                                        await changeSearchBarVisibility();
+                                        searchBarRef.current.taskSearchFocus();
+                                    }}/>}
+
+                    {!searchBarVisibility &&
+                        <FilterContainer ref={closeFilterRef}>
+                            <FilterButton type="image" src={filterIcon} alt="Przycisk Filtrowania"
+                                          onClick={toggleFilterContainer}/>
+                            {show && <FilterContent>
+                                {displayOptions()}
+                            </FilterContent>}
+                        </FilterContainer>
+                    }
                 </SearchFilterContainer>
             </ItemsHeader>
 
