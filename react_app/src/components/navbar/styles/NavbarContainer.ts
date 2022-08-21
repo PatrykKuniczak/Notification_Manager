@@ -10,7 +10,6 @@ export const NavbarContainer = styled.nav`
   display: flex;
   flex-direction: column;
   justify-content: space-between;
-  align-items: center;
   padding: 12px;
   background-color: #8c4def;
 
@@ -32,7 +31,7 @@ export const NavbarIcon = styled.img<{ name: string, location: string }>`
 
   filter: ${props => `/${props.name}` === props.location && activeStateIconFilter};
   pointer-events: ${props => `/${props.name}` === props.location && "none"};
-
+  
   &:hover {
     opacity: 0.7;
     cursor: ${props => props.name === "add-form" || "active" ? "pointer" : "default"};

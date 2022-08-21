@@ -2,7 +2,7 @@ import styled from "styled-components";
 import {M_SIZE, S_SIZE, textColor, XS_SIZE} from "../../helpers/constants";
 
 
-const SubmitModalContainer = styled.div`
+export const SubmitModalContainer = styled.div`
   position: absolute;
   z-index: 1;
   width: calc(100vw - 67px - 24px);
@@ -22,14 +22,20 @@ export const SubmitModalContent = styled.div`
   position: absolute;
   z-index: 2;
   display: flex;
-  height: 180px;
-  width: 350px;
   flex-direction: column;
   justify-content: space-between;
+  width: 350px;
+  height: 180px;
   padding: 20px;
   border-radius: 20px;
-  transform: translate(calc(50vw - 67px - 24px - (350px / 2)), calc(50vh - (180px / 2)));
+  transform: translate(calc(50vw - (91px / 2) - (350px / 2)), calc(50vh - (180px / 2)));
   background-color: #5c30f8;
+
+  @media (max-width: ${M_SIZE}) {
+    width: 300px;
+    height: 160px;
+    transform: translate(calc(50vw - (74px / 2) - (300px / 2)), calc(50vh - (160px / 2)));
+  }
 
   @media (max-width: ${S_SIZE}) {
     width: 300px;

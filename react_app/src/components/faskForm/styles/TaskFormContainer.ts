@@ -65,12 +65,6 @@ export const Input = styled.input<{ border?: boolean | null }>`
   }
 `
 
-export const Select = styled(Input).attrs({
-    as: "select"
-})`
-  border: black solid 2px;
-`
-
 export const Switch = styled(Input)<{ disabled: boolean }>`
   z-index: 1;
   width: 60px;
