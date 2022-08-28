@@ -54,14 +54,13 @@ export const SubmitModalContent = styled.div`
   }
 
   button {
-    width: fit-content;
     align-self: center;
     padding: 7px;
     border: transparent;
     border-radius: 5px;
     font-size: 1.2rem;
     font-weight: 700;
-    background-color: #dcd5fa;
+    background-color: #dad4fa;
 
     @media (max-width: ${S_SIZE}) {
       font-size: 1rem;
