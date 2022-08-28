@@ -8,9 +8,9 @@ import Form, {
     SwitchLabel,
     TaskFormContainer,
     Title
-} from "../../components/faskForm/styles/TaskFormContainer";
-import TaskFormFunc from "../../components/faskForm/logic/TaskFormFunc";
-import SubmitModal from "../../components/submitModal/SubmitModal";
+} from "../components/faskForm/styles/TaskFormContainer";
+import TaskFormFunc from "../components/faskForm/logic/TaskFormFunc";
+import SubmitModal from "../components/submitModal/SubmitModal";
 
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
