@@ -99,7 +99,7 @@ const TaskFormFunc = (type: "display" | "add" | "edit") => {
         type === "add" && reset(initialValue);
     }, [type, reset, initialValue])
 
-    usePrompt("Zacząłeś wypełniać formularz, czy chcesz stracić dane?", showSubmitModal ? false : isDirty);
+    usePrompt("Zacząłeś wypełniać formularz, czy chcesz stracić dane?", isDirty);
 
     return {
         navAhead,
