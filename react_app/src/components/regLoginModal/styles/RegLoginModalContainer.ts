@@ -1,7 +1,8 @@
 import styled, {css} from "styled-components";
-import SubmitModalContainer, {SubmitModalContent} from "../submitModal/SubmitModalContainer";
-import {M_SIZE, textColor, XXS_SIZE} from "../../helpers/constants";
-import {ILoginRegOption} from "./RegLoginModal";
+import SubmitModalContainer, {SubmitModalContent} from "../../submitModal/SubmitModalContainer";
+import {M_SIZE, textColor, XXS_SIZE} from "../../../helpers/constants";
+import {ILoginRegOption} from "../RegLoginModal";
+import {Input, Label} from "../../faskForm/styles/TaskFormContainer";
 
 
 const RegLoginModalContainer = styled(SubmitModalContainer)`
@@ -17,26 +18,6 @@ export const RegLoginInputContainer = styled.form`
   align-items: center;
   justify-content: space-evenly;
   gap: 10px;
-
-  label {
-    color: ${textColor};
-    font-size: 2rem;
-
-    @media (max-width: ${M_SIZE}) {
-      font-size: 1.25rem;
-      font-weight: 600;
-    }
-  }
-
-  input {
-    width: 100%;
-    height: 30px;
-    border-radius: 10px;
-
-    @media (max-width: ${M_SIZE}) {
-      height: 25px;
-    }
-  }
 `
 
 export const RegLoginModalContent = styled(SubmitModalContent)`
@@ -68,10 +49,39 @@ export const RegLoginHeader = styled.header`
   position: relative;
 `
 
-const LogRegH1 = styled.h1<{ loginRegOption: ILoginRegOption }>`
+export const RegLogLabel = styled(Label)`
+  color: ${textColor};
+  font-size: 2rem;
+
+  @media (max-width: ${M_SIZE}) {
+    font-size: 1.25rem;
+    font-weight: 600;
+  }
+`
+
+export const RegLogInput = styled(Input)`
+  width: 100%;
+  height: 30px;
+  border-radius: 10px;
+
+  @media (max-width: ${M_SIZE}) {
+    height: 25px;
+  }
+`
+
+export const LogRegH1 = styled.h1<{ loginRegOption: ILoginRegOption }>`
   cursor: default;
   text-underline-offset: 10px;
 
+  ${props => props.loginRegOption === "login" ? css`
+    :first-child {
+      text-decoration: underline;
+    }
+  ` : css`
+    :nth-child(2) {
+      text-decoration: underline;
+    }`}
+  
   :hover {
     text-decoration: underline;
     cursor: pointer;
@@ -80,25 +90,6 @@ const LogRegH1 = styled.h1<{ loginRegOption: ILoginRegOption }>`
   @media (max-width: ${XXS_SIZE}) {
     font-size: 1.25rem;
   }
-`
-
-export const Login = styled(LogRegH1)`
-  ${props => props.loginRegOption === "login" && css`
-    text-decoration: underline;
-  `}
-`
-
-export const Register = styled(LogRegH1)`
-  ${props => props.loginRegOption === "register" && css`
-    text-decoration: underline;
-  `}
-`
-
-export const LoginRegisterButton = styled.button`
-  display: flex;
-  align-items: center;
-  margin-top: 10px;
-  height: 30px;
 `
 
 

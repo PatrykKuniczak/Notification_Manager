@@ -34,7 +34,6 @@ export const Label = styled.label<{ error: string | undefined }>`
     position: absolute;
     top: 95px;
     left: 10px;
-    width: fit-content;
     padding: 5px;
     border-radius: 5px;
     font-size: 1rem;

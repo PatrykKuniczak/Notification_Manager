@@ -1,48 +1,54 @@
-import {useRef, useState} from "react";
-import {useOnClickOutside} from "usehooks-ts";
+import {useRef} from "react";
 import RegLoginModalContainer, {
-    Login,
-    LoginRegisterButton,
-    Register,
+    LogRegH1,
     RegLoginHeader,
     RegLoginInputContainer,
-    RegLoginModalContent
-} from "./RegLoginModalContainer";
+    RegLoginModalContent,
+    RegLogInput, RegLogLabel
+} from "./styles/RegLoginModalContainer";
+import RegLoginFunc from "./logic/RegLoginFunc";
+import {Button} from "../faskForm/styles/TaskFormContainer";
 
 
 export type ILoginRegOption = "login" | "register"
 
 const RegLoginModal = ({changeModalVisibility}: { changeModalVisibility: () => void }) => {
     const ref = useRef(null);
-    const [loginRegOption, setLoginRegOption] = useState<ILoginRegOption>("login");
 
-    useOnClickOutside(ref, () => changeModalVisibility());
-
-    const changeLoginRegOption = (option: ILoginRegOption) => {
-        setLoginRegOption(option);
-    }
+    const {
+        loginRegOption,
+        changeLoginRegOption,
+        submitHandler,
+        handleSubmit,
+        register,
+        errors,
+        checkValidity,
+        isSubmitting
+    } = RegLoginFunc({ref, changeModalVisibility});
 
     return (<RegLoginModalContainer>
         <RegLoginModalContent ref={ref}>
             <RegLoginHeader>
-                <Login loginRegOption={loginRegOption}
-                       onClick={() => changeLoginRegOption(`login`)}>Logowanie</Login>
-                <Register loginRegOption={loginRegOption}
-                          onClick={() => changeLoginRegOption(`register`)}>Rejestracja</Register>
+                <LogRegH1 loginRegOption={loginRegOption}
+                          onClick={() => changeLoginRegOption(`login`)}>Logowanie</LogRegH1>
+                <LogRegH1 loginRegOption={loginRegOption}
+                          onClick={() => changeLoginRegOption(`register`)}>Rejestracja</LogRegH1>
             </RegLoginHeader>
 
-            <RegLoginInputContainer>
-                <label htmlFor="login">Login</label>
-                <input id="login" type="login"/>
-                <label htmlFor="password">Hasło</label>
-                <input id="password" type="password"/>
+            <RegLoginInputContainer onSubmit={handleSubmit(data => submitHandler(data))}>
+                <RegLogLabel htmlFor="login" error={errors.login?.message}>Login</RegLogLabel>
+                <RegLogInput id="login" type="login" {...register("login")}
+                             border={checkValidity("login")} autoFocus/>
+                <RegLogLabel htmlFor="password" error={errors.password?.message}>Hasło</RegLogLabel>
+                <RegLogInput id="password" type="password" {...register("password")}
+                             border={checkValidity("password")}/>
                 {loginRegOption === "register" && <>
-                    <label htmlFor="email">Email</label>
-                    <input id="email" type="email"/>
+                    <RegLogLabel htmlFor="email" error={errors.email?.message}>Email</RegLogLabel>
+                    <RegLogInput id="email" type="email" {...register("email")}
+                                 border={checkValidity("email")}/>
                 </>}
 
-                <LoginRegisterButton
-                    type="submit">{loginRegOption === "login" ? "Zaloguj" : "Rejestruj"}</LoginRegisterButton>
+                <Button disabled={isSubmitting}>{loginRegOption === "login" ? "Zaloguj" : "Rejestruj"}</Button>
             </RegLoginInputContainer>
         </RegLoginModalContent>
     </RegLoginModalContainer>)
