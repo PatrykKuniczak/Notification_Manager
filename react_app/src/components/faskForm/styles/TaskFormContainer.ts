@@ -1,6 +1,6 @@
 import styled, {css} from "styled-components";
 import {ItemsContainer, ItemsList} from "../../items/styles/Items/ItemsContainer";
-import {S_SIZE} from "../../../helpers/constants";
+import {M_SIZE, S_SIZE} from "../../../helpers/constants";
 import {ItemsHeader} from "../../items/styles/Item/ItemsHeader";
 
 export const TaskFormContainer = styled(ItemsContainer)`
@@ -32,12 +32,18 @@ export const Label = styled.label<{ error: string | undefined }>`
       content: "${props.error}";
     `}
     position: absolute;
-    top: 95px;
-    left: 10px;
+    top: 20px;
+    left: -200px;
     padding: 5px;
     border-radius: 5px;
     font-size: 1rem;
     background-color: #ba0404;
+
+    @media (max-width: ${M_SIZE}) {
+      font-size: 0.7rem;
+      top: 10px;
+      left: -150px;
+    }
   }
 `
 
