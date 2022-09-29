@@ -8,6 +8,7 @@ import cors from "cors"
 import cookieParser from "cookie-parser"
 import {Task} from "./database/entities/Task";
 import dotenv from "dotenv";
+import {User} from "./database/entities/User";
 
 
 const app: Express = express();
@@ -27,7 +28,7 @@ export const AppDataSource = new DataSource({
     synchronize: true,
     ssl: process.env.NODE_ENV === 'production'
         ? {rejectUnauthorized: false} : false,
-    entities: [Task]
+    entities: [Task, User]
 })
 
 AppDataSource.initialize()
