@@ -1,15 +1,15 @@
 import {Request, Response} from "express";
 import {DeleteResult} from "typeorm";
-import {createItem} from "../services/itemsService";
+import {createEntity} from "../services/entityService";
 import {IEntityRepository, IItems, IJsonMessage} from "./helpers/interfaces";
 import {fullTrim, instanceOfIJsonMessage} from "./helpers/helpers";
 import {AppDataSource} from "../index";
 
 
-const itemsController: IItems = (Repository: IEntityRepository) => ({
+const entityController: IItems = (Repository: IEntityRepository) => ({
 
     create: async (req: Request, res: Response): Promise<Response> => {
-        const result = await createItem(req, res, Repository);
+        const result = await createEntity(req, res, Repository);
 
         if (instanceOfIJsonMessage(result as IJsonMessage))
             return res.status(406).send(result)
@@ -25,7 +25,7 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
 
     edit: async (req: Request, res: Response): Promise<Response> => {
-        const result = await createItem(req, res, Repository);
+        const result = await createEntity(req, res, Repository);
 
         if (instanceOfIJsonMessage(result as IJsonMessage))
             return res.status(401).send(result);
@@ -43,7 +43,6 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
 
 
     delete: async (req: Request, res: Response): Promise<Response> => {
-
         if (req.params.id) {
             try {
                 const result: DeleteResult = await AppDataSource.manager.delete(Repository, req.params.id);
@@ -92,4 +91,4 @@ const itemsController: IItems = (Repository: IEntityRepository) => ({
     }
 });
 
-export default itemsController;
+export default entityController;
