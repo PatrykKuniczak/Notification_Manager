@@ -10,9 +10,9 @@ export class User {
 
     @Column()
     @Length(2, 120, {
-        message: "Name must have minimum length $constraint1 and maximal length is $constraint2."
+        message: "Login must have minimum length $constraint1 and maximal length is $constraint2."
     })
-    name: string;
+    login: string;
 
     @Column()
     @IsEmail()

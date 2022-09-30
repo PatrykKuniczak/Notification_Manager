@@ -6,6 +6,7 @@ import {fullTrim, instanceOfIJsonMessage} from "./helpers/helpers";
 import {AppDataSource} from "../index";
 
 
+// TODO: WYKONAJ POŁĄCZENIE POSTÓW Z UŻYTKOWNIKAMI
 const entityController: IItems = (Repository: IEntityRepository) => ({
 
     create: async (req: Request, res: Response): Promise<Response> => {

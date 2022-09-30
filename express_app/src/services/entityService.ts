@@ -8,7 +8,7 @@ import {User} from "../database/entities/User";
 
 
 export const createEntity = async (req: Request, res: Response, Repository: IEntityRepository) => {
-    const [title, description, important, date, name, email, password] = validBody(req);
+    const [title, description, important, date, login, email, password] = validBody(req);
 
     switch (Repository) {
         case Task:
@@ -27,7 +27,7 @@ export const createEntity = async (req: Request, res: Response, Repository: IEnt
         case User:
             const user = new User();
 
-            user.name = name;
+            user.login = login;
             user.email = email;
             user.password = password;
 
@@ -50,11 +50,11 @@ export const validBody = (req) => {
     const description = req.body.description && fullTrim(req.body.description);
     const important = (req.body.important === true || req.body.important === false) && req.body.important;
     const date = req.body.date;
-    const name = req.body.name && fullTrim(req.body.name);
+    const login = req.body.login && fullTrim(req.body.login);
     const email = req.body.email && fullTrim(req.body.email);
     const password = req.body.password && fullTrim(req.body.password);
 
-    return [title, description, important, date, name, email, password];
+    return [title, description, important, date, login, email, password];
 }
 
 export const createValidationErrors = (res, err): IJsonMessage => {
