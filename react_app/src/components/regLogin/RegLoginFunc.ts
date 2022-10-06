@@ -1,23 +1,20 @@
-import {MutableRefObject, useEffect, useMemo, useState} from "react";
-import {useOnClickOutside} from "usehooks-ts";
-import {ILoginRegOption} from "../RegLoginModal";
+import {useEffect, useMemo, useState} from "react";
+import {ILoginRegOption} from "../../pages/LoginReg";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup/dist/yup";
 import * as yup from "yup";
-import {usePrompt} from "../../../helpers/usePrompt";
+import {usePrompt} from "../../helpers/usePrompt";
 import {boolean} from "yup";
+import Axios from "axios";
 
-
-interface IRegLoginFunc {
-    ref: MutableRefObject<null | HTMLElement>
-    changeModalVisibility: () => void
-}
 
 type IInputType = "login" | "password" | "email";
 
-const RegLoginFunc = ({ref, changeModalVisibility}: IRegLoginFunc) => {
+const RegLoginFunc = () => {
     const [loginRegOption, setLoginRegOption] = useState<ILoginRegOption>("login");
+    const [responseMessage, setResponseMessage] = useState<string>("");
 
+    // TODO: VALIDATOR Z CLASS-VALIDATOR NIE ZGADZA SIĘ Z TYM ODNOŚNIE EMAIL
     const formikSchema = yup.object().shape({
         login: yup.string().required("Login jest wymagany").min(5, "Login jest za krótki").max(255, "Login jest za długi"),
         password: yup.string().required("Hasło jest wymagane").min(10, "Hasło jest za krótkie"),
@@ -62,21 +59,36 @@ const RegLoginFunc = ({ref, changeModalVisibility}: IRegLoginFunc) => {
         setLoginRegOption(option);
     }
 
-    const submitHandler = (data: { login: string, password: string, email: string }) => {
-        changeModalVisibility();
-        console.log(data);
-    }
+    const submitHandler = async (object: typeof initialValue, option: 'login' | 'register') => {
+        // @ts-ignore
+        delete object.isLogin;
+        setResponseMessage("")
 
-    const clickOutsideListener = () => {
-        if (!isDirty)
-            changeModalVisibility();
-        else
-            window.confirm("Rozpocząłeś wypełnianie danych, chcesz je stracić?") && changeModalVisibility();
+        // TODO: NIE DZIAŁA PRAWIDŁOWO
+        if (option === 'register') {
+            const checkLogin = await Axios.get("/users", {params: {"field": "login", "data": object.login}});
+            const checkEmail = await Axios.get("/users", {params: {"field": "email", "data": object.email}});
+
+            if (checkEmail.data || checkLogin.data) {
+
+                if (checkEmail.data) {
+                    setResponseMessage("Email jest już używany!");
+                } else if (checkLogin.data) {
+                    setResponseMessage("Login jest już używany!");
+                } else {
+                    const res = await Axios.post("/users", object);
+                    if (res.status === 201) {
+                        setResponseMessage("Utworzono");
+                        await reset(initialValue);
+                    } else
+                        setResponseMessage(res.data);
+                }
+            }
+        } else
+            await Axios.post("/users");
     }
 
     usePrompt("Rozpocząłeś wypełnianie danych, chcesz je stracić?", isDirty);
-
-    useOnClickOutside(ref, clickOutsideListener);
 
     useEffect(() => {
         reset(initialValue);
@@ -91,7 +103,8 @@ const RegLoginFunc = ({ref, changeModalVisibility}: IRegLoginFunc) => {
         register,
         errors,
         checkValidity,
-        isSubmitting
+        isSubmitting,
+        responseMessage
     }
 }
 

@@ -9,13 +9,12 @@ import {useLocation} from "react-router-dom";
 import {ListElement, NavbarIcon} from './styles/NavbarContainer';
 import {NavbarContainer} from './styles/NavbarContainer';
 import NavbarFunc from "./NavbarFunc";
-import LoginReg from "../../pages/LoginReg";
 
 
 const Navbar = () => {
     const {pathname} = useLocation();
 
-    const {setDefaultFilterOptionWithNav, navigate, showRegLoginModal, changeModalVisibility} = NavbarFunc();
+    const {setDefaultFilterOptionWithNav, navigate, changeModalVisibility} = NavbarFunc();
 
     return (
         <NavbarContainer>
@@ -46,8 +45,6 @@ const Navbar = () => {
                                 name="login-register" location={pathname} onClick={() => changeModalVisibility()}/>
                 </ListElement>
             </AddAvatarContainer>
-
-            {showRegLoginModal && <LoginReg changeModalVisibility={changeModalVisibility}/>}
         </NavbarContainer>
     );
 }

@@ -1,20 +1,16 @@
-import {useRef} from "react";
-import RegLoginModalContainer, {
-    LogRegH1,
+import RegLoginContainer, {
+    LogRegH1, RegLoginContent,
     RegLoginHeader,
     RegLoginInputContainer,
-    RegLoginModalContent,
-    RegLogInput, RegLogLabel
-} from "./styles/RegLoginModalContainer";
-import RegLoginFunc from "./logic/RegLoginFunc";
-import {Button} from "../faskForm/styles/TaskFormContainer";
+    RegLogInput, RegLogLabel, SubmitMessage
+} from "../components/regLogin/RegLoginModalContainer";
+import RegLoginFunc from "../components/regLogin/RegLoginFunc";
+import {Button} from "../components/faskForm/TaskFormContainer";
 
 
 export type ILoginRegOption = "login" | "register"
 
-const RegLoginModal = ({changeModalVisibility}: { changeModalVisibility: () => void }) => {
-    const ref = useRef(null);
-
+const LoginReg = () => {
     const {
         loginRegOption,
         changeLoginRegOption,
@@ -23,11 +19,12 @@ const RegLoginModal = ({changeModalVisibility}: { changeModalVisibility: () => v
         register,
         errors,
         checkValidity,
-        isSubmitting
-    } = RegLoginFunc({ref, changeModalVisibility});
+        isSubmitting,
+        responseMessage
+    } = RegLoginFunc();
 
-    return (<RegLoginModalContainer>
-        <RegLoginModalContent ref={ref}>
+    return (<RegLoginContainer>
+        <RegLoginContent>
             <RegLoginHeader>
                 <LogRegH1 loginRegOption={loginRegOption}
                           onClick={() => changeLoginRegOption(`login`)}>Logowanie</LogRegH1>
@@ -35,7 +32,7 @@ const RegLoginModal = ({changeModalVisibility}: { changeModalVisibility: () => v
                           onClick={() => changeLoginRegOption(`register`)}>Rejestracja</LogRegH1>
             </RegLoginHeader>
 
-            <RegLoginInputContainer onSubmit={handleSubmit(data => submitHandler(data))}>
+            <RegLoginInputContainer loginRegOption={loginRegOption} onSubmit={handleSubmit(data => submitHandler(data, loginRegOption))}>
                 <RegLogLabel htmlFor="login" error={errors.login?.message}>Login</RegLogLabel>
                 <RegLogInput id="login" type="login" {...register("login")}
                              border={checkValidity("login")} autoFocus/>
@@ -47,12 +44,12 @@ const RegLoginModal = ({changeModalVisibility}: { changeModalVisibility: () => v
                     <RegLogInput id="email" type="email" {...register("email")}
                                  border={checkValidity("email")}/>
                 </>}
-
+                <SubmitMessage>{responseMessage}</SubmitMessage>
                 <Button disabled={isSubmitting}>{loginRegOption === "login" ? "Zaloguj" : "Rejestruj"}</Button>
             </RegLoginInputContainer>
-        </RegLoginModalContent>
-    </RegLoginModalContainer>)
+        </RegLoginContent>
+    </RegLoginContainer>)
 }
 
 
-export default RegLoginModal;
+export default LoginReg;
