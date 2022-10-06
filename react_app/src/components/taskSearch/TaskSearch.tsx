@@ -1,4 +1,4 @@
-import TaskSearchInput from "./styles/TaskSearchContainer";
+import TaskSearchInput from "./TaskSearchContainer";
 import {forwardRef, useEffect, useImperativeHandle, useRef, useState} from "react";
 import {useDispatch, useSelector} from "react-redux";
 import {filterItems, filterItemsByTerm} from "../../store/slices/itemsSlice";

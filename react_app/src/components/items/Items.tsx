@@ -8,7 +8,7 @@ import CheckEmptiness from "../checkEmptiness/CheckEmptiness";
 import ErrorLoadingProvider from "../errorLoadingProvider/ErrorLoadingProvider";
 import TaskSearch from "../taskSearch/TaskSearch";
 import SearchFilterContainer from "./styles/Items/SearchFilterContainer";
-import {CloseSearchBarButton, SearchIcon, TaskSearchContainer} from "../taskSearch/styles/TaskSearchContainer";
+import {CloseSearchBarButton, SearchIcon, TaskSearchContainer} from "../taskSearch/TaskSearchContainer";
 import {VERY_SMALL_SIZE} from "../../helpers/constants";
 import searchIcon from "../icons/searchIcon.svg";
 import closeSearchBarArrow from "../icons/closeSearchBarArrow.svg";

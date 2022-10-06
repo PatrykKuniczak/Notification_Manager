@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import {L_SIZE, S_SIZE, VERY_SMALL_SIZE, XS_SIZE, XXS_SIZE} from "../../../helpers/constants";
+import {L_SIZE, S_SIZE, VERY_SMALL_SIZE, XS_SIZE, XXS_SIZE} from "../../helpers/constants";
 
 
 export const TaskSearchContainer = styled.div`

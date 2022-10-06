@@ -8,8 +8,8 @@ import {DisplayTaskContainer, Logo} from './styles/DisplayPart';
 import {useLocation} from "react-router-dom";
 import {ListElement, NavbarIcon} from './styles/NavbarContainer';
 import {NavbarContainer} from './styles/NavbarContainer';
-import NavbarFunc from "./logic/NavbarFunc/NavbarFunc";
-import RegLoginModal from "../regLoginModal/RegLoginModal";
+import NavbarFunc from "./NavbarFunc";
+import LoginReg from "../../pages/LoginReg";
 
 
 const Navbar = () => {
@@ -47,7 +47,7 @@ const Navbar = () => {
                 </ListElement>
             </AddAvatarContainer>
 
-            {showRegLoginModal && <RegLoginModal changeModalVisibility={changeModalVisibility}/>}
+            {showRegLoginModal && <LoginReg changeModalVisibility={changeModalVisibility}/>}
         </NavbarContainer>
     );
 }

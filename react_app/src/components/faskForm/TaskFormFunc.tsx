@@ -1,12 +1,12 @@
 import {useCallback, useEffect, useMemo, useState} from "react";
 import {useNavigate, useParams} from "react-router-dom";
-import {ITask} from "../../../helpers/interfaces";
+import {ITask} from "../../helpers/interfaces";
 import Axios from "axios";
 import dateFormat from "dateformat";
 import * as yup from "yup";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup";
-import {usePrompt} from "../../../helpers/usePrompt";
+import {usePrompt} from "../../helpers/usePrompt";
 
 
 const formikSchema = yup.object().shape({

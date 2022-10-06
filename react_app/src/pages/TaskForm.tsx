@@ -8,8 +8,8 @@ import Form, {
     SwitchLabel,
     TaskFormContainer,
     Title
-} from "../components/faskForm/styles/TaskFormContainer";
-import TaskFormFunc from "../components/faskForm/logic/TaskFormFunc";
+} from "../components/faskForm/TaskFormContainer";
+import TaskFormFunc from "../components/faskForm/TaskFormFunc";
 import SubmitModal from "../components/submitModal/SubmitModal";
 
 

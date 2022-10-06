@@ -1,8 +1,8 @@
 import styled, {css} from "styled-components";
-import SubmitModalContainer, {SubmitModalContent} from "../../submitModal/SubmitModalContainer";
-import {M_SIZE, textColor, XXS_SIZE} from "../../../helpers/constants";
-import {ILoginRegOption} from "../RegLoginModal";
-import {Input, Label} from "../../faskForm/styles/TaskFormContainer";
+import SubmitModalContainer, {SubmitModalContent} from "../submitModal/SubmitModalContainer";
+import {M_SIZE, textColor, XXS_SIZE} from "../../helpers/constants";
+import {ILoginRegOption} from "../../pages/LoginReg";
+import {Input, Label} from "../faskForm/TaskFormContainer";
 
 
 const RegLoginModalContainer = styled(SubmitModalContainer)`
@@ -92,5 +92,9 @@ export const LogRegH1 = styled.h1<{ loginRegOption: ILoginRegOption }>`
   }
 `
 
+export const SubmitMessage = styled.span`
+  font-size: 1.5rem;
+  color: ${textColor};
+`
 
 export default RegLoginModalContainer;
