@@ -14,7 +14,7 @@ import NavbarFunc from "./NavbarFunc";
 const Navbar = () => {
     const {pathname} = useLocation();
 
-    const {setDefaultFilterOptionWithNav, navigate, changeModalVisibility} = NavbarFunc();
+    const {setDefaultFilterOptionWithNav, navigate} = NavbarFunc();
 
     return (
         <NavbarContainer>
@@ -42,7 +42,7 @@ const Navbar = () => {
 
                 <ListElement>
                     <NavbarIcon src={avatarIcon} alt="Przycisk Avatar - Logowanie i Rejestracja"
-                                name="login-register" location={pathname} onClick={() => changeModalVisibility()}/>
+                                name="login-register" location={pathname}/>
                 </ListElement>
             </AddAvatarContainer>
         </NavbarContainer>
