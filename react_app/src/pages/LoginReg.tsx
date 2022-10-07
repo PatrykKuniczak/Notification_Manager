@@ -20,7 +20,7 @@ const LoginReg = () => {
         errors,
         checkValidity,
         isSubmitting,
-        responseMessage
+        message
     } = RegLoginFunc();
 
     return (<RegLoginContainer>
@@ -32,7 +32,8 @@ const LoginReg = () => {
                           onClick={() => changeLoginRegOption(`register`)}>Rejestracja</LogRegH1>
             </RegLoginHeader>
 
-            <RegLoginInputContainer loginRegOption={loginRegOption} onSubmit={handleSubmit(data => submitHandler(data, loginRegOption))}>
+            <RegLoginInputContainer loginRegOption={loginRegOption}
+                                    onSubmit={handleSubmit(data => submitHandler(data, loginRegOption))}>
                 <RegLogLabel htmlFor="login" error={errors.login?.message}>Login</RegLogLabel>
                 <RegLogInput id="login" type="login" {...register("login")}
                              border={checkValidity("login")} autoFocus/>
@@ -44,7 +45,7 @@ const LoginReg = () => {
                     <RegLogInput id="email" type="email" {...register("email")}
                                  border={checkValidity("email")}/>
                 </>}
-                <SubmitMessage>{responseMessage}</SubmitMessage>
+                <SubmitMessage>{message}</SubmitMessage>
                 <Button disabled={isSubmitting}>{loginRegOption === "login" ? "Zaloguj" : "Rejestruj"}</Button>
             </RegLoginInputContainer>
         </RegLoginContent>

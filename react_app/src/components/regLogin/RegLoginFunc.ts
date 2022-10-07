@@ -3,25 +3,24 @@ import {ILoginRegOption} from "../../pages/LoginReg";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup/dist/yup";
 import * as yup from "yup";
-import {usePrompt} from "../../helpers/usePrompt";
 import {boolean} from "yup";
 import Axios from "axios";
+import browserStore from "store";
 
 
 type IInputType = "login" | "password" | "email";
 
 const RegLoginFunc = () => {
     const [loginRegOption, setLoginRegOption] = useState<ILoginRegOption>("login");
-    const [responseMessage, setResponseMessage] = useState<string>("");
+    const [message, setMessage] = useState<string>("");
 
-    // TODO: VALIDATOR Z CLASS-VALIDATOR NIE ZGADZA SIĘ Z TYM ODNOŚNIE EMAIL
     const formikSchema = yup.object().shape({
         login: yup.string().required("Login jest wymagany").min(5, "Login jest za krótki").max(255, "Login jest za długi"),
         password: yup.string().required("Hasło jest wymagane").min(10, "Hasło jest za krótkie"),
         isLogin: boolean().required(),
         email: yup.string().when("isLogin", {
             is: false,
-            then: schema => schema.required("Email jest wymagany").email("Nieprawidłowy email"),
+            then: schema => schema.required("Email jest wymagany").matches(/\S+@\S+\.\S{2,}/, "Nieprawidłowy email"),
             otherwise: schema => schema.optional()
         })
     });
@@ -36,7 +35,8 @@ const RegLoginFunc = () => {
     const {
         register,
         handleSubmit,
-        formState: {errors, isDirty, touchedFields, isSubmitting},
+        formState: {errors, touchedFields, isSubmitting},
+        setError,
         clearErrors,
         reset
     } = useForm({
@@ -62,37 +62,40 @@ const RegLoginFunc = () => {
     const submitHandler = async (object: typeof initialValue, option: 'login' | 'register') => {
         // @ts-ignore
         delete object.isLogin;
-        setResponseMessage("")
 
-        // TODO: NIE DZIAŁA PRAWIDŁOWO
+        const checkLogin = await Axios.get("/users", {params: {"field": "login", "data": object.login}});
+
         if (option === 'register') {
-            const checkLogin = await Axios.get("/users", {params: {"field": "login", "data": object.login}});
             const checkEmail = await Axios.get("/users", {params: {"field": "email", "data": object.email}});
 
-            if (checkEmail.data || checkLogin.data) {
+            if (checkEmail.data.length)
+                setError("email", {type: 'custom', message: "Email jest już używany!"});
 
-                if (checkEmail.data) {
-                    setResponseMessage("Email jest już używany!");
-                } else if (checkLogin.data) {
-                    setResponseMessage("Login jest już używany!");
-                } else {
-                    const res = await Axios.post("/users", object);
-                    if (res.status === 201) {
-                        setResponseMessage("Utworzono");
-                        await reset(initialValue);
-                    } else
-                        setResponseMessage(res.data);
-                }
+            else if (checkLogin.data.length)
+                setError("login", {type: 'custom', message: "Login jest już używany!"});
+
+            else
+                Axios.post("/users", object).then(() => {
+                    setMessage("Utworzono");
+                    reset(initialValue);
+                }).catch(({response}) => setMessage(response.statusText))
+        } else {
+            const checkPassword = await Axios.get("/users", {params: {"field": "password", "data": object.password}});
+
+            if (checkLogin.data.length === 0 || checkPassword.data.length === 0) {
+                setMessage("Hasło lub/i Login są błędne!");
+            } else {
+                browserStore.set("isLogged", true);
+                // eslint-disable-next-line no-restricted-globals
+                location.reload();
             }
-        } else
-            await Axios.post("/users");
+        }
     }
-
-    usePrompt("Rozpocząłeś wypełnianie danych, chcesz je stracić?", isDirty);
 
     useEffect(() => {
         reset(initialValue);
         clearErrors();
+        setMessage("");
     }, [reset, initialValue, loginRegOption, clearErrors])
 
     return {
@@ -104,7 +107,7 @@ const RegLoginFunc = () => {
         errors,
         checkValidity,
         isSubmitting,
-        responseMessage
+        message
     }
 }
 

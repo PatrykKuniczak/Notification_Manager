@@ -90,7 +90,7 @@ export const RegLogInput = styled(Input)`
 
 export const SubmitMessage = styled.span`
   font-size: 1.5rem;
-  color: #87ffff;
+  color: #e72004;
 `
 
 export default RegLoginContainer;
