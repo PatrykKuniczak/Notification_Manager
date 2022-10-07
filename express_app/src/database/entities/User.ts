@@ -1,4 +1,4 @@
-import {Column, Entity, PrimaryGeneratedColumn} from 'typeorm';
+import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
 import {IsEmail, Length, MinLength} from "class-validator";
 
 
@@ -8,13 +8,13 @@ export class User {
     @PrimaryGeneratedColumn()
     id: number;
 
-    @Column()
+    @Column({unique: true})
     @Length(2, 120, {
         message: "Login must have minimum length $constraint1 and maximal length is $constraint2."
     })
     login: string;
 
-    @Column()
+    @Column({unique: true})
     @IsEmail()
     email: string;
 
