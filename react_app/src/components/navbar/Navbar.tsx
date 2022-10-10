@@ -6,15 +6,24 @@ import logo from "../icons/logo.svg";
 import {AddAvatarContainer} from './styles/AddLoginContainer';
 import {DisplayTaskContainer, Logo} from './styles/DisplayPart';
 import {useLocation} from "react-router-dom";
-import {ListElement, NavbarIcon} from './styles/NavbarContainer';
-import {NavbarContainer} from './styles/NavbarContainer';
+import {
+    Avatar,
+    ListElement,
+    NavbarContainer,
+    NavbarIcon,
+    UserProfileContainer,
+    UserProfileForm,
+    UserProfileInput,
+    UserProfileWrapper
+} from './styles/NavbarContainer';
 import NavbarFunc from "./NavbarFunc";
+import {Button} from "../faskForm/TaskFormContainer";
 
 
 const Navbar = () => {
     const {pathname} = useLocation();
 
-    const {setDefaultFilterOptionWithNav, navigate} = NavbarFunc();
+    const {setDefaultFilterOptionWithNav, navigate, showProfile, changeProfileModalVisibility, ref} = NavbarFunc();
 
     return (
         <NavbarContainer>
@@ -42,9 +51,24 @@ const Navbar = () => {
 
                 <ListElement>
                     <NavbarIcon src={avatarIcon} alt="Przycisk Avatar - Logowanie i Rejestracja"
-                                name="login-register" location={pathname}/>
+                                name="login-register" location={pathname} onClick={changeProfileModalVisibility}/>
+
                 </ListElement>
             </AddAvatarContainer>
+
+            {showProfile && <UserProfileWrapper>
+                <UserProfileContainer ref={ref}>
+                    <UserProfileForm>
+                        <Avatar src={avatarIcon}/>
+                        <label htmlFor="description">Opis</label>
+                        <UserProfileInput name="description" placeholder={"Napisz coś o sobie"}/>
+                        <label htmlFor="birthDate">Data urodzenia</label>
+                        <UserProfileInput name="birthDate" type={"date"}/>
+
+                        <Button type="button" onClick={changeProfileModalVisibility}>Zapisz</Button>
+                    </UserProfileForm>
+                </UserProfileContainer>
+            </UserProfileWrapper>}
         </NavbarContainer>
     );
 }
