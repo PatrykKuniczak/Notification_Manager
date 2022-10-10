@@ -5,7 +5,6 @@ import {M_SIZE, S_SIZE} from "../../../../helpers/constants";
 export const ItemsContainer = styled.div`
   display: flex;
   flex-direction: column;
-  width: 100%;
 
   @media (max-width: ${S_SIZE}) {
     height: calc(100vh - 74px);

@@ -1,6 +1,7 @@
 import styled from "styled-components";
 import {textColor, XS_SIZE} from "../../../../helpers/constants";
 
+
 export const ItemsHeader = styled.span`
   display: flex;
   justify-content: space-between;
