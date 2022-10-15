@@ -1,19 +1,15 @@
 import styled from "styled-components";
-import {M_SIZE, S_SIZE} from "../../../helpers/constants";
+import {S_SIZE} from "../../../helpers/constants";
 
 
 export const Logo = styled.img`
   margin-bottom: 30px;
-
-  @media (max-width: ${M_SIZE}) {
-    width: 50px;
-    height: 50px;
-  }
+  width: clamp(40px, 6vw, 60px);
 
   @media (max-width: ${S_SIZE}) {
     margin-bottom: 0;
   }
-  
+
   &:hover {
     cursor: pointer;
   }
@@ -28,6 +24,5 @@ export const DisplayTaskContainer = styled.ul`
 
   @media (max-width: ${S_SIZE}) {
     flex-direction: row;
-    margin: 0;
   }
 `

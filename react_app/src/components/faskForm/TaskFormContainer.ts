@@ -1,10 +1,7 @@
 import styled, {css} from "styled-components";
-import {ItemsContainer, ItemsList} from "../items/styles/Items/ItemsContainer";
+import {ItemsList} from "../items/styles/Items/ItemsContainer";
 import {S_SIZE} from "../../helpers/constants";
-import {ItemsHeader} from "../items/styles/Item/ItemsHeader";
 
-export const TaskFormContainer = styled(ItemsContainer)`
-`
 
 const Form = styled(ItemsList).attrs({
     as: "form"
@@ -16,15 +13,13 @@ const Form = styled(ItemsList).attrs({
     max-height: calc(100vh - 74px - 40px);
   }
 `
-export const Title = styled(ItemsHeader)`
-`
 
 export const Label = styled.label<{ error: string | undefined }>`
   position: relative;
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  font-size: 1.5em;
+  font-size: clamp(1.25rem, 4vw, 1.5rem);
   color: #fff;
 
   &::after {
@@ -35,17 +30,9 @@ export const Label = styled.label<{ error: string | undefined }>`
     left: 80px;
     padding: 5px;
     border-radius: 5px;
-    font-size: 1rem;
+    font-size: clamp(.7rem, 2.5vw, 1rem);
     background-color: #ba0404;
-
-    @media (max-width: ${S_SIZE}) {
-      font-size: 0.8rem;
-    }
   }
-`
-
-export const SwitchLabel = styled(Label)`
-  position: relative;
 `
 
 export const Input = styled.input<{ border?: boolean | null }>`
@@ -122,7 +109,7 @@ export const ButtonContainer = styled.div`
 
 export const Button = styled.button`
   padding: 5px;
-  font-size: 1.25em;
+  font-size: clamp(1rem, 2vw, 1.2rem);
   border-radius: 10px;
   background-color: #e4b9fd;
 

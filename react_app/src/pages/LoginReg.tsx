@@ -1,11 +1,14 @@
 import RegLoginContainer, {
-    LogRegH1, RegLoginContent,
+    LogRegH1,
+    RegLoginContent,
     RegLoginHeader,
     RegLoginInputContainer,
-    RegLogInput, RegLogLabel, SubmitMessage
+    RegLogInput,
+    RegLogLabel,
+    SubmitButton,
+    SubmitMessage
 } from "../components/regLogin/RegLoginModalContainer";
 import RegLoginFunc from "../components/regLogin/RegLoginFunc";
-import {Button} from "../components/faskForm/TaskFormContainer";
 
 
 export type ILoginRegOption = "login" | "register"
@@ -46,7 +49,10 @@ const LoginReg = () => {
                                  border={checkValidity("email")}/>
                 </>}
                 <SubmitMessage>{message}</SubmitMessage>
-                <Button disabled={isSubmitting}>{loginRegOption === "login" ? "Zaloguj" : "Rejestruj"}</Button>
+
+                <SubmitButton disabled={isSubmitting}>
+                    {loginRegOption === "login" ? "Zaloguj" : "Rejestruj"}
+                </SubmitButton>
             </RegLoginInputContainer>
         </RegLoginContent>
     </RegLoginContainer>)

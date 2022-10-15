@@ -6,18 +6,15 @@ import logo from "../icons/logo.svg";
 import {AddAvatarContainer} from './styles/AddLoginContainer';
 import {DisplayTaskContainer, Logo} from './styles/DisplayPart';
 import {useLocation} from "react-router-dom";
-import {
+import {ListElement, NavbarContainer, NavbarIcon} from './styles/NavbarContainer';
+import NavbarFunc from "./NavbarFunc";
+import {Button} from "../faskForm/TaskFormContainer";
+import UserProfileContainer, {
     Avatar,
-    ListElement,
-    NavbarContainer,
-    NavbarIcon,
-    UserProfileContainer,
     UserProfileForm,
     UserProfileInput,
     UserProfileWrapper
-} from './styles/NavbarContainer';
-import NavbarFunc from "./NavbarFunc";
-import {Button} from "../faskForm/TaskFormContainer";
+} from '../userProfile/UserProfileContainer';
 
 
 const Navbar = () => {
@@ -61,7 +58,7 @@ const Navbar = () => {
                     <UserProfileForm>
                         <Avatar src={avatarIcon}/>
                         <label htmlFor="description">Opis</label>
-                        <UserProfileInput name="description" placeholder={"Napisz coś o sobie"}/>
+                        <UserProfileInput name="description" placeholder={"Napisz coś o sobie"} autoComplete={"off"}/>
                         <label htmlFor="birthDate">Data urodzenia</label>
                         <UserProfileInput name="birthDate" type={"date"}/>
 

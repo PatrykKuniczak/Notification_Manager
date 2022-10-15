@@ -1,5 +1,4 @@
 import styled from "styled-components";
-import {L_SIZE, M_SIZE, S_SIZE, XS_SIZE, XXS_SIZE} from "../../../../helpers/constants";
 
 
 const activeStarIconFilter = "invert(89%) sepia(29%) saturate(5270%) hue-rotate(351deg) brightness(105%) contrast(89%)";
@@ -10,34 +9,17 @@ const deleteIconFilter = "invert(33%) sepia(59%) saturate(4715%) hue-rotate(248d
 export const ButtonContainer = styled.div`
   display: inline-flex;
   justify-content: flex-end;
-  width: 10%;
-  gap: 15px;
-
-  @media (max-width: ${L_SIZE}) {
-    width: 15%;
-  }
-
-  @media (max-width: ${M_SIZE}) {
-    width: 20%;
-  }
-
-  @media (max-width: ${S_SIZE}) {
-    width: 25%;
-  }
-
-  @media (max-width: ${XS_SIZE}) {
-    width: 30%;
-  }
-
-  @media (max-width: ${XXS_SIZE}) {
-    width: 45%;
-    gap: 10px;
-  }
+  gap: 1vw;
 `
 
 export const IconElement = styled.input<{ name: string, activeImportant?: boolean, active?: boolean }>`
-  width: 35px;
-  height: 35px;
+  max-width: 2.5rem;
+  max-height: 2.5rem;
+  min-width: 1.25rem;
+  min-height: 1.25rem;
+  width: 3vw;
+  height: 3vw;
+
   filter: ${props => props.name === "star" ?
           (props.activeImportant ? activeStarIconFilter : inactiveStarIconFilter) :
           props.name === "edit" ? editIconFilter : deleteIconFilter};
@@ -45,15 +27,5 @@ export const IconElement = styled.input<{ name: string, activeImportant?: boolea
   &:first-child {
     pointer-events: ${props => !props.active && "none"};
     opacity: ${props => !props.active && "0.5"};
-  }
-
-  @media (max-width: ${L_SIZE}) {
-    width: 32px;
-    height: 32px;
-  }
-
-  @media (max-width: ${XS_SIZE}) {
-    width: 28px;
-    height: 28px;
   }
 `

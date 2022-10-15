@@ -1,8 +1,8 @@
 import Item from "./Item";
 import filterIcon from "../icons/filter.svg";
-import {ItemsHeader} from "./styles/Item/ItemsHeader";
-import {ItemsContainer, ItemsList} from "./styles/Items/ItemsContainer";
-import {FilterButton, FilterContainer, FilterContent} from "./styles/Items/FilterContainer";
+import {Header} from "./styles/Item/ItemsHeader";
+import {ItemsList, MainContainer} from "./styles/Items/ItemsContainer";
+import {FilterButton, FilterContent} from "./styles/Items/FilterContainer";
 import ItemsFunc from "./logic/ItemsFunc";
 import CheckEmptiness from "../checkEmptiness/CheckEmptiness";
 import ErrorLoadingProvider from "../errorLoadingProvider/ErrorLoadingProvider";
@@ -31,8 +31,8 @@ const Items = ({active}: { active: boolean }) => {
     } = ItemsFunc();
 
     return (
-        <ItemsContainer>
-            <ItemsHeader>
+        <MainContainer>
+            <Header>
                 {!searchBarVisibility && <h1>{active ? "Aktywne" : "Zarchiwizowane"}</h1>}
                 <SearchFilterContainer>
                     <TaskSearchContainer>
@@ -54,16 +54,16 @@ const Items = ({active}: { active: boolean }) => {
                                     }}/>}
 
                     {!searchBarVisibility &&
-                        <FilterContainer ref={closeFilterRef}>
+                        <div ref={closeFilterRef}>
                             <FilterButton type="image" src={filterIcon} alt="Przycisk Filtrowania"
                                           onClick={toggleFilterContainer}/>
                             {show && <FilterContent>
                                 {displayOptions()}
                             </FilterContent>}
-                        </FilterContainer>
+                        </div>
                     }
                 </SearchFilterContainer>
-            </ItemsHeader>
+            </Header>
 
             <ItemsList>
                 <ErrorLoadingProvider loading={loading} errorOccur={error} errorMessage={errorMessage}>
@@ -72,7 +72,7 @@ const Items = ({active}: { active: boolean }) => {
                         : <CheckEmptiness/>}
                 </ErrorLoadingProvider>
             </ItemsList>
-        </ItemsContainer>
+        </MainContainer>
     )
 }
 

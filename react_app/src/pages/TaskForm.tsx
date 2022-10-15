@@ -1,16 +1,8 @@
-import Form, {
-    Button,
-    ButtonContainer,
-    Input,
-    Label,
-    Slider,
-    Switch,
-    SwitchLabel,
-    TaskFormContainer,
-    Title
-} from "../components/faskForm/TaskFormContainer";
+import Form, {Button, ButtonContainer, Input, Label, Slider, Switch} from "../components/faskForm/TaskFormContainer";
 import TaskFormFunc from "../components/faskForm/TaskFormFunc";
+import {MainContainer} from "../components/items/styles/Items/ItemsContainer";
 import SubmitModal from "../components/submitModal/SubmitModal";
+import {Header} from "../components/items/styles/Item/ItemsHeader";
 
 
 const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
@@ -26,12 +18,12 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
         submitMessage
     } = TaskFormFunc(type);
 
-    return (<TaskFormContainer>
-        <Title>
+    return (<MainContainer>
+        <Header>
             <h1>
                 {type === "add" ? "Dodawanie Zadania " : type === "edit" ? "Edytowanie Zadania " : "Twoje Zadanie"}
             </h1>
-        </Title>
+        </Header>
 
         <Form onSubmit={handleSubmit(data => submitHandler(data))}>
             <Label htmlFor="title" error={errors.title?.message}>
@@ -53,12 +45,12 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
                        {...register("date")} border={checkValidity("date")}/>
             </Label>
 
-            <SwitchLabel htmlFor="important" error={errors.important?.message!}>
+            <Label htmlFor="important" error={errors.important?.message!}>
                 Ważne
                 <Switch type={"checkbox"} {...register("important")}
                         disabled={type === "display"}/>
                 <Slider active={watch("important")} disabled={type === "display"}/>
-            </SwitchLabel>
+            </Label>
 
             <ButtonContainer>
                 {type === "display" && <Button type={"button"} onClick={navAhead}>
@@ -72,7 +64,7 @@ const TaskForm = ({type}: { type: "add" | "edit" | "display" }) => {
             </ButtonContainer>
         </Form>
         {showSubmitModal && <SubmitModal navAhead={navAhead} submitMessage={submitMessage}/>}
-    </TaskFormContainer>)
+    </MainContainer>)
 }
 
 

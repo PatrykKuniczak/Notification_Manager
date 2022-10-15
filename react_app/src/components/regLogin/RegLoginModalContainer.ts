@@ -1,11 +1,10 @@
 import styled, {css} from "styled-components";
-import {M_SIZE, textColor, XXS_SIZE} from "../../helpers/constants";
+import {textColor} from "../../helpers/constants";
 import {ILoginRegOption} from "../../pages/LoginReg";
-import {Input, Label} from "../faskForm/TaskFormContainer";
+import {Button, Input, Label} from "../faskForm/TaskFormContainer";
 
 
 const RegLoginContainer = styled.div`
-  width: 100vw;
   height: 100vh;
   display: flex;
   align-items: center;
@@ -17,20 +16,11 @@ export const RegLoginContent = styled.div`
   display: flex;
   flex-direction: column;
   justify-content: space-evenly;
-  width: 600px;
-  height: 450px;
+  width: clamp(250px, 40vw, 450px);
+  height: clamp(250px, 40vw, 450px);
   border-radius: 20px;
+  gap: 10px;
   background-color: #5c30f8;
-
-  @media (max-width: ${M_SIZE}) {
-    width: 400px;
-    height: 380px;
-  }
-
-  @media (max-width: ${XXS_SIZE}) {
-    width: 300px;
-    height: 75vh;
-  }
 `
 
 export const RegLoginHeader = styled.header`
@@ -40,8 +30,8 @@ export const RegLoginHeader = styled.header`
 `
 
 export const LogRegH1 = styled.h1<{ loginRegOption: ILoginRegOption }>`
-  cursor: default;
-  text-underline-offset: 10px;
+  text-underline-offset: 12px;
+  font-size: clamp(1rem, 2vw, 1.75rem);
 
   ${props => props.loginRegOption === "login" ? css`
     :first-child {
@@ -50,14 +40,11 @@ export const LogRegH1 = styled.h1<{ loginRegOption: ILoginRegOption }>`
   ` : css`
     :nth-child(2) {
       text-decoration: underline;
-    }`}
+    }`
+  }
   :hover {
     text-decoration: underline;
     cursor: pointer;
-  }
-
-  @media (max-width: ${XXS_SIZE}) {
-    font-size: 1.25rem;
   }
 `
 
@@ -65,32 +52,26 @@ export const RegLoginInputContainer = styled.form<{ loginRegOption: ILoginRegOpt
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: ${props => props.loginRegOption === "login" ? "1rem" : ".5rem"}; 
+  gap: ${props => props.loginRegOption === "login" ? "1rem" : ".5rem"};
 `
 
 export const RegLogLabel = styled(Label)`
   color: ${textColor};
-  font-size: 2rem;
-
-  @media (max-width: ${M_SIZE}) {
-    font-size: 1.25rem;
-    font-weight: 600;
-  }
+  font-size: clamp(.75rem, 2vw, 1.5rem);
 `
 
 export const RegLogInput = styled(Input)`
   width: 90%;
-  height: 30px;
+  height: clamp(.75rem, 2vw, 1.5rem);
   border-radius: 10px;
-
-  @media (max-width: ${M_SIZE}) {
-    height: 25px;
-  }
 `
 
 export const SubmitMessage = styled.span`
   font-size: 1.5rem;
   color: #e72004;
+`
+export const SubmitButton = styled(Button)`
+  font-size: clamp(12px, 2.5vw, 1.5rem);
 `
 
 export default RegLoginContainer;

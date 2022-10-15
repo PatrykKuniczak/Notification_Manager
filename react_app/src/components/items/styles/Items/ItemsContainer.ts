@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import {M_SIZE, S_SIZE} from "../../../../helpers/constants";
+import {S_SIZE} from "../../../../helpers/constants";
 
 
-export const ItemsContainer = styled.div`
+export const MainContainer = styled.div`
   display: flex;
   flex-direction: column;
 
@@ -33,9 +33,5 @@ export const ItemsList = styled.ul`
   @media (max-width: ${S_SIZE}) {
     min-width: calc(100vw - 40px);
     border-radius: 35px;
-  }
-
-  @media (max-width: ${M_SIZE}) {
-    width: calc(100vw - 114px);
   }
 `
