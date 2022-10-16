@@ -8,19 +8,15 @@ import {DisplayTaskContainer, Logo} from './styles/DisplayPart';
 import {useLocation} from "react-router-dom";
 import {ListElement, NavbarContainer, NavbarIcon} from './styles/NavbarContainer';
 import NavbarFunc from "./NavbarFunc";
-import {Button} from "../faskForm/TaskFormContainer";
-import UserProfileContainer, {
-    Avatar,
-    UserProfileForm,
-    UserProfileInput,
-    UserProfileWrapper
-} from '../userProfile/UserProfileContainer';
+import UserProfileModal from "../userProfile/UserProfileModal";
+import UserProfileFunc from "../userProfile/UserProfileFunc";
 
 
 const Navbar = () => {
     const {pathname} = useLocation();
 
-    const {setDefaultFilterOptionWithNav, navigate, showProfile, changeProfileModalVisibility, ref} = NavbarFunc();
+    const {setDefaultFilterOptionWithNav, navigate} = NavbarFunc();
+    const {changeProfileModalVisibility, showProfile, ref} = UserProfileFunc();
 
     return (
         <NavbarContainer>
@@ -53,19 +49,7 @@ const Navbar = () => {
                 </ListElement>
             </AddAvatarContainer>
 
-            {showProfile && <UserProfileWrapper>
-                <UserProfileContainer ref={ref}>
-                    <UserProfileForm>
-                        <Avatar src={avatarIcon}/>
-                        <label htmlFor="description">Opis</label>
-                        <UserProfileInput name="description" placeholder={"Napisz coś o sobie"} autoComplete={"off"}/>
-                        <label htmlFor="birthDate">Data urodzenia</label>
-                        <UserProfileInput name="birthDate" type={"date"}/>
-
-                        <Button type="button" onClick={changeProfileModalVisibility}>Zapisz</Button>
-                    </UserProfileForm>
-                </UserProfileContainer>
-            </UserProfileWrapper>}
+            {showProfile && <UserProfileModal ref={ref} changeProfileModalVisibility={changeProfileModalVisibility}/>}
         </NavbarContainer>
     );
 }
