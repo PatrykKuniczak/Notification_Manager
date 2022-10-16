@@ -7,7 +7,7 @@ import Items from "./components/items/Items";
 import {Provider} from "react-redux";
 import store from "./store/store";
 import TaskForm from "./pages/TaskForm";
-import LoginReg from "./pages/LoginReg";
+import RegLogin from "./pages/RegLogin";
 import browserStore from "store";
 
 Axios.defaults.baseURL = process.env.REACT_APP_API_URL;
@@ -20,7 +20,7 @@ const App: React.FC = () => {
             <GlobalStyles/>
             <BrowserRouter>
                 <Routes>
-                    {!isLogged && <Route path="/login" element={<LoginReg/>}/>}
+                    {!isLogged && <Route path="/login" element={<RegLogin/>}/>}
                     {isLogged && <Route path="/" element={<Home/>}>
                         <Route path="" element={<Navigate to={'active'}/>}/>
                         <Route path="active" element={<Items active={true}/>}/>

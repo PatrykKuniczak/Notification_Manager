@@ -1,5 +1,5 @@
 import {useEffect, useMemo, useState} from "react";
-import {ILoginRegOption} from "../../pages/LoginReg";
+import {ILoginRegOption} from "../../pages/RegLogin";
 import {useForm} from "react-hook-form";
 import {yupResolver} from "@hookform/resolvers/yup/dist/yup";
 import * as yup from "yup";
@@ -63,15 +63,25 @@ const RegLoginFunc = () => {
         // @ts-ignore
         delete object.isLogin;
 
-        const checkLogin = await Axios.get("/users", {params: {"field": "login", "data": object.login}});
+        const checkLogin = await Axios.get("/users", {params: {"field": "login", "data": object.login}})
+            .catch(({message}) => {
+                setMessage(message)
+            });
 
         if (option === 'register') {
-            const checkEmail = await Axios.get("/users", {params: {"field": "email", "data": object.email}});
+            const checkEmail = await Axios.get("/users", {
+                params: {
+                    "field": "email",
+                    "data": object.email
+                }
+            }).catch(({message}) => {
+                setMessage(message)
+            });
 
-            if (checkEmail.data.length)
+            if (checkEmail?.data.length)
                 setError("email", {type: 'custom', message: "Email jest już używany!"});
 
-            else if (checkLogin.data.length)
+            else if (checkLogin?.data.length)
                 setError("login", {type: 'custom', message: "Login jest już używany!"});
 
             else
@@ -82,7 +92,7 @@ const RegLoginFunc = () => {
         } else {
             const checkPassword = await Axios.get("/users", {params: {"field": "password", "data": object.password}});
 
-            if (checkLogin.data.length === 0 || checkPassword.data.length === 0) {
+            if (checkLogin?.data.length === 0 || checkPassword.data.length === 0) {
                 setMessage("Hasło lub/i Login są błędne!");
             } else {
                 browserStore.set("isLogged", true);

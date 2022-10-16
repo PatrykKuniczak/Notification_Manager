@@ -1,6 +1,6 @@
 import styled, {css} from "styled-components";
 import {textColor} from "../../helpers/constants";
-import {ILoginRegOption} from "../../pages/LoginReg";
+import {ILoginRegOption} from "../../pages/RegLogin";
 import {Button, Input, Label} from "../faskForm/TaskFormContainer";
 
 

@@ -13,7 +13,7 @@ import RegLoginFunc from "../components/regLogin/RegLoginFunc";
 
 export type ILoginRegOption = "login" | "register"
 
-const LoginReg = () => {
+const RegLogin = () => {
     const {
         loginRegOption,
         changeLoginRegOption,
@@ -40,14 +40,17 @@ const LoginReg = () => {
                 <RegLogLabel htmlFor="login" error={errors.login?.message}>Login</RegLogLabel>
                 <RegLogInput id="login" type="login" {...register("login")}
                              border={checkValidity("login")} autoFocus/>
+
                 <RegLogLabel htmlFor="password" error={errors.password?.message}>Hasło</RegLogLabel>
                 <RegLogInput id="password" type="password" {...register("password")}
                              border={checkValidity("password")}/>
+
                 {loginRegOption === "register" && <>
                     <RegLogLabel htmlFor="email" error={errors.email?.message}>Email</RegLogLabel>
                     <RegLogInput id="email" type="email" {...register("email")}
                                  border={checkValidity("email")}/>
                 </>}
+
                 <SubmitMessage>{message}</SubmitMessage>
 
                 <SubmitButton disabled={isSubmitting}>
@@ -59,4 +62,4 @@ const LoginReg = () => {
 }
 
 
-export default LoginReg;
+export default RegLogin;
