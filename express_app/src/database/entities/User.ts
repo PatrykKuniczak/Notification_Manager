@@ -1,5 +1,7 @@
-import {Column, Entity, PrimaryGeneratedColumn, Unique} from 'typeorm';
+import {Column, Entity, JoinColumn, OneToMany, OneToOne, PrimaryGeneratedColumn} from 'typeorm';
 import {IsEmail, Length, MinLength} from "class-validator";
+import {Task} from "./Task";
+import {Profile} from "./Profile";
 
 
 @Entity()
@@ -23,4 +25,11 @@ export class User {
         message: "Password is too short. Minimal length is $constraint1."
     })
     password: string;
+
+    @OneToMany(() => Task, (task) => task.user)
+    tasks: Task[]
+
+    @OneToOne(() => Profile)
+    @JoinColumn()
+    profile: Profile
 }
