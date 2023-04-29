@@ -1,6 +1,6 @@
 # Task_Manager
 
-[Task Manager](https://task-manager-patrykkuniczak.vercel.app)
+[Task Manager](https://task-manager-patrykkuniczak.vercel.app) - Backend hosting is down, cause herokku change policy and now the free version is unaviable.
 
 ## Functionality:
 
